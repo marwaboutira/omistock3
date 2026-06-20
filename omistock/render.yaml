@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: omistock
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    branch: main
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: OMISTOCK_SECRET_KEY
+        generateValue: true
+      - key: OMISTOCK_ROOT
+        value: /app
+      - key: PORT
+        value: "8000"
