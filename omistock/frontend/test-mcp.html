@@ -63,8 +63,13 @@
             }
 
             try {
-                // On tape directement sur l'API locale
-                const response = await fetch('http://localhost:8000/api/assistant/chat', {
+                // Détection de l'API (utilise Render par défaut si ouvert en local)
+                let apiBase = window.location.origin;
+                if (window.location.protocol === 'file:' || apiBase.includes('localhost')) {
+                    apiBase = 'https://omistock3.onrender.com';
+                }
+
+                const response = await fetch(`${apiBase}/api/assistant/chat`, {
                     method: 'POST',
                     headers: headers,
                     body: JSON.stringify({ message: input })
@@ -83,7 +88,7 @@
 
             } catch (error) {
                 statusMsg.textContent = "Erreur de connexion !";
-                outputBox.value = `Erreur lors du fetch :\n${error.message}\n\nVérifiez que le serveur uvicorn tourne bien sur http://localhost:8000.`;
+                outputBox.value = `Erreur lors du fetch :\n${error.message}\n\nVérifiez que le serveur est bien en ligne sur l'adresse API.`;
             }
         }
     </script>
