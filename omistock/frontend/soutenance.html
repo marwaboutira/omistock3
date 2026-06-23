@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMISTOCK V3 - Présentation de Soutenance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+            overflow: hidden;
+        }
+        
+        /* Grille de points subtile */
+        .dot-grid {
+            background-image: radial-gradient(rgba(56, 189, 248, 0.15) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Halo lumineux Teal */
+        .halo-teal {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, rgba(20, 184, 166, 0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Transition rapide en fondu (0.3s) */
+        .slide {
+            transition: opacity 0.3s ease-in-out, visibility 0.3s;
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 5rem 4rem 4rem 4rem;
+            z-index: 10;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Pointeur Laser intelligent */
+        .laser-pointer-active {
+            cursor: none !important;
+        }
+
+        #laser-dot {
+            position: fixed;
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle, rgba(20, 184, 166, 1) 0%, rgba(20, 184, 166, 0.4) 40%, rgba(20, 184, 166, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            display: none;
+            box-shadow: 0 0 15px rgba(20, 184, 166, 0.8);
+        }
+
+        .laser-highlight {
+            transition: all 0.2s ease;
+        }
+
+        .laser-pointer-active .laser-highlight:hover {
+            box-shadow: 0 0 0 2px #14b8a6, 0 0 20px rgba(20, 184, 166, 0.6);
+            background-color: rgba(20, 184, 166, 0.15) !important;
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.45);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem;
+        }
+    </style>
+</head>
+<body class="dot-grid min-h-screen relative select-none">
+
+    <div class="halo-teal"></div>
+    <div id="laser-dot"></div>
+
+    <!-- Header Permanent -->
+    <header class="fixed top-0 left-0 right-0 h-16 bg-[#0F172A]/80 backdrop-blur-md border-b border-white/5 flex items-center justify-between px-8 z-50">
+        <div class="flex items-center gap-3">
+            <span class="text-emerald-400 font-bold tracking-wider text-sm uppercase">ISTA / Oran 1</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <!-- Bouton Pointeur Laser -->
+            <button id="toggle-laser" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-300 transition-all">
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-400 animate-pulse inline-block" id="laser-indicator"></span>
+                <span>Pointeur Laser</span>
+            </button>
+            <span class="text-white font-bold tracking-tight text-md">OMISTOCK <span class="text-emerald-400">V3</span></span>
+        </div>
+    </header>
+
+    <!-- SLIDE 01 -->
+    <div class="slide active" id="slide-1">
+        <div class="my-auto flex flex-col items-center text-center max-w-4xl mx-auto space-y-6">
+            <div class="w-24 h-24 bg-gradient-to-tr from-teal-500 to-emerald-400 rounded-3xl flex items-center justify-center shadow-lg shadow-teal-500/20 border border-white/10 animate-bounce">
+                <svg class="w-12 h-12 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
+            </div>
+            <h1 class="text-6xl font-bold tracking-tight text-white mt-4">
+                OMISTOCK <span class="bg-gradient-to-r from-teal-400 to-emerald-500 bg-clip-text text-transparent">V3</span>
+            </h1>
+            <p class="text-2xl text-slate-300 font-light">
+                L'aboutissement d'un cycle de R&D vers l'intelligence logistique
+            </p>
+            <div class="h-[1px] w-48 bg-teal-500/30"></div>
+            <p class="text-slate-400 max-w-2xl text-sm leading-relaxed">
+                Plateforme ERP multi-tenant moderne alliant architecture 3-tiers découplée, logistique scientifique et gouvernance multi-agents sécurisée (Human-in-the-Loop).
+            </p>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "Monsieur le Président, membres du jury. Aujourd'hui, je ne vous présente pas une simple application, mais un changement de paradigme. OMISTOCK V3 est l'aboutissement de trois itérations de recherche. Notre mission : transformer la gestion de stock passive en une véritable tour de contrôle décisionnelle."
+        </div>
+    </div>
+
+    <!-- SLIDE 02 -->
+    <div class="slide" id="slide-2">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">La Supply Chain 4.0</h2>
+            <p class="text-slate-400 text-sm mb-6">Le paysage et l'environnement technologique de l'industrie logistique moderne</p>
+            
+            <div class="grid grid-cols-3 gap-6 max-w-6xl mx-auto mt-6">
+                <div class="glass-card p-6 flex flex-col justify-between h-72">
+                    <div class="w-12 h-12 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-400 border border-teal-500/20 mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2">Hyper-connexion</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Intégration d'entrepôts distants, d'opérateurs terrain sur mobile, de capteurs et d'agents IA autonomes dans une structure logicielle centralisée.
+                        </p>
+                    </div>
+                </div>
+                <div class="glass-card p-6 flex flex-col justify-between h-72">
+                    <div class="w-12 h-12 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-400 border border-teal-500/20 mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2">Sécurisation accrue</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Besoin impératif de protection contre la falsification interne (chaînes d'audit cryptographiques) et d'une stricte étanchéité multi-tenant pour les clients.
+                        </p>
+                    </div>
+                </div>
+                <div class="glass-card p-6 flex flex-col justify-between h-72">
+                    <div class="w-12 h-12 rounded-2xl bg-teal-500/10 flex items-center justify-center text-teal-400 border border-teal-500/20 mb-4">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-2">Automatisation ROP/CMP</h3>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Transition vers une logistique scientifique calculant en continu le stock de sécurité, le point de commande, et la valorisation financière en temps réel.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "Aujourd'hui, la logistique fait face à trois défis majeurs : la dispersion des flux, les risques de fraude ou d'erreur sur les stocks, et la lenteur des décisions manuelles. OMISTOCK V3 répond précisément à ces problématiques de l'industrie 4.0 par l'automatisation, la sécurité et la connectivité mobile."
+        </div>
+    </div>
+
+    <!-- SLIDE 03 -->
+    <div class="slide" id="slide-3">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">Les Limites de l'Existant</h2>
+            <p class="text-slate-400 text-sm mb-6">Pourquoi les solutions classiques échouent-elles face aux besoins modernes ?</p>
+            
+            <div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto mt-6">
+                <div class="glass-card p-6 border-l-2 border-red-500/40">
+                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                        <span class="text-red-400">✗</span> Centralisation excessive & Monolithes
+                    </h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Les ERP traditionnels intègrent les requêtes SQL directement dans les interfaces utilisateur, créant des failles de sécurité, des couplages forts et rendant la maintenance extrêmement laborieuse.
+                    </p>
+                </div>
+                <div class="glass-card p-6 border-l-2 border-red-500/40">
+                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                        <span class="text-red-400">✗</span> Absence de résilience réseau
+                    </h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Dès qu'une perte réseau survient dans l'entrepôt, l'activité est paralysée. Les opérateurs ne peuvent plus scanner les lots ou enregistrer les mouvements physiques de stock.
+                    </p>
+                </div>
+                <div class="glass-card p-6 border-l-2 border-red-500/40">
+                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                        <span class="text-red-400">✗</span> Intégrité d'audit fragile
+                    </h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Les bases de données classiques n'empêchent pas un administrateur malveillant ou un pirate de modifier directement la table des stocks en supprimant ou insérant des lignes sans laisser de traces.
+                    </p>
+                </div>
+                <div class="glass-card p-6 border-l-2 border-red-500/40">
+                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                        <span class="text-red-400">✗</span> IA sans contrôle ni garde-fous
+                    </h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        L'intégration brute d'agents autonomes comporte des risques : achats involontaires, ordres de transfert contradictoires ou mauvaise estimation des seuils critiques sans supervision humaine.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "En analysant l'existant, nous avons constaté que l'absence de résilience hors-ligne et le couplage architectural constituaient des freins majeurs. De plus, laisser un agent IA agir seul en base de données sans validation humaine est inacceptable pour un environnement de production critique."
+        </div>
+    </div>
+
+    <!-- SLIDE 04 -->
+    <div class="slide" id="slide-4">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">L'Écosystème OMISTOCK V3</h2>
+            <p class="text-slate-400 text-sm mb-6">Une vue d'ensemble des modules connectés</p>
+            
+            <div class="max-w-4xl mx-auto mt-6">
+                <!-- Diagramme conceptuel SVG/CSS -->
+                <div class="glass-card p-8 flex flex-col items-center justify-center space-y-6">
+                    <div class="flex items-center justify-between w-full max-w-2xl">
+                        <!-- PWA -->
+                        <div class="flex flex-col items-center space-y-2 bg-slate-800/80 border border-slate-700 px-4 py-3 rounded-xl w-36 text-center">
+                            <span class="text-xs font-bold text-teal-400">PWA Terrain</span>
+                            <span class="text-[10px] text-slate-400">Offline-First / Sync</span>
+                        </div>
+                        <div class="h-0.5 flex-1 bg-slate-700 mx-2 relative">
+                            <span class="absolute -top-3 left-1/2 -translate-x-1/2 text-[9px] text-slate-500 font-bold">API / JSON</span>
+                        </div>
+                        <!-- CORE ERP -->
+                        <div class="flex flex-col items-center space-y-2 bg-teal-500/10 border-2 border-teal-500/30 px-6 py-4 rounded-2xl w-48 text-center shadow-lg shadow-teal-500/5">
+                            <span class="text-sm font-bold text-white">CORE ERP V3</span>
+                            <span class="text-xs text-slate-300">FastAPI / SQLite</span>
+                            <span class="text-[10px] text-teal-400 font-mono">Multi-Tenant DAL</span>
+                        </div>
+                        <div class="h-0.5 flex-1 bg-slate-700 mx-2 relative">
+                            <span class="absolute -top-3 left-1/2 -translate-x-1/2 text-[9px] text-slate-500 font-bold">HITL Protocol</span>
+                        </div>
+                        <!-- AGENT GOVERNANCE -->
+                        <div class="flex flex-col items-center space-y-2 bg-slate-800/80 border border-slate-700 px-4 py-3 rounded-xl w-36 text-center">
+                            <span class="text-xs font-bold text-teal-400">Gouvernance IA</span>
+                            <span class="text-[10px] text-slate-400">Human-in-the-Loop</span>
+                        </div>
+                    </div>
+                    <div class="h-12 w-0.5 bg-slate-700"></div>
+                    <div class="bg-slate-800/60 border border-slate-700/50 rounded-xl px-6 py-3 text-center max-w-md">
+                        <span class="text-xs font-semibold text-slate-300 block mb-1">Journal d'Audit Cryptographique SHA-256</span>
+                        <span class="text-[10px] font-mono text-emerald-400">prev_hash ➔ block_data ➔ entry_hash</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "Voici la cartographie d'OMISTOCK V3. L'application se compose d'un noyau ERP FastAPI découplé, flanqué à gauche d'une application progressive (PWA) pour les terminaux mobiles du personnel au sol, et à droite d'une tour de contrôle de gouvernance des agents IA."
+        </div>
+    </div>
+
+    <!-- SLIDE 05 -->
+    <div class="slide" id="slide-5">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">Architecture 3-Tiers & Propreté du Code</h2>
+            <p class="text-slate-400 text-sm mb-6">Une séparation stricte des responsabilités pour la version V3</p>
+            
+            <div class="grid grid-cols-3 gap-6 max-w-6xl mx-auto mt-6">
+                <div class="glass-card p-6">
+                    <div class="text-emerald-400 font-bold text-lg mb-2">1. Frontend Unifié</div>
+                    <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                        Élimination des feuilles de style éparses. Centralisation totale au sein de <span class="font-mono text-white text-[11px]">style.css</span>. Intégration fluide de Tailwind et de micro-animations pour une UX native.
+                    </p>
+                </div>
+                <div class="glass-card p-6">
+                    <div class="text-emerald-400 font-bold text-lg mb-2">2. Contrôleurs (FastAPI)</div>
+                    <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                        Les routeurs FastAPI ne s'occupent plus que de la validation HTTP et de la sérialisation des requêtes. Aucun accès direct à la persistance SQL.
+                    </p>
+                </div>
+                <div class="glass-card p-6">
+                    <div class="text-emerald-400 font-bold text-lg mb-2">3. Couche DAL (Repository Pattern)</div>
+                    <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                        Création de <span class="font-mono text-white text-[11px]">repository.py</span>. Toute manipulation SQL s'effectue dans cette couche isolée via SQLAlchemy ORM, assurant la testabilité unitaire et l'indépendance de la base de données.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "D'un point de vue académique et logiciel, nous avons banni toute forme de couplage. Nous avons introduit un Repository Pattern pour séparer la couche d'accès aux données (DAL) des routeurs de l'API. Cette structure garantit la portabilité de l'application."
+        </div>
+    </div>
+
+    <!-- SLIDE 06 -->
+    <div class="slide" id="slide-6">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">Multi-Tenancy & Isolation des Locataires</h2>
+            <p class="text-slate-400 text-sm mb-6">Comment nous garantissons la confidentialité des données inter-entreprises</p>
+            
+            <div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto mt-6">
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-bold text-white mb-2">Ségrégation de données logique</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Chaque entité de notre base de données (Produit, Commande, Mouvement, Utilisateur) est rattachée à un <span class="font-mono text-emerald-400 text-[11px]">company_id</span>. Lors de l'accès aux données via la DAL, des filtres automatiques sont appliqués de manière hermétique.
+                    </p>
+                </div>
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-bold text-white mb-2">Authentification par Jetons JWT</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Le jeton d'accès contient le rôle et le <span class="font-mono text-emerald-400 text-[11px]">company_id</span> décodés à la volée côté serveur. Un utilisateur de l'entreprise "A" ne peut sous aucun prétexte forger ou lire une entité de l'entreprise "B".
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "L'architecture multi-tenant d'OMISTOCK V3 est conçue avec une isolation logique stricte. Chaque transaction, chaque lecture ou écriture est liée à l'empreinte de la compagnie récupérée de manière cryptographique dans le token JWT."
+        </div>
+    </div>
+
+    <!-- SLIDE 07 -->
+    <div class="slide" id="slide-7">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">Gestion Logistique Scientifique</h2>
+            <p class="text-slate-400 text-sm mb-6">Algorithmes d'approvisionnement et de valorisation métier</p>
+            
+            <div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto mt-6">
+                <div class="glass-card p-6 laser-highlight">
+                    <h3 class="text-lg font-bold text-white mb-2">Point de Commande Dynamique (ROP)</h3>
+                    <div class="p-3 bg-slate-900/60 rounded-lg font-mono text-emerald-400 text-xs mb-3">
+                        ROP = (Demande journalière moyenne × Délai d'approvisionnement) + Stock de sécurité
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Le ROP (Reorder Point) s'ajuste en continu par rapport aux ventes passées, afin d'émettre des alertes de réapprovisionnement automatiques au bon moment.
+                    </p>
+                </div>
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-bold text-white mb-2">Coût Moyen Pondéré (WAC / CMP)</h3>
+                    <div class="p-3 bg-slate-900/60 rounded-lg font-mono text-emerald-400 text-xs mb-3">
+                        CMP = (Valeur stock initial + Coût entrée) / (Quantité initiale + Quantité entrée)
+                    </div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Assure une traçabilité financière rigoureuse lors de l'intégration de nouveaux lots achetés à des prix différents, pour une valorisation fiscale exacte.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "Nous appliquons des principes rigoureux de gestion des stocks. Le ROP calcule de manière dynamique quand commander pour éviter les ruptures, tandis que le CMP assure la valorisation comptable exacte de l'inventaire après chaque entrée physique."
+        </div>
+    </div>
+
+    <!-- SLIDE 08 -->
+    <div class="slide" id="slide-8">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">Logistique Agro-Pharmaceutique : FEFO</h2>
+            <p class="text-slate-400 text-sm mb-6">Gestion fine des lots et contrôle strict des cycles de péremption</p>
+            
+            <div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto mt-6">
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-bold text-white mb-2">Support FEFO (First Expired, First Out)</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Indispensable pour l'industrie pharmaceutique et agroalimentaire. Lors des ventes, le système trie et affecte automatiquement en priorité les lots dont la date d'expiration est la plus proche.
+                    </p>
+                </div>
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-bold text-white mb-2">Traçabilité par numéro de lot</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Chaque mouvement de stock (entrée, sortie, transfert) est tracé au niveau du lot. En cas d'anomalie ou de rappel produit, OMISTOCK V3 est capable d'isoler l'historique complet d'un lot en quelques secondes.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "Pour les secteurs sensibles comme la pharmacie ou l'agroalimentaire, nous avons implémenté la règle FEFO. Ce module garantit le déstockage prioritaire des produits les plus proches de leur date limite, minimisant ainsi les pertes d'inventaire."
+        </div>
+    </div>
+
+    <!-- SLIDE 09 -->
+    <div class="slide" id="slide-9">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">Gouvernance Multi-Agent (Human-in-the-Loop)</h2>
+            <p class="text-slate-400 text-sm mb-6">Encadrer les agents intelligents pour éliminer les risques opérationnels</p>
+            
+            <div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto mt-6">
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-amber-500"></span> Principe de Séparation des Pouvoirs (SoD)
+                    </h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        L'IA dispose d'un niveau d'autonomie <span class="font-mono text-amber-400 text-[11px]">PROPOSE</span>. Elle peut analyser les ruptures et proposer un réapprovisionnement, mais n'a aucun droit d'écriture physique directe en base sans action humaine.
+                    </p>
+                </div>
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-emerald-500"></span> Cycle de validation sécurisé
+                    </h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Le flux suit un cycle d'état strict : <span class="font-mono text-white text-[11px]">PENDING</span> ➔ <span class="font-mono text-white text-[11px]">VALIDATED</span> ➔ <span class="font-mono text-white text-[11px]">EXECUTED</span>. Chaque validation humaine génère un jeton signé liant la décision de l'administrateur à l'action de l'agent.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "C'est ici notre plus grande valeur ajoutée académique : la gouvernance d'agent. L'agent IA n'est pas un acteur incontrôlé. Il est cantonné au rôle d'analyste de propositions. Toute action critique doit transiter par le flux de validation Human-in-the-Loop."
+        </div>
+    </div>
+
+    <!-- SLIDE 10 -->
+    <div class="slide" id="slide-10">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">Journal d'Audit Cryptographique</h2>
+            <p class="text-slate-400 text-sm mb-6">Garantir la non-répudiation et la détection instantanée de falsification</p>
+            
+            <div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto mt-6">
+                <div class="glass-card p-6 laser-highlight">
+                    <h3 class="text-lg font-bold text-white mb-2">Chaînage par Hachage SHA-256</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed mb-4">
+                        Chaque nouvelle action crée une ligne d'audit liée à la précédente.
+                    </p>
+                    <div class="bg-slate-900/60 p-3 rounded-lg font-mono text-[10px] text-teal-400 space-y-1">
+                        <div>Entry #14: prev_hash = <span class="text-slate-400">"8f2a7b..."</span></div>
+                        <div>Entry #15: prev_hash = SHA256(Entry #14)</div>
+                        <div>Entry #15: entry_hash = <span class="text-teal-300 font-bold">"f3e8c2..."</span></div>
+                    </div>
+                </div>
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-bold text-white mb-2">Détection de Fraude Logistique</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Si un acteur malveillant modifie une entrée ou supprime une transaction en base de données pour dissimuler un vol, le chaînage cryptographique est rompu immédiatement. Le système lève une alerte critique en temps réel.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "La sécurité de notre registre de stock repose sur la cryptographie. Chaque log d'audit est relié au précédent, à l'image d'une blockchain privée par entreprise. Toute altération physique de la base brise instantanément le hash de la chaîne."
+        </div>
+    </div>
+
+    <!-- SLIDE 11 -->
+    <div class="slide" id="slide-11">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">Démonstration Live</h2>
+            <p class="text-slate-400 text-sm mb-6">Scénario de validation en conditions réelles</p>
+            
+            <div class="grid grid-cols-3 gap-6 max-w-6xl mx-auto mt-6">
+                <div class="glass-card p-5 border border-teal-500/20">
+                    <div class="text-teal-400 font-bold text-sm uppercase mb-2">1. Dashboard & ROP</div>
+                    <p class="text-slate-400 text-[11px] leading-relaxed">
+                        Visualisation des produits en alerte d'approvisionnement (en-dessous de leur point de commande calculé).
+                    </p>
+                </div>
+                <div class="glass-card p-5 border border-teal-500/20">
+                    <div class="text-teal-400 font-bold text-sm uppercase mb-2">2. Flux HITL</div>
+                    <p class="text-slate-400 text-[11px] leading-relaxed">
+                        L'agent IA propose un restockage. Validation en direct par l'administrateur humain : transition de <span class="font-mono text-white text-[10px]">PENDING</span> à <span class="font-mono text-white text-[10px]">VALIDATED</span>.
+                    </p>
+                </div>
+                <div class="glass-card p-5 border border-teal-500/20">
+                    <div class="text-teal-400 font-bold text-sm uppercase mb-2">3. Audit & Intégrité</div>
+                    <p class="text-slate-400 text-[11px] leading-relaxed">
+                        Vérification instantanée de la signature de la chaîne d'audit après la validation de l'action de l'agent.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "Passons maintenant à la démonstration en direct. Nous allons simuler une alerte de stock bas d'un produit, observer la suggestion automatique de l'agent IA, la valider, puis vérifier que notre journal d'audit a cryptographiquement verrouillé la transaction."
+        </div>
+    </div>
+
+    <!-- SLIDE 12 -->
+    <div class="slide" id="slide-12">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">PWA Mobile Terrain</h2>
+            <p class="text-slate-400 text-sm mb-6">Résilience du personnel au sol avec le mode hors-ligne</p>
+            
+            <div class="grid grid-cols-2 gap-6 max-w-5xl mx-auto mt-6">
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-bold text-white mb-2">Service Worker & Stockage Local</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Le Service Worker intercepte les requêtes réseau et met en cache l'application mobile. En mode hors-ligne, les données scannées sont stockées temporairement dans IndexedDB au niveau du terminal mobile.
+                    </p>
+                </div>
+                <div class="glass-card p-6">
+                    <h3 class="text-lg font-bold text-white mb-2">Synchronisation à chaud</h3>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Dès que le terminal de l'opérateur récupère une connexion internet (Wi-Fi ou 4G), l'application déclenche automatiquement une synchronisation bidirectionnelle avec le serveur sans aucune action requise.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "Sur le terrain, les coupures de réseau sont fréquentes. La PWA d'OMISTOCK V3 garantit que l'opérateur peut continuer de scanner ses articles en mode déconnecté. Le système gère de manière transparente la réconciliation des données lors du retour réseau."
+        </div>
+    </div>
+
+    <!-- SLIDE 13 -->
+    <div class="slide" id="slide-13">
+        <div>
+            <h2 class="text-3xl font-bold text-white mb-2">Sécurité d'Entreprise & cycle de vie</h2>
+            <p class="text-slate-400 text-sm mb-6">Politiques de sécurité avancées, conformité et gestion des erreurs</p>
+            
+            <div class="grid grid-cols-3 gap-6 max-w-6xl mx-auto mt-6">
+                <div class="glass-card p-6">
+                    <div class="text-emerald-400 font-bold text-lg mb-2">Contrôle d'accès RBAC</div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Gestion fine des droits sur 3 niveaux : Administrateurs (tous droits), Opérateurs humains (lecture/écriture métier), et Agents IA (limités à la lecture et aux propositions).
+                    </p>
+                </div>
+                <div class="glass-card p-6">
+                    <div class="text-emerald-400 font-bold text-lg mb-2">Mécanisme de Soft-Delete</div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Toute suppression n'est pas physique immédiatement. Un délai de rétention de 30 jours est appliqué, permettant la restauration immédiate en cas d'erreur de manipulation.
+                    </p>
+                </div>
+                <div class="glass-card p-6">
+                    <div class="text-emerald-400 font-bold text-lg mb-2">Sauvegarde & Restauration</div>
+                    <p class="text-slate-400 text-xs leading-relaxed">
+                        Exportations JSON complètes scopées par entreprise, assurant qu'un administrateur ne peut exporter ou réimporter que ses propres données métier sans polluer la base commune.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "Dans cette V3 mûre, nous offrons une gestion fine des accès (RBAC) et une protection contre les erreurs humaines fatales grâce au Soft-Delete et à des exports/imports JSON hermétiques."
+        </div>
+    </div>
+
+    <!-- SLIDE 14 -->
+    <div class="slide" id="slide-14">
+        <div class="my-auto flex flex-col items-center text-center max-w-4xl mx-auto space-y-6">
+            <h2 class="text-5xl font-bold tracking-tight text-white">Conclusion & Perspectives</h2>
+            <p class="text-xl text-slate-300 font-light">
+                Une architecture éprouvée, prête pour l'échelle industrielle
+            </p>
+            <div class="h-[1px] w-48 bg-teal-500/30"></div>
+            
+            <div class="grid grid-cols-2 gap-6 w-full text-left mt-4">
+                <div class="glass-card p-5">
+                    <h4 class="text-sm font-bold text-teal-400 mb-1">✓ Industrialisation V3</h4>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">
+                        Un socle technique performant, résilient et rigoureusement testé. Séparation stricte de la DAL et modularité complète de l'application.
+                    </p>
+                </div>
+                <div class="glass-card p-5">
+                    <h4 class="text-sm font-bold text-teal-400 mb-1">✓ Ouverture Technologique</h4>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">
+                        Prêt pour l'intégration de modèles de langage (LLMs) via le protocole standardisé MCP (Model Context Protocol).
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Script Oral -->
+        <div class="glass-card p-4 border-l-4 border-teal-500 text-slate-300 text-sm mt-auto max-w-5xl mx-auto">
+            <span class="font-bold text-teal-400 text-xs block uppercase mb-1">Script Oral :</span>
+            "Monsieur le Président, membres du jury. OMISTOCK V3 n'est plus seulement une preuve de concept. C'est une architecture solide, conforme aux normes d'isolation d'entreprise et prête pour l'intégration future d'agents autonomes à grande échelle. Je vous remercie pour votre attention."
+        </div>
+    </div>
+
+    <!-- Footer Permanent -->
+    <footer class="fixed bottom-0 left-0 right-0 h-14 bg-slate-950/40 border-t border-white/5 flex items-center justify-between px-8 z-50">
+        <span class="text-xs text-slate-500">Présentation OMISTOCK V3 — ISTA / Oran 1</span>
+        
+        <!-- Contrôles de navigation -->
+        <div class="flex items-center gap-6">
+            <button id="prev-btn" class="text-slate-400 hover:text-white transition-colors disabled:opacity-30" disabled>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <span class="text-teal-400 text-xs font-bold font-mono" id="slide-num">01/14</span>
+            <button id="next-btn" class="text-slate-400 hover:text-white transition-colors">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </div>
+        
+        <span class="text-[10px] text-slate-500 uppercase tracking-widest hidden md:inline-block">Utilisez les flèches ← → du clavier</span>
+    </footer>
+
+    <script>
+        const totalSlides = 14;
+        let currentSlide = 1;
+
+        const slideNumEl = document.getElementById('slide-num');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        
+        function updateSlides() {
+            // Masquer tous les slides
+            for (let i = 1; i <= totalSlides; i++) {
+                const el = document.getElementById(`slide-${i}`);
+                if (el) {
+                    el.classList.remove('active');
+                }
+            }
+            // Afficher le slide actif
+            const activeEl = document.getElementById(`slide-${currentSlide}`);
+            if (activeEl) {
+                activeEl.classList.add('active');
+            }
+
+            // Mettre à jour la numérotation
+            slideNumEl.textContent = `${String(currentSlide).padStart(2, '0')}/${totalSlides}`;
+
+            // Gérer l'état des boutons de contrôle
+            prevBtn.disabled = currentSlide === 1;
+            nextBtn.disabled = currentSlide === totalSlides;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlides();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlides();
+            }
+        });
+
+        // Contrôles clavier
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                if (currentSlide < totalSlides) {
+                    currentSlide++;
+                    updateSlides();
+                }
+            } else if (e.key === 'ArrowLeft') {
+                if (currentSlide > 1) {
+                    currentSlide--;
+                    updateSlides();
+                }
+            }
+        });
+
+        // Gestion du Pointeur Laser
+        const toggleLaserBtn = document.getElementById('toggle-laser');
+        const laserIndicator = document.getElementById('laser-indicator');
+        const laserDot = document.getElementById('laser-dot');
+        let laserActive = false;
+
+        toggleLaserBtn.addEventListener('click', () => {
+            laserActive = !laserActive;
+            if (laserActive) {
+                document.body.classList.add('laser-pointer-active');
+                laserIndicator.className = 'w-2.5 h-2.5 rounded-full bg-teal-400 animate-ping inline-block';
+                laserDot.style.display = 'block';
+            } else {
+                document.body.classList.remove('laser-pointer-active');
+                laserIndicator.className = 'w-2.5 h-2.5 rounded-full bg-slate-400 animate-pulse inline-block';
+                laserDot.style.display = 'none';
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (laserActive) {
+                laserDot.style.left = `${e.clientX}px`;
+                laserDot.style.top = `${e.clientY}px`;
+            }
+        });
+    </script>
+</body>
+</html>
