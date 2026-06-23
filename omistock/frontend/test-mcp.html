@@ -11,8 +11,8 @@
     <h1>Console de Test MCP (Standalone)</h1>
 
     <div class="form-group">
-        <label for="mcp_token">Token d'accès (Bearer JWT) :</label>
-        <input type="text" id="mcp_token" placeholder="Collez votre token JWT ici">
+        <label for="mcp_apikey">Clé API Agent (X-API-Key) :</label>
+        <input type="text" id="mcp_apikey" placeholder="Collez la clé API agent ici">
     </div>
 
     <div class="form-group">
@@ -45,21 +45,23 @@
 
     <script>
         window.onload = () => {
-            const token = localStorage.getItem('omistock_token');
-            if (token) document.getElementById('mcp_token').value = token;
+            const stored = localStorage.getItem('omistock_agent_key');
+            if (stored) document.getElementById('mcp_apikey').value = stored;
         };
 
         async function sendToMCP() {
-            const token    = document.getElementById('mcp_token').value.trim();
+            const apiKey   = document.getElementById('mcp_apikey').value.trim();
             const endpoint = document.getElementById('mcp_endpoint').value;
             const paramsRaw = document.getElementById('mcp_params').value.trim();
             const outputBox = document.getElementById('mcp_output');
             const statusMsg = document.getElementById('status_msg');
 
-            if (!token) {
-                alert("Veuillez entrer un token JWT.");
+            if (!apiKey) {
+                alert("Veuillez entrer la clé API agent.");
                 return;
             }
+
+            localStorage.setItem('omistock_agent_key', apiKey);
 
             let url = endpoint;
             if (paramsRaw) {
@@ -79,10 +81,7 @@
             try {
                 const response = await fetch(url, {
                     method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
+                    headers: { 'X-API-Key': apiKey }
                 });
 
                 statusMsg.textContent = `Statut HTTP : ${response.status} ${response.statusText}`;
