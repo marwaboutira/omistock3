@@ -3,6 +3,11 @@ chcp 65001 >nul
 title OMISTOCK - Lancement Systeme
 color 0A
 
+:: Activation de l'environnement virtuel local
+if exist .venv\Scripts\activate.bat (
+    call .venv\Scripts\activate.bat
+)
+
 echo.
 echo  ██████╗ ███╗   ███╗██╗███████╗████████╗ ██████╗  ██████╗██╗  ██╗
 echo  ██╔═══██╗████╗ ████║██║██╔════╝╚══██╔══╝██╔═══██╗██╔════╝██║ ██╔╝

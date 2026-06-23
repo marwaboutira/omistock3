@@ -7,11 +7,11 @@ uvicorn[standard]==0.30.1
 starlette==1.3.1
 
 # ORM & base de données
-sqlalchemy==2.0.25
+sqlalchemy>=2.0.35
 
 # Validation & schémas
-pydantic==2.10.1
-pydantic[email]==2.10.1
+pydantic>=2.11.0
+pydantic[email]>=2.11.0
 email-validator==2.1.0.post1
 
 # Authentification JWT & mots de passe
@@ -31,4 +31,5 @@ httpx==0.27.2
 
 # QR code (route /api/auth/qr-code)
 qrcode[pil]==7.4.2
-pillow==10.2.0
+pillow>=10.3.0
+
