@@ -4,33 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Outil de Test MCP Indépendant</title>
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="light-theme">
 
     <h1>Console de Test MCP (Standalone)</h1>
-
+    
     <div class="form-group">
-        <label for="mcp_apikey">Clé API Agent (X-API-Key) :</label>
-        <input type="text" id="mcp_apikey" placeholder="Collez la clé API agent ici">
+        <label for="mcp_token">Token d'accès API (Optionnel si désactivé sur la route) :</label>
+        <input type="text" id="mcp_token" placeholder="Collez le token Bearer ici si nécessaire (ex: localStorage.getItem('omistock_token'))">
     </div>
 
     <div class="form-group">
-        <label for="mcp_endpoint">Endpoint agent :</label>
-        <select id="mcp_endpoint">
-            <option value="/api/agent/capabilities">GET /capabilities — droits de l'agent</option>
-            <option value="/api/agent/alerts">GET /alerts — produits sous ROP</option>
-            <option value="/api/agent/inventory">GET /inventory — stock réel</option>
-            <option value="/api/agent/valuation">GET /valuation — valorisation stock</option>
-            <option value="/api/agent/reorder-suggestions">GET /reorder-suggestions — suggestions EOQ</option>
-            <option value="/api/agent/expiring-lots">GET /expiring-lots — lots expirants</option>
-            <option value="/api/agent/proposals/mine">GET /proposals/mine — mes propositions</option>
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="mcp_params">Paramètres additionnels (JSON, optionnel) :</label>
-        <input type="text" id="mcp_params" placeholder='Ex: {"low_stock_only": true} ou {"days": 60}'>
+        <label for="mcp_input">Commande ou Question pour l'Agent IA :</label>
+        <input type="text" id="mcp_input" placeholder="Ex: alerte stock, résumé des ventes...">
     </div>
 
     <div class="form-group">
@@ -45,52 +33,57 @@
 
     <script>
         window.onload = () => {
-            const stored = localStorage.getItem('omistock_agent_key');
-            if (stored) document.getElementById('mcp_apikey').value = stored;
+            const token = localStorage.getItem('omistock_token');
+            if (token) {
+                document.getElementById('mcp_token').value = token;
+            }
         };
 
         async function sendToMCP() {
-            const apiKey   = document.getElementById('mcp_apikey').value.trim();
-            const endpoint = document.getElementById('mcp_endpoint').value;
-            const paramsRaw = document.getElementById('mcp_params').value.trim();
+            const input = document.getElementById('mcp_input').value;
+            const token = document.getElementById('mcp_token').value;
             const outputBox = document.getElementById('mcp_output');
             const statusMsg = document.getElementById('status_msg');
 
-            if (!apiKey) {
-                alert("Veuillez entrer la clé API agent.");
+            if (!input.trim()) {
+                alert("Veuillez entrer une commande.");
                 return;
-            }
-
-            localStorage.setItem('omistock_agent_key', apiKey);
-
-            let url = endpoint;
-            if (paramsRaw) {
-                try {
-                    const params = JSON.parse(paramsRaw);
-                    const qs = new URLSearchParams(params).toString();
-                    if (qs) url += '?' + qs;
-                } catch {
-                    alert("Paramètres JSON invalides.");
-                    return;
-                }
             }
 
             outputBox.value = "";
             statusMsg.textContent = "Requête en cours...";
 
+            // Configuration de la requête
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
             try {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: { 'X-API-Key': apiKey }
+                // Détection de l'API (utilise Render par défaut si ouvert en local)
+                let apiBase = window.location.origin;
+                if (window.location.protocol === 'file:' || apiBase.includes('localhost')) {
+                    apiBase = 'https://omistock3.onrender.com';
+                }
+
+                const response = await fetch(`${apiBase}/api/assistant/chat`, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({ message: input })
                 });
 
                 statusMsg.textContent = `Statut HTTP : ${response.status} ${response.statusText}`;
 
+                // On essaie de parser en JSON pour l'afficher joliment, sinon on affiche en texte brut
                 try {
                     const data = await response.json();
                     outputBox.value = JSON.stringify(data, null, 4);
-                } catch {
-                    outputBox.value = await response.text();
+                } catch (jsonErr) {
+                    const text = await response.text();
+                    outputBox.value = text;
                 }
 
             } catch (error) {
