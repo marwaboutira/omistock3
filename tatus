@@ -1,0 +1,5 @@
+[33ma1e928d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Align UI colors with OMISTOCK logo
+[33m10cdf40[m Remove dead settings UI sections
+[33mea853f0[m feat: Mise a jour soutenance 19 slides avec logos et QR codes
+[33mdccfa28[m Ajout de la page de présentation (soutenance.html)
+[33mfef37b2[m Update requirements.txt dependencies and start.bat venv activation
