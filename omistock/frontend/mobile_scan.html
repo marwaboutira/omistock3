@@ -1,114 +1,166 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0f172a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>OMISTOCK - Scanner</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="dark-theme">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+        />
+        <meta name="theme-color" content="#0050b8" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <title>OMISTOCK - Scanner</title>
+        <link rel="manifest" href="manifest.json" />
+        <link rel="apple-touch-icon" href="icon-192.png" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/html5-qrcode"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
 
-    <!-- Scanner Full Screen -->
-    <div id="reader"></div>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body class="dark-theme">
+        <!-- Scanner Full Screen -->
+        <div id="reader"></div>
 
-    <!-- UI Overlay -->
-    <div class="ui-overlay flex flex-col p-8">
-        <header class="flex justify-between items-center mb-auto">
-            <button onclick="window.location.href='dashboard.html'" class="ui-element w-14 h-14 glass rounded-2xl flex items-center justify-center text-white active:scale-90 transition-all shadow-2xl">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-            </button>
-            <div class="ui-element glass px-8 py-4 rounded-full text-white font-black text-xs uppercase tracking-[0.3em] shadow-2xl">
-                Scanner
+        <!-- UI Overlay -->
+        <div class="ui-overlay flex flex-col p-8">
+            <header class="flex justify-between items-center mb-auto">
+                <button
+                    onclick="window.location.href = 'dashboard.html'"
+                    class="ui-element w-14 h-14 glass rounded-2xl flex items-center justify-center text-white active:scale-90 transition-all shadow-2xl"
+                >
+                    <svg
+                        class="w-7 h-7"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M15 19l-7-7 7-7"
+                        ></path>
+                    </svg>
+                </button>
+                <div
+                    class="ui-element glass px-8 py-4 rounded-full text-white font-black text-xs uppercase tracking-[0.3em] shadow-2xl"
+                >
+                    Scanner
+                </div>
+                <div class="w-14"></div>
+            </header>
+
+            <div class="mt-auto flex flex-col items-center gap-6 mb-12">
+                <div
+                    class="w-64 h-64 border-2 border-white/20 rounded-[40px] relative"
+                >
+                    <div
+                        class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-[#0050b8] rounded-tl-2xl"
+                    ></div>
+                    <div
+                        class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-[#0050b8] rounded-tr-2xl"
+                    ></div>
+                    <div
+                        class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-[#0050b8] rounded-bl-2xl"
+                    ></div>
+                    <div
+                        class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-[#0050b8] rounded-br-2xl"
+                    ></div>
+                    <div
+                        class="absolute inset-x-8 top-1/2 h-0.5 bg-[#0050b8]/40 animate-pulse"
+                    ></div>
+                </div>
+                <p
+                    class="text-white/60 text-[10px] font-black uppercase tracking-[0.4em] text-center"
+                >
+                    Placez le code au centre
+                </p>
             </div>
-            <div class="w-14"></div>
-        </header>
-
-        <div class="mt-auto flex flex-col items-center gap-6 mb-12">
-            <div class="w-64 h-64 border-2 border-white/20 rounded-[40px] relative">
-                <div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-emerald-400 rounded-tl-2xl"></div>
-                <div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-emerald-400 rounded-tr-2xl"></div>
-                <div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-emerald-400 rounded-bl-2xl"></div>
-                <div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-emerald-400 rounded-br-2xl"></div>
-                <div class="absolute inset-x-8 top-1/2 h-0.5 bg-emerald-400/50 animate-pulse"></div>
-            </div>
-            <p class="text-white/60 text-[10px] font-black uppercase tracking-[0.4em] text-center">Placez le code au centre</p>
         </div>
-    </div>
 
-    <!-- Simple Result Toast -->
-    <div id="toast" class="fixed bottom-12 left-1/2 -translate-x-1/2 glass text-white px-8 py-5 rounded-[24px] font-bold shadow-2xl opacity-0 transform translate-y-20 transition-all duration-500 z-[100] text-center">
-        Produit détecté : <span id="toast-name" class="text-emerald-400">...</span>
-    </div>
+        <!-- Simple Result Toast -->
+        <div
+            id="toast"
+            class="fixed bottom-12 left-1/2 -translate-x-1/2 glass text-white px-8 py-5 rounded-[24px] font-bold shadow-2xl opacity-0 transform translate-y-20 transition-all duration-500 z-[100] text-center"
+        >
+            Produit détecté :
+            <span id="toast-name" class="text-[#77a7ff]">...</span>
+        </div>
 
-    <script>
-        let scanner = null;
-        const API_BASE = "";
+        <script>
+            let scanner = null;
+            const API_BASE = "";
 
-        function startScan() {
-            scanner = new Html5Qrcode("reader");
-            scanner.start(
-                { facingMode: "environment" }, 
-                { fps: 20, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 }, 
-                onScanSuccess
-            ).catch(err => {
-                console.error("Erreur Caméra", err);
-            });
-        }
-
-        async function onScanSuccess(decodedText) {
-            const token = localStorage.getItem('omistock_token');
-            try {
-                const res = await fetch(`${API_BASE}/scan/${decodedText}`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                if (res.ok) {
-                    const p = await res.json();
-                    showToast(p.name);
-                }
-            } catch (err) { console.error(err); }
-        }
-
-        function showToast(name) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-name').textContent = name;
-            toast.classList.remove('opacity-0', 'translate-y-20');
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-20');
-            }, 3000);
-        }
-
-        window.onload = startScan;
-    </script>
-
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker
-                    .register('./sw.js', { scope: './' })
-                    .then(function (registration) {
-                        console.log(
-                            '[OMISTOCK PWA] Service Worker enregistré avec succès. Scope:',
-                            registration.scope
-                        );
-                    })
-                    .catch(function (error) {
-                        console.error(
-                            '[OMISTOCK PWA] Échec de l\'enregistrement du Service Worker:',
-                            error
-                        );
+            function startScan() {
+                scanner = new Html5Qrcode("reader");
+                scanner
+                    .start(
+                        { facingMode: "environment" },
+                        {
+                            fps: 20,
+                            qrbox: { width: 250, height: 250 },
+                            aspectRatio: 1.0,
+                        },
+                        onScanSuccess,
+                    )
+                    .catch((err) => {
+                        console.error("Erreur Caméra", err);
                     });
-            });
-        } else {
-            console.warn('[OMISTOCK PWA] Service Worker non supporté par ce navigateur.');
-        }
-    </script>
-</body>
+            }
+
+            async function onScanSuccess(decodedText) {
+                const token = localStorage.getItem("omistock_token");
+                try {
+                    const res = await fetch(`${API_BASE}/scan/${decodedText}`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    });
+                    if (res.ok) {
+                        const p = await res.json();
+                        showToast(p.name);
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+
+            function showToast(name) {
+                const toast = document.getElementById("toast");
+                document.getElementById("toast-name").textContent = name;
+                toast.classList.remove("opacity-0", "translate-y-20");
+                setTimeout(() => {
+                    toast.classList.add("opacity-0", "translate-y-20");
+                }, 3000);
+            }
+
+            window.onload = startScan;
+        </script>
+
+        <script>
+            if ("serviceWorker" in navigator) {
+                window.addEventListener("load", function () {
+                    navigator.serviceWorker
+                        .register("./sw.js", { scope: "./" })
+                        .then(function (registration) {
+                            console.log(
+                                "[OMISTOCK PWA] Service Worker enregistré avec succès. Scope:",
+                                registration.scope,
+                            );
+                        })
+                        .catch(function (error) {
+                            console.error(
+                                "[OMISTOCK PWA] Échec de l'enregistrement du Service Worker:",
+                                error,
+                            );
+                        });
+                });
+            } else {
+                console.warn(
+                    "[OMISTOCK PWA] Service Worker non supporté par ce navigateur.",
+                );
+            }
+        </script>
+    </body>
 </html>

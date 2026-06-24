@@ -11,6 +11,7 @@
         />
 
         <link rel="stylesheet" href="style.css" />
+        <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     </head>
     <body class="light-theme flex min-h-screen">
         <!-- Mobile Sidebar Overlay -->
@@ -227,7 +228,7 @@
                     </p>
                     <span
                         id="user_role_badge"
-                        class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-[8px] font-black rounded-full border border-emerald-500/30 uppercase"
+                        class="px-2 py-0.5 bg-[#eaf1ff] text-[#0050b8] text-[8px] font-black rounded-full border border-[#cfe1ff] uppercase"
                         >...</span
                     >
                 </div>
@@ -837,22 +838,22 @@
                             </div>
                             <!-- Seeding -->
                             <div
-                                class="p-4 bg-emerald-50/50 rounded-xl border border-emerald-100 flex flex-col justify-between"
+                                class="p-4 bg-[#eaf1ff]/60 rounded-xl border border-[#cfe1ff] flex flex-col justify-between"
                             >
                                 <div>
                                     <h3
-                                        class="text-sm font-bold text-emerald-800 mb-2"
+                                        class="text-sm font-bold text-[#0a3d8f] mb-2"
                                     >
                                         Données de démo
                                     </h3>
-                                    <p class="text-xs text-emerald-600 mb-4">
+                                    <p class="text-xs text-[#0050b8] mb-4">
                                         Initialise le jeu de test (produits,
                                         ventes, fournisseurs).
                                     </p>
                                 </div>
                                 <button
                                     onclick="adminAction('seed')"
-                                    class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl font-semibold shadow-sm transition-colors text-xs flex items-center justify-center gap-2"
+                                    class="w-full bg-[#0050b8] hover:bg-[#0a3d8f] text-white py-2.5 rounded-xl font-semibold shadow-sm transition-colors text-xs flex items-center justify-center gap-2"
                                 >
                                     <svg
                                         class="w-4 h-4"
@@ -1268,7 +1269,7 @@
                         ).textContent = company.name.toUpperCase();
 
                         btn.textContent = "Modifications enregistrées !";
-                        btn.classList.replace("bg-[#174092]", "bg-emerald-600");
+                        btn.classList.replace("bg-[#174092]", "bg-blue-600");
                     } else {
                         const err = await response.json();
                         alert(
@@ -1281,7 +1282,7 @@
                 } finally {
                     setTimeout(() => {
                         btn.textContent = originalText;
-                        btn.classList.replace("bg-emerald-600", "bg-[#174092]");
+                        btn.classList.replace("bg-blue-600", "bg-[#174092]");
                         btn.disabled = false;
                         btn.classList.remove("opacity-75");
                     }, 2000);
@@ -1475,14 +1476,11 @@
                     document.body.removeChild(a);
 
                     if (btn) {
-                        btn.classList.replace(
-                            "btn-solid-blue",
-                            "bg-emerald-600",
-                        );
+                        btn.classList.replace("btn-solid-blue", "bg-blue-600");
                         btn.innerHTML = "Sauvegarde OK !";
                         setTimeout(() => {
                             btn.classList.replace(
-                                "bg-emerald-600",
+                                "bg-blue-600",
                                 "btn-solid-blue",
                             );
                             btn.innerHTML = originalHTML;
@@ -1603,7 +1601,7 @@
                                     u.email ===
                                     localStorage.getItem("omistock_user");
                                 const statusBadge = u.is_active
-                                    ? `<span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-xs font-semibold rounded-full">Actif</span>`
+                                    ? `<span class="px-2 py-0.5 bg-[#eaf1ff] text-[#0050b8] text-xs font-semibold rounded-full border border-[#cfe1ff]">Actif</span>`
                                     : `<span class="px-2 py-0.5 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full">Désactivé</span>`;
 
                                 const actionBtn = isSelf

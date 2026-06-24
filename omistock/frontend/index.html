@@ -1,119 +1,208 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OMISTOCK - Connexion</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="dark-theme min-h-screen flex items-center justify-center p-6">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>OMISTOCK - Connexion</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap"
+            rel="stylesheet"
+        />
 
-    <div class="w-full max-w-md space-y-8">
-        <div class="text-center">
-            <h1 class="text-4xl font-bold gradient-text tracking-tight">OMISTOCK</h1>
-            <p class="text-slate-400 mt-2">Gestion d'Inventaire Multi-Tenant</p>
-        </div>
-
-        <div class="glass p-8 rounded-3xl shadow-2xl space-y-6">
-            <form id="login-form" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Email</label>
-                    <input type="email" id="email" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-sky-500 transition-colors" placeholder="admin@test.com">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Mot de passe</label>
-                    <input type="password" id="password" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-sky-500 transition-colors" placeholder="••••••••">
-                </div>
-                <button type="submit" class="w-full bg-sky-500 hover:bg-sky-400 text-white py-4 rounded-xl font-bold transition-all shadow-lg shadow-sky-500/20">
-                    SE CONNECTER
-                </button>
-            </form>
-
-            <div class="relative py-4">
-                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-700"></div></div>
-                <div class="relative flex justify-center text-xs uppercase"><span class="bg-slate-900 px-2 text-slate-500 font-bold">Accès Démo Rapide</span></div>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    </head>
+    <body class="dark-theme min-h-screen flex items-center justify-center p-6">
+        <div class="w-full max-w-md space-y-8">
+            <div class="text-center">
+                <img
+                    src="logo_omistock.png"
+                    alt="OMISTOCK"
+                    class="w-24 h-24 object-contain mx-auto mb-4"
+                />
+                <h1 class="text-4xl font-bold gradient-text tracking-tight">
+                    OMISTOCK
+                </h1>
+                <p class="text-slate-400 mt-2">
+                    Gestion d'Inventaire Multi-Tenant
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 gap-3">
-                <button onclick="quickLogin('admin@test.com')" class="flex items-center justify-between p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all group">
-                    <div class="text-left">
-                        <p class="text-emerald-400 font-bold text-sm">Entreprise Pharma/Tech</p>
-                        <p class="text-[10px] text-emerald-500/60 uppercase">Multi-sites (Alger/Oran)</p>
+            <div class="glass p-8 rounded-3xl shadow-2xl space-y-6">
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2"
+                            >Email</label
+                        >
+                        <input
+                            type="email"
+                            id="email"
+                            required
+                            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-sky-500 transition-colors"
+                            placeholder="admin@test.com"
+                        />
                     </div>
-                    <svg class="w-5 h-5 text-emerald-500 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
-                </button>
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2"
+                            >Mot de passe</label
+                        >
+                        <input
+                            type="password"
+                            id="password"
+                            required
+                            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-sky-500 transition-colors"
+                            placeholder="••••••••"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        class="w-full bg-sky-500 hover:bg-sky-400 text-white py-4 rounded-xl font-bold transition-all shadow-lg shadow-sky-500/20"
+                    >
+                        SE CONNECTER
+                    </button>
+                </form>
 
-                <button onclick="quickLogin('food_admin@test.com')" class="flex items-center justify-between p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 transition-all group">
-                    <div class="text-left">
-                        <p class="text-amber-400 font-bold text-sm">Alimentation Dz</p>
-                        <p class="text-[10px] text-amber-500/60 uppercase">Dépôt Constantine</p>
+                <div class="relative py-4">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-slate-700"></div>
                     </div>
-                    <svg class="w-5 h-5 text-amber-500 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
-                </button>
+                    <div class="relative flex justify-center text-xs uppercase">
+                        <span class="bg-slate-900 px-2 text-slate-500 font-bold"
+                            >Accès Démo Rapide</span
+                        >
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-3">
+                    <button
+                        onclick="quickLogin('admin@test.com')"
+                        class="flex items-center justify-between p-4 rounded-xl bg-[#eaf1ff] border border-[#cfe1ff] hover:bg-[#dbe9ff] transition-all group"
+                    >
+                        <div class="text-left">
+                            <p class="text-[#0050b8] font-bold text-sm">
+                                Entreprise Pharma/Tech
+                            </p>
+                            <p class="text-[10px] text-[#0a3d8f]/60 uppercase">
+                                Multi-sites (Alger/Oran)
+                            </p>
+                        </div>
+                        <svg
+                            class="w-5 h-5 text-[#0050b8] group-hover:translate-x-1 transition-transform"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                            ></path>
+                        </svg>
+                    </button>
+
+                    <button
+                        onclick="quickLogin('food_admin@test.com')"
+                        class="flex items-center justify-between p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 transition-all group"
+                    >
+                        <div class="text-left">
+                            <p class="text-amber-400 font-bold text-sm">
+                                Alimentation Dz
+                            </p>
+                            <p class="text-[10px] text-amber-500/60 uppercase">
+                                Dépôt Constantine
+                            </p>
+                        </div>
+                        <svg
+                            class="w-5 h-5 text-amber-500 group-hover:translate-x-1 transition-transform"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 7l5 5m0 0l-5 5m5-5H6"
+                            ></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <p class="text-center text-xs text-slate-500 font-medium italic">
+                Session sécurisée avec isolation de données via Company ID
+            </p>
+
+            <div class="text-center mt-4">
+                <p class="text-slate-400 text-sm">
+                    Pas encore de compte ?
+                    <a
+                        href="signup.html"
+                        class="text-sky-400 font-bold hover:underline"
+                        >Inscrivez votre entreprise</a
+                    >
+                </p>
             </div>
         </div>
 
-        <p class="text-center text-xs text-slate-500 font-medium italic">
-            Session sécurisée avec isolation de données via Company ID
-        </p>
+        <script>
+            const API_BASE = window.location.origin;
 
-        <div class="text-center mt-4">
-            <p class="text-slate-400 text-sm">Pas encore de compte ? <a href="signup.html" class="text-sky-400 font-bold hover:underline">Inscrivez votre entreprise</a></p>
-        </div>
-    </div>
-
-    <script>
-        const API_BASE = window.location.origin;
-
-        if (window.location.protocol === 'file:') {
-            alert("ATTENTION : Le mode démo nécessite de passer par le serveur.\nLancement via : http://localhost:8000/app/index.html");
-        }
-
-        const form = document.getElementById('login-form');
-        
-        async function performLogin(email, password) {
-            const formData = new FormData();
-            formData.append('username', email);
-            formData.append('password', password);
-
-            try {
-                const res = await fetch(`${API_BASE}/token`, {
-                    method: 'POST',
-                    headers: { 'ngrok-skip-browser-warning': '1' },
-                    body: formData
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    localStorage.setItem('omistock_token', data.access_token);
-                    localStorage.setItem('omistock_user', email);
-                    window.location.href = 'dashboard.html';
-                } else {
-                    alert("Identifiants incorrects");
-                }
-            } catch (err) {
-                alert("Erreur de connexion au serveur");
+            if (window.location.protocol === "file:") {
+                alert(
+                    "ATTENTION : Le mode démo nécessite de passer par le serveur.\nLancement via : http://localhost:8000/app/index.html",
+                );
             }
-        }
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            await performLogin(email, password);
-        });
+            const form = document.getElementById("login-form");
 
-        async function quickLogin(email) {
-            await performLogin(email, 'password123');
-        }
+            async function performLogin(email, password) {
+                const formData = new FormData();
+                formData.append("username", email);
+                formData.append("password", password);
 
-        // Si déjà connecté, rediriger
-        if (localStorage.getItem('omistock_token')) {
-            window.location.href = 'dashboard.html';
-        }
-    </script>
-</body>
+                try {
+                    const res = await fetch(`${API_BASE}/token`, {
+                        method: "POST",
+                        headers: { "ngrok-skip-browser-warning": "1" },
+                        body: formData,
+                    });
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        localStorage.setItem(
+                            "omistock_token",
+                            data.access_token,
+                        );
+                        localStorage.setItem("omistock_user", email);
+                        window.location.href = "dashboard.html";
+                    } else {
+                        alert("Identifiants incorrects");
+                    }
+                } catch (err) {
+                    alert("Erreur de connexion au serveur");
+                }
+            }
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+                await performLogin(email, password);
+            });
+
+            async function quickLogin(email) {
+                await performLogin(email, "password123");
+            }
+
+            // Si déjà connecté, rediriger
+            if (localStorage.getItem("omistock_token")) {
+                window.location.href = "dashboard.html";
+            }
+        </script>
+    </body>
 </html>

@@ -6,15 +6,34 @@
 
 /* --- Design tokens --- */
 :root {
-    --color-primary: #10b981;
-    --color-primary-dark: #059669;
-    --color-sidebar-from: #0f172a;
-    --color-sidebar-to: #1e293b;
-    --color-sidebar-accent: #34d399;
+    /* Brand (logo-based) */
+    --color-primary: #0050b8; /* OMISTOCK blue */
+    --color-primary-dark: #0a3d8f; /* hover/active */
+    --color-primary-soft: #eaf1ff; /* subtle backgrounds */
+
+    /* Surfaces & text */
+    --color-bg: #f5f6f2; /* warm off-white (logo background) */
+    --color-surface: #ffffff;
+    --color-border: #e2e8f0;
+    --color-text: #0f172a;
+    --color-muted: #64748b;
+
+    /* Sidebar (ERP premium) */
+    --color-sidebar-from: #0b1224;
+    --color-sidebar-to: #0f1b3a;
+    --color-sidebar-accent: #77a7ff;
+
+    /* Status */
+    --color-success: #16a34a;
+    --color-warning: #f59e0b;
+    --color-danger: #dc2626;
+
     --radius-card: 24px;
     --radius-btn: 16px;
-    --shadow-card: 0 4px 6px -1px rgba(15, 23, 42, 0.06), 0 12px 24px -4px rgba(15, 23, 42, 0.08);
-    --shadow-premium: 0 10px 40px -10px rgba(16, 185, 129, 0.35);
+    --shadow-card:
+        0 4px 6px -1px rgba(15, 23, 42, 0.06),
+        0 12px 24px -4px rgba(15, 23, 42, 0.08);
+    --shadow-premium: 0 10px 40px -10px rgba(0, 80, 184, 0.28);
     --sidebar-width: 18rem;
     --transition-fast: 0.2s ease;
     --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -22,39 +41,44 @@
 
 /* --- Base & themes --- */
 body.dark-theme {
-    font-family: 'Outfit', sans-serif;
-    background-color: #0f172a;
+    font-family: "Outfit", sans-serif;
+    background-color: #0b1224;
     color: #f1f5f9;
 }
 
 body.light-theme,
 body.light-theme-alt {
-    font-family: 'Outfit', sans-serif;
-    background-color: #f1f5f9;
-    color: #1e293b;
+    font-family: "Outfit", sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
 }
 
 body.light-theme-alt {
-    background-color: #f8fafc;
+    background-color: #fbfcf8;
 }
 
 body.settings-theme {
-    font-family: 'Outfit', sans-serif;
-    background-color: #f4f7f9;
-    color: #1e293b;
+    font-family: "Outfit", sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
 }
 
 body.mobile-theme {
-    font-family: 'Inter', sans-serif;
-    background-color: #f8fafc;
-    color: #1e293b;
+    font-family: "Inter", sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior-y: none;
 }
 
 /* --- Typography --- */
 .gradient-text {
-    background: linear-gradient(135deg, #38bdf8 0%, #34d399 50%, #10b981 100%);
+    background: linear-gradient(
+        135deg,
+        var(--color-primary-dark) 0%,
+        var(--color-primary) 55%,
+        #77a7ff 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -84,11 +108,13 @@ body.dark-theme .glass {
 
 /* --- Cards --- */
 .card {
-    background: #ffffff;
+    background: var(--color-surface);
     border-radius: var(--radius-card);
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--color-border);
     box-shadow: var(--shadow-card);
-    transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+    transition:
+        box-shadow var(--transition-fast),
+        transform var(--transition-fast);
 }
 
 .card:hover {
@@ -100,8 +126,11 @@ body.dark-theme .glass {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast),
-        background-color var(--transition-fast), color var(--transition-fast);
+    transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        background-color var(--transition-fast),
+        color var(--transition-fast);
     cursor: pointer;
 }
 
@@ -116,7 +145,12 @@ body.dark-theme .glass {
 
 /* --- Sidebar (ERP — fond sombre) --- */
 .sidebar {
-    background: linear-gradient(165deg, var(--color-sidebar-from) 0%, var(--color-sidebar-to) 45%, #0f172a 100%);
+    background: linear-gradient(
+        165deg,
+        var(--color-sidebar-from) 0%,
+        var(--color-sidebar-to) 45%,
+        #0f172a 100%
+    );
     border-right: 1px solid rgba(255, 255, 255, 0.06);
     box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
 }
@@ -133,7 +167,9 @@ body.dark-theme .glass {
 .nav-item {
     color: rgba(241, 245, 249, 0.75);
     text-decoration: none;
-    transition: background var(--transition-fast), color var(--transition-fast),
+    transition:
+        background var(--transition-fast),
+        color var(--transition-fast),
         transform var(--transition-fast);
 }
 
@@ -160,7 +196,9 @@ body.mobile-theme .bottom-nav .nav-item {
     cursor: pointer;
     padding: 0.25rem;
     border-radius: 12px;
-    transition: color var(--transition-fast), background var(--transition-fast);
+    transition:
+        color var(--transition-fast),
+        background var(--transition-fast);
 }
 
 body.mobile-theme .bottom-nav .nav-item.active {
@@ -252,13 +290,15 @@ body.mobile-theme .progress-track {
     justify-content: center;
     flex-shrink: 0;
     padding: 0.5rem;
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
-    color: #334155;
+    color: var(--color-text);
     cursor: pointer;
     box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
-    transition: background var(--transition-fast), transform var(--transition-fast);
+    transition:
+        background var(--transition-fast),
+        transform var(--transition-fast);
 }
 
 .menu-toggle:hover {
@@ -355,7 +395,9 @@ body.mobile-theme .progress-track {
     border-radius: 8px;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--transition-fast), transform var(--transition-fast);
+    transition:
+        opacity var(--transition-fast),
+        transform var(--transition-fast);
     z-index: 60;
 }
 
@@ -366,8 +408,12 @@ body.mobile-theme .progress-track {
 
 /* --- Animations --- */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideInFromTop {
@@ -458,7 +504,9 @@ body.mobile-theme .progress-track {
 }
 
 .ui-element {
-    transition: transform var(--transition-fast), opacity var(--transition-fast);
+    transition:
+        transform var(--transition-fast),
+        opacity var(--transition-fast);
 }
 
 .scanner-frame {
@@ -521,7 +569,9 @@ body.mobile-theme .progress-track {
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.35);
     border: 3px solid #fff;
     cursor: pointer;
-    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
 }
 
 .fab:hover,
@@ -569,7 +619,9 @@ body.light-theme > h1:first-of-type {
     font-family: inherit;
     font-size: 0.9rem;
     background: #fff;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast);
 }
 
 .form-group input:focus,
