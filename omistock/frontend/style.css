@@ -42,7 +42,18 @@
 /* --- Base & themes --- */
 body.dark-theme {
     font-family: "Outfit", sans-serif;
-    background-color: #0b1224;
+    background:
+        radial-gradient(
+            1100px 500px at 50% -10%,
+            rgba(0, 80, 184, 0.35),
+            rgba(0, 0, 0, 0) 60%
+        ),
+        radial-gradient(
+            900px 450px at 100% 0%,
+            rgba(119, 167, 255, 0.18),
+            rgba(0, 0, 0, 0) 55%
+        ),
+        #0b1224;
     color: #f1f5f9;
 }
 
@@ -75,7 +86,8 @@ body.mobile-theme {
 .gradient-text {
     background: linear-gradient(
         135deg,
-        var(--color-primary-dark) 0%,
+        #ffffff 0%,
+        #cfe1ff 22%,
         var(--color-primary) 55%,
         #77a7ff 100%
     );
@@ -102,8 +114,42 @@ body.settings-theme .glass {
 }
 
 body.dark-theme .glass {
-    background: rgba(15, 23, 42, 0.45);
-    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(11, 18, 36, 0.55);
+    border-color: rgba(119, 167, 255, 0.18);
+    box-shadow: 0 18px 60px -24px rgba(0, 80, 184, 0.55);
+}
+
+/* --- Logo / brand helpers --- */
+.omi-login-logo-wrap {
+    width: 108px;
+    height: 108px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(119, 167, 255, 0.22);
+    box-shadow: 0 28px 70px -40px rgba(0, 80, 184, 0.85);
+    display: grid;
+    place-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.omi-login-logo-wrap::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    background: radial-gradient(
+        120px 120px at 30% 20%,
+        rgba(119, 167, 255, 0.38),
+        rgba(0, 0, 0, 0) 55%
+    );
+    pointer-events: none;
+}
+
+.omi-login-logo {
+    width: 84px;
+    height: 84px;
+    object-fit: contain;
+    filter: drop-shadow(0 14px 30px rgba(0, 80, 184, 0.35));
 }
 
 /* --- Cards --- */
