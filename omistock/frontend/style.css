@@ -943,3 +943,474 @@ canvas {
         padding: 0 !important;
     }
 }
+
+/* --- Login SaaS redesign (desktop web only) --- */
+body.omi-login-page {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Outfit", sans-serif;
+    background: #f8fafc;
+    color: #0f172a;
+}
+
+.omi-login-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 42fr 58fr;
+}
+
+.omi-login-brand-panel {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(155deg, #0050b8 0%, #1b3a6b 100%);
+    color: #fff;
+}
+
+.omi-login-brand-bg,
+.omi-login-brand-panel::before,
+.omi-login-brand-panel::after {
+    position: absolute;
+    content: "";
+    border-radius: 9999px;
+    filter: blur(12px);
+    pointer-events: none;
+}
+
+.omi-login-brand-bg {
+    inset: 0;
+    background:
+        radial-gradient(
+            circle at 20% 18%,
+            rgba(255, 255, 255, 0.12),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(161, 199, 255, 0.14),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 50% 85%,
+            rgba(255, 255, 255, 0.08),
+            transparent 30%
+        );
+}
+
+.omi-login-brand-panel::before {
+    width: 18rem;
+    height: 18rem;
+    top: -4rem;
+    right: -4rem;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.omi-login-brand-panel::after {
+    width: 20rem;
+    height: 20rem;
+    left: -7rem;
+    bottom: -7rem;
+    background: rgba(153, 198, 255, 0.12);
+}
+
+.omi-login-brand-content {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3.25rem 2.5rem 2.5rem;
+}
+
+.omi-login-brand-head {
+    max-width: 28rem;
+}
+
+.omi-login-brand-logo {
+    width: 5.75rem;
+    height: 5.75rem;
+    object-fit: contain;
+    display: block;
+    margin-bottom: 1.25rem;
+}
+
+.omi-login-brand-wordmark,
+.omi-login-mobile-brand__wordmark {
+    margin: 0;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.omi-login-brand-wordmark {
+    font-size: clamp(2.3rem, 4vw, 3.6rem);
+    font-weight: 800;
+}
+
+.omi-login-brand-wordmark .omi,
+.omi-login-mobile-brand__wordmark .omi {
+    color: #8fc0ff;
+}
+
+.omi-login-brand-wordmark .stock,
+.omi-login-mobile-brand__wordmark .stock {
+    color: #ffffff;
+}
+
+.omi-login-brand-subtitle {
+    margin: 1rem 0 0;
+    font-size: 1rem;
+    color: rgba(226, 232, 240, 0.9);
+}
+
+.omi-login-brand-slogan {
+    margin: 1.4rem 0 0;
+    font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.92);
+    font-weight: 500;
+}
+
+.omi-login-illustration-wrap {
+    margin: 2.25rem 0 2rem;
+    align-self: center;
+    width: min(100%, 38rem);
+}
+
+.omi-login-illustration {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.omi-login-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+}
+
+.omi-login-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.78rem 1rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    font-size: 0.92rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
+
+.omi-login-badge span {
+    color: #8fc0ff;
+    font-weight: 800;
+}
+
+.omi-login-form-panel {
+    min-height: 100vh;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+}
+
+.omi-login-form-wrap {
+    width: min(100%, 33rem);
+}
+
+.omi-login-mobile-brand {
+    display: none;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 2rem;
+}
+
+.omi-login-mobile-brand__logo {
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.omi-login-mobile-brand__wordmark {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.omi-login-mobile-brand__subtitle {
+    margin: 0.35rem 0 0;
+    color: #64748b;
+    font-size: 0.92rem;
+}
+
+.omi-login-mobile-brand__wordmark .omi {
+    color: #0050b8;
+}
+
+.omi-login-mobile-brand__wordmark .stock {
+    color: #0f172a;
+}
+
+.omi-login-form-header h2 {
+    margin: 0;
+    font-family: "Poppins", sans-serif;
+    font-size: 42px;
+    line-height: 1.08;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.omi-login-form-header p {
+    margin: 0.85rem 0 0;
+    color: #64748b;
+    font-size: 1rem;
+}
+
+.omi-login-form-fields {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1.1rem;
+}
+
+.omi-login-field-group {
+    display: grid;
+    gap: 0.55rem;
+}
+
+.omi-login-field-group label {
+    color: #0f172a;
+    font-size: 0.94rem;
+    font-weight: 600;
+}
+
+.omi-login-input {
+    width: 100%;
+    height: 56px;
+    padding: 0 1rem;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #0f172a;
+    outline: none;
+    transition:
+        border-color var(--transition-fast),
+        box-shadow var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.omi-login-input::placeholder {
+    color: #94a3b8;
+}
+
+.omi-login-input:focus {
+    border-color: #0050b8;
+    box-shadow: 0 0 0 4px rgba(0, 80, 184, 0.12);
+    background: #ffffff;
+}
+
+.omi-login-submit {
+    width: 100%;
+    height: 56px;
+    border: none;
+    border-radius: 16px;
+    background: #0050b8;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 12px 24px -14px rgba(0, 80, 184, 0.5);
+    transition:
+        background-color var(--transition-fast),
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast);
+}
+
+.omi-login-submit:hover {
+    background: #003f94;
+    transform: scale(1.015);
+}
+
+.omi-login-submit:active {
+    transform: scale(0.992);
+}
+
+.omi-login-links {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.omi-login-links a {
+    width: fit-content;
+    color: #64748b;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.omi-login-links a:last-child {
+    color: #0050b8;
+    font-weight: 700;
+}
+
+.omi-login-links a:hover {
+    color: #003f94;
+}
+
+.omi-login-demo-block {
+    margin-top: 2rem;
+}
+
+.omi-login-demo-title {
+    margin-bottom: 0.95rem;
+    color: #64748b;
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.omi-login-demo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.omi-login-demo-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    box-shadow: 0 12px 30px -24px rgba(15, 23, 42, 0.22);
+    cursor: pointer;
+    text-align: left;
+    transition:
+        transform var(--transition-fast),
+        box-shadow var(--transition-fast),
+        border-color var(--transition-fast);
+}
+
+.omi-login-demo-card:hover {
+    transform: translateY(-3px);
+    border-color: #bfd5ff;
+    box-shadow: 0 16px 34px -22px rgba(0, 80, 184, 0.2);
+}
+
+.omi-login-demo-card__icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 14px;
+    background: #eaf1ff;
+    color: #0050b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.omi-login-demo-card__icon svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.omi-login-demo-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.omi-login-demo-card__content strong {
+    color: #0f172a;
+    font-size: 0.94rem;
+    line-height: 1.35;
+}
+
+.omi-login-demo-card__content span {
+    color: #64748b;
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.omi-fade-up {
+    animation: omiFadeUp 0.75s ease both;
+}
+
+.omi-fade-delay-2 {
+    animation-delay: 0.12s;
+}
+
+.omi-float {
+    animation: omiFloat 5.5s ease-in-out infinite;
+}
+
+@keyframes omiFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes omiFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@media (max-width: 1279px) {
+    .omi-login-shell {
+        grid-template-columns: 35fr 65fr;
+    }
+
+    .omi-login-brand-content {
+        padding: 2.5rem 2rem 2rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .omi-login-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .omi-login-brand-panel {
+        display: none;
+    }
+
+    .omi-login-form-panel {
+        min-height: 100vh;
+        padding: 1.5rem;
+        background: #f8fafc;
+    }
+
+    .omi-login-form-wrap {
+        width: 100%;
+        max-width: 28rem;
+    }
+
+    .omi-login-mobile-brand {
+        display: flex;
+    }
+
+    .omi-login-form-header h2 {
+        font-size: 34px;
+    }
+
+    .omi-login-demo-grid {
+        grid-template-columns: 1fr;
+    }
+}
