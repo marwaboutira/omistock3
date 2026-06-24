@@ -42,13 +42,11 @@
             class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-center p-6 hidden"
         >
             <div class="mb-10 text-center">
-                <div
-                    class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-slate-900/10 border border-[#cfe1ff]"
-                >
+                <div class="omi-signup-logo mb-4">
                     <img
-                        src="logo_omistock.png"
+                        src="OMISTOCK.png"
                         alt="OMISTOCK"
-                        class="w-16 h-16 object-contain"
+                        class="omi-signup-logo__img"
                     />
                 </div>
                 <h1
@@ -124,14 +122,20 @@
                 <div class="flex justify-between items-center mb-4">
                     <div>
                         <h1
-                            class="text-xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2"
+                            class="text-xl font-extrabold text-slate-900 tracking-tight"
+                            aria-label="OMISTOCK"
                         >
-                            <img
-                                src="logo_omistock.png"
-                                alt=""
-                                class="w-5 h-5 object-contain"
-                            />
-                            OMISTOCK
+                            <span class="omi-mobile-brand">
+                                <img
+                                    src="logo-mark.svg"
+                                    alt="OMISTOCK"
+                                    class="omi-mobile-brand__logo"
+                                />
+                                <span class="omi-wordmark"
+                                    ><span class="omi">OMI</span
+                                    ><span class="stock">STOCK</span></span
+                                >
+                            </span>
                         </h1>
                         <p class="text-xs text-slate-500 font-medium">
                             Gestion multi-entreprises
@@ -960,11 +964,9 @@
 
                         const isLow = displayQty <= p.min_threshold;
                         const statusColor = isLow
-                            "text-rose-500 bg-rose-50"
-                                                        : "text-[#0050b8] bg-[#eaf1ff]";
-                        const statusBg = isLow
-                            "bg-rose-500"
-                                                        : "bg-[#0050b8]";
+                            ? "text-rose-500 bg-rose-50"
+                            : "text-[#0050b8] bg-[#eaf1ff]";
+                        const statusBg = isLow ? "bg-rose-500" : "bg-[#0050b8]";
 
                         return `
                 <div class="bg-white rounded-2xl border border-slate-100 p-4 shadow-sm active:bg-slate-50 transition-colors" onclick="openProductModalFromList(${p.id})">
@@ -1021,16 +1023,20 @@
                     badges.forEach((b) => b.classList.remove("hidden"));
                     countEl.innerText = `${alerts.length} critique(s)`;
                     countEl.classList.remove(
-                                            "bg-[#eaf1ff]",
-                                            "text-[#0050b8]",
-                                            "border-[#cfe1ff]",
-                                        );
+                        "bg-[#eaf1ff]",
+                        "text-[#0050b8]",
+                        "border-[#cfe1ff]",
+                    );
                     countEl.classList.add("bg-rose-100", "text-rose-600");
                 } else {
                     badges.forEach((b) => b.classList.add("hidden"));
                     countEl.innerText = "0 alerte";
                     countEl.classList.remove("bg-rose-100", "text-rose-600");
-                    countEl.classList.add("bg-[#eaf1ff]", "text-[#0050b8]", "border-[#cfe1ff]");
+                    countEl.classList.add(
+                        "bg-[#eaf1ff]",
+                        "text-[#0050b8]",
+                        "border-[#cfe1ff]",
+                    );
                 }
 
                 const alertHtml =
@@ -1298,15 +1304,12 @@
                         // Premium micro-animation
                         if (change > 0) {
                             qtyEl.classList.remove("text-slate-900");
-                            qtyEl.classList.add(
-                                                            "text-[#0050b8]",
-                                                            "scale-125",
-                                                        );
+                            qtyEl.classList.add("text-[#0050b8]", "scale-125");
                             setTimeout(() => {
                                 qtyEl.classList.remove(
-                                                                    "text-[#0050b8]",
-                                                                    "scale-125",
-                                                                );
+                                    "text-[#0050b8]",
+                                    "scale-125",
+                                );
                                 qtyEl.classList.add("text-slate-900");
                             }, 400);
                         } else if (change < 0) {

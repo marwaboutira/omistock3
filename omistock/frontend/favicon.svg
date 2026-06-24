@@ -1,12 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#f5f6f2"/>
+  <rect width="512" height="512" rx="96" fill="#f5f6f2" stroke="#cfe1ff" stroke-width="6"/>
   <g fill="#0050b8">
-    <path d="M256 72 192 136v52l64-64 64 64v-52z"/>
-    <path d="M192 188v204h48V236z"/>
-    <path d="M272 124v268h48V124z"/>
-    <path d="M144 260v132h48V260z"/>
-    <path d="M320 188v204h48V236z"/>
-    <path d="M368 260v132h48V260z"/>
+    <path d="M256 72 192 136v52h64l-64 72v132h176V188h-48v-52z"/>
+    <path d="M256 124 224 156v188h32z" fill="#f5f6f2"/>
+    <path d="M96 260h96v132H96z"/>
     <path d="M96 392h320v48H96z"/>
   </g>
 </svg>

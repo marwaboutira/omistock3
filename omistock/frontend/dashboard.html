@@ -25,21 +25,20 @@
         <aside
             class="sidebar w-72 flex flex-col p-8 text-white fixed h-full z-50"
         >
-            <div class="mb-12 flex items-center gap-3">
-                <div
-                    class="w-10 h-10 bg-white rounded-xl flex items-center justify-center"
-                >
+            <div class="mb-12 omi-sidebar-brand">
+                <div class="omi-sidebar-brand__icon">
                     <img
                         src="logo-mark.svg"
                         alt="OMISTOCK"
-                        class="w-8 h-8 object-contain"
+                        class="omi-sidebar-brand__logo"
                     />
                 </div>
                 <h2
                     id="company_name_sidebar"
-                    class="text-xl font-bold tracking-tight"
+                    class="omi-sidebar-brand__name omi-wordmark"
+                    aria-label="OMISTOCK"
                 >
-                    OMISTOCK
+                    <span class="omi">OMI</span><span class="stock">STOCK</span>
                 </h2>
             </div>
 
@@ -842,7 +841,7 @@
                         <h2
                             class="text-3xl font-black italic tracking-tighter uppercase"
                         >
-                            Omistock Intelligence
+                            OMISTOCK Intelligence
                             <span class="text-[#77a7ff]">MCP</span>
                         </h2>
                     </div>
@@ -1009,13 +1008,6 @@
             const API_BASE = window.location.origin;
 
             async function loadDashboard() {
-                const savedCompany = localStorage.getItem("omistock_company");
-                if (savedCompany) {
-                    document.getElementById(
-                        "company_name_sidebar",
-                    ).textContent = savedCompany.toUpperCase();
-                }
-
                 const token = localStorage.getItem("omistock_token");
                 if (!token) {
                     window.location.href = "index.html";

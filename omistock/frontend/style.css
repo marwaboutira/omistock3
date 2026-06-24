@@ -120,36 +120,142 @@ body.dark-theme .glass {
 }
 
 /* --- Logo / brand helpers --- */
-.omi-login-logo-wrap {
-    width: 108px;
-    height: 108px;
-    border-radius: 28px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(119, 167, 255, 0.22);
-    box-shadow: 0 28px 70px -40px rgba(0, 80, 184, 0.85);
-    display: grid;
-    place-items: center;
-    position: relative;
+.omi-login-logo-wrap,
+.omi-signup-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-inline: auto;
+    background: #ffffff;
+    border: 1px solid rgba(207, 225, 255, 0.95);
+    box-shadow:
+        0 14px 40px -24px rgba(15, 23, 42, 0.2),
+        0 22px 70px -42px rgba(0, 80, 184, 0.32);
     overflow: hidden;
 }
 
-.omi-login-logo-wrap::before {
-    content: "";
-    position: absolute;
-    inset: -2px;
-    background: radial-gradient(
-        120px 120px at 30% 20%,
-        rgba(119, 167, 255, 0.38),
-        rgba(0, 0, 0, 0) 55%
-    );
-    pointer-events: none;
+.omi-login-logo-wrap {
+    width: min(100%, 320px);
+    min-height: 220px;
+    padding: 1.25rem;
+    border-radius: 32px;
 }
 
 .omi-login-logo {
-    width: 84px;
-    height: 84px;
+    width: 100%;
+    max-width: 260px;
+    height: auto;
     object-fit: contain;
-    filter: drop-shadow(0 14px 30px rgba(0, 80, 184, 0.35));
+    object-position: center;
+    filter: none; /* do not alter the official logo colors */
+    image-rendering: auto;
+    mix-blend-mode: normal;
+    display: block;
+}
+
+/* Ensure logos are never dimmed by parent styles */
+img[alt="OMISTOCK"] {
+    filter: none !important;
+    opacity: 1 !important;
+}
+
+.omi-signup-logo {
+    width: min(100%, 260px);
+    min-height: 180px;
+    padding: 1rem;
+    border-radius: 28px;
+}
+
+.omi-signup-logo__img {
+    width: 100%;
+    max-width: 210px;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+}
+
+.omi-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.omi-sidebar-brand__icon {
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1rem;
+    background: #ffffff;
+    border: 1px solid rgba(207, 225, 255, 0.95);
+    box-shadow: 0 10px 24px -18px rgba(0, 80, 184, 0.45);
+}
+
+.omi-sidebar-brand__logo {
+    width: 1.8rem;
+    height: 1.8rem;
+    object-fit: contain;
+    display: block;
+}
+
+.omi-sidebar-brand__name {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.sidebar .omi-wordmark .omi {
+    color: #77a7ff;
+}
+
+.sidebar .omi-wordmark .stock {
+    color: #f8fafc;
+}
+
+.omi-mobile-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+.omi-mobile-brand__logo {
+    width: 1.75rem;
+    height: 1.75rem;
+    object-fit: contain;
+    display: block;
+}
+
+@media (max-width: 640px) {
+    .omi-login-logo-wrap {
+        width: min(100%, 280px);
+        min-height: 200px;
+        padding: 1rem;
+    }
+
+    .omi-signup-logo {
+        width: min(100%, 230px);
+        min-height: 160px;
+        padding: 0.875rem;
+    }
+}
+
+/* --- Wordmark helper (text OMISTOCK) --- */
+.omi-wordmark {
+    letter-spacing: -0.02em;
+}
+.omi-wordmark .omi {
+    color: #0050b8;
+}
+.omi-wordmark .stock {
+    color: #3a3a3a;
+}
+body.dark-theme .omi-wordmark .stock {
+    color: #e2e8f0;
 }
 
 /* --- Cards --- */
