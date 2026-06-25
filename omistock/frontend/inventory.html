@@ -293,6 +293,13 @@
                 >
                     + Ajouter un produit
                 </button>
+                <button
+                    id="bulk-delete-btn"
+                    class="bg-rose-500 text-white px-4 py-2 rounded-xl font-bold hidden"
+                    onclick="bulkDelete()"
+                >
+                    Supprimer la sélection (<span id="selected-count">0</span>)
+                </button>
             </header>
 
             <!-- Filters Row -->
@@ -393,7 +400,8 @@
                             <th class="py-6 px-8 w-12">
                                 <input
                                     type="checkbox"
-                                    class="rounded border-slate-300"
+                                    id="select-all-checkbox"
+                                    class="rounded border-slate-300 product-checkbox"
                                 />
                             </th>
                             <th class="py-6 px-8">SKU</th>
@@ -620,6 +628,7 @@
             const API_BASE = window.location.origin;
             let allProducts = [];
             let currentStockFilter = "all";
+            const selectedIds = new Set();
 
             async function init() {
                 const token = localStorage.getItem("omistock_token");
@@ -713,7 +722,7 @@
 
                 try {
                     const response = await fetch("/api/admin/backup", {
-                        headers: { Authorization: "Bearer " + token },
+                        headers: { Authorization: `Bearer ${token}` },
                     });
 
                     if (!response.ok) throw new Error("Backup failed");
@@ -882,7 +891,7 @@
                     const tr = document.createElement("tr");
                     tr.className = "hover:bg-slate-50/50 transition-colors";
                     tr.innerHTML = `
-                    <td class="py-6 px-8"><input type="checkbox" class="rounded border-slate-300"></td>
+                    <td class="py-6 px-8"><input type="checkbox" class="product-checkbox rounded border-slate-300" data-id="${p.id}"></td>
                     <td class="py-6 px-8 text-[11px] font-black text-slate-400 tracking-widest uppercase">${p.sku || "N/A"}</td>
                     <td class="py-6 px-8 text-slate-900 font-black">${p.name}</td>
                     <td class="py-6 px-8 text-slate-400">${mockCat}</td>
@@ -902,6 +911,19 @@
                     </td>
                 `;
                     tbody.appendChild(tr);
+                    // Attach checkbox listener
+                    const checkbox = tr.querySelector('.product-checkbox');
+                    if (checkbox) {
+                        checkbox.addEventListener('change', (e) => {
+                            const id = e.target.dataset.id;
+                            if (e.target.checked) {
+                                selectedIds.add(id);
+                            } else {
+                                selectedIds.delete(id);
+                            }
+                            updateBulkDeleteUI();
+                        });
+                    }
                 });
             }
 
@@ -911,6 +933,34 @@
             }
             function closeModal(id) {
                 document.getElementById(id).classList.add("hidden");
+            }
+
+            function updateBulkDeleteUI() {
+                const btn = document.getElementById('bulk-delete-btn');
+                const countSpan = document.getElementById('selected-count');
+                const count = selectedIds.size;
+                if (count > 0) {
+                    btn.classList.remove('hidden');
+                    countSpan.textContent = count;
+                } else {
+                    btn.classList.add('hidden');
+                }
+            }
+
+            function bulkDelete() {
+                if (!confirm('Supprimer les produits sélectionnés ?')) return;
+                const token = localStorage.getItem('omistock_token');
+                const ids = Array.from(selectedIds);
+                Promise.all(ids.map(id =>
+                    fetch(`${API_BASE}/api/products/${id}`, {
+                        method: 'DELETE',
+                        headers: { Authorization: `Bearer ${token}` }
+                    })
+                )).then(() => {
+                    selectedIds.clear();
+                    updateBulkDeleteUI();
+                    fetchProducts();
+                }).catch(err => console.error(err));
             }
 
             async function submitAddForm(e) {
