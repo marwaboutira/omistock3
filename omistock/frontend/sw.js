@@ -1,17 +1,26 @@
 /**
  * OMISTOCK — Service Worker
- * Stratégie Stale-While-Revalidate (SWR) pour l'app mobile terrain.
+ * Stratégie hybride : network-first pour CSS/JS locaux, SWR pour le reste.
+ *
+ * ASSET_VERSION : synchroniser avec ?v= dans les pages HTML.
+ * Incrémenter à chaque déploiement CSS/JS/design.
  */
+const ASSET_VERSION = '20260625';
+const CACHE_NAME = `omistock-cache-v${ASSET_VERSION}`;
 
-const CACHE_NAME = 'omistock-cache-v2';
+/** @param {string} path */
+function versionedUrl(path) {
+  const separator = path.includes('?') ? '&' : '?';
+  return `${path}${separator}v=${ASSET_VERSION}`;
+}
 
-/** Fichiers locaux + CDN + polices Google (chemins relatifs au dossier /app/) */
+/** Fichiers locaux versionnés + CDN + polices Google */
 const PRECACHE_URLS = [
   './app_mobile.html',
   './mobile_scan.html',
-  './style.css',
-  './erp-sidebar.js',
-  './manifest.json',
+  versionedUrl('./style.css'),
+  versionedUrl('./erp-sidebar.js'),
+  versionedUrl('./manifest.json'),
   './icon-192.png',
   './icon-512.png',
   'https://cdn.tailwindcss.com',
@@ -32,6 +41,18 @@ function shouldUseCacheStrategy(request) {
     return false;
   }
   return true;
+}
+
+/**
+ * CSS/JS locaux : priorité réseau pour éviter les styles obsolètes.
+ * @param {Request} request
+ * @returns {boolean}
+ */
+function isLocalStaticAsset(request) {
+  if (request.method !== 'GET') return false;
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return false;
+  return /\.(css|js)$/i.test(url.pathname);
 }
 
 self.addEventListener('install', (event) => {
@@ -67,8 +88,41 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (!shouldUseCacheStrategy(event.request)) return;
 
+  if (isLocalStaticAsset(event.request)) {
+    event.respondWith(networkFirst(event.request));
+    return;
+  }
+
   event.respondWith(staleWhileRevalidate(event.request));
 });
+
+/**
+ * Network-first : réseau d'abord, cache uniquement hors ligne.
+ * @param {Request} request
+ * @returns {Promise<Response>}
+ */
+async function networkFirst(request) {
+  const cache = await caches.open(CACHE_NAME);
+
+  try {
+    const networkResponse = await fetch(request);
+    if (networkResponse && networkResponse.status === 200) {
+      cache.put(request, networkResponse.clone());
+    }
+    return networkResponse;
+  } catch {
+    const cachedResponse = await cache.match(request);
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
+    return new Response('Hors ligne — ressource indisponible.', {
+      status: 503,
+      statusText: 'Service Unavailable',
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    });
+  }
+}
 
 /**
  * SWR : réponse cache immédiate si disponible, mise à jour réseau en arrière-plan.
