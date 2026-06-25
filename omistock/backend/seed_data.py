@@ -103,35 +103,17 @@ def seed(admin_only=False):
         # 6. Création des Produits Universels (IT, Santé, Agro)
         print("Ajout du catalogue pharmaceutique...")
         products_data = [
-            # Pharmaceutique (Pharmacie)
-            {"name": "Doliprane 500 mg", "sku": "PHA-DOL-500", "price": 250.0, "qty": 500, "min": 100, "sid": s_saidal.id},
-            {"name": "Amoxicilline 1 g", "sku": "PHA-AMO-1G", "price": 300.0, "qty": 200, "min": 50, "sid": s_saidal.id},
-            {"name": "Ibuprofène 400 mg", "sku": "PHA-IBU-400", "price": 350.0, "qty": 300, "min": 60, "sid": s_saidal.id},
-            {"name": "Paracétamol 1 g", "sku": "PHA-PAR-1G", "price": 200.0, "qty": 400, "min": 80, "sid": s_saidal.id},
-            {"name": "Vitamine C 1000 mg", "sku": "PHA-VITC-1000", "price": 900.0, "qty": 200, "min": 40, "sid": s_saidal.id},
-            {"name": "Sérum Physiologique", "sku": "PHA-SER-PHY", "price": 120.0, "qty": 180, "min": 40, "sid": s_saidal.id},
-            {"name": "Oméprazole 20 mg", "sku": "PHA-OME-20", "price": 450.0, "qty": 150, "min": 30, "sid": s_saidal.id},
-            {"name": "Solution Antiseptique", "sku": "PHA-SOL-ANT", "price": 280.0, "qty": 250, "min": 50, "sid": s_saidal.id},
-
-            # Cosmétique
-            {"name": "Crème Hydratante Visage 50ml", "sku": "COS-CRE-HYD-50", "price": 1800.0, "qty": 120, "min": 30, "sid": s_biopharm.id},
-            {"name": "Écran Solaire SPF50 100ml", "sku": "COS-SOL-SPF50", "price": 2200.0, "qty": 90, "min": 20, "sid": s_biopharm.id},
-            {"name": "Gel Nettoyant Visage 200ml", "sku": "COS-GEL-NET-200", "price": 1500.0, "qty": 140, "min": 40, "sid": s_biopharm.id},
-            {"name": "Baume à Lèvres Réparateur", "sku": "COS-BAU-LEV", "price": 450.0, "qty": 200, "min": 50, "sid": s_biopharm.id},
-            {"name": "Shampooing Dermatologique 250ml", "sku": "COS-SHA-DER-250", "price": 1300.0, "qty": 110, "min": 25, "sid": s_biopharm.id},
-            {"name": "Lotion Micellaire 400ml", "sku": "COS-LOT-MIC-400", "price": 1600.0, "qty": 95, "min": 20, "sid": s_biopharm.id},
-
-            # Autres (Dispositifs & Consommables)
-            {"name": "Masques Chirurgicaux", "sku": "MAT-MSK-CHIR", "price": 80.0, "qty": 400, "min": 80, "sid": s_biopharm.id},
-            {"name": "Gants Jetables", "sku": "MAT-GNT-JET", "price": 50.0, "qty": 500, "min": 100, "sid": s_biopharm.id},
-            {"name": "Thermomètre Digital", "sku": "MAT-THM-DIG", "price": 250.0, "qty": 100, "min": 20, "sid": s_biopharm.id},
-            {"name": "Tensiomètre Électronique", "sku": "MAT-TEN-ELEC", "price": 4500.0, "qty": 30, "min": 5, "sid": s_biopharm.id},
-            {"name": "Pansements Stériles", "sku": "MAT-PAN-STE", "price": 150.0, "qty": 300, "min": 50, "sid": s_biopharm.id},
-            {"name": "Compresses Stériles", "sku": "MAT-CMP-STE", "price": 60.0, "qty": 300, "min": 60, "sid": s_biopharm.id},
-            {"name": "Seringues Usage Unique", "sku": "MAT-SER-UNI", "price": 30.0, "qty": 600, "min": 150, "sid": s_biopharm.id},
-            {"name": "Gel Hydroalcoolique 500 ml", "sku": "MAT-GEL-HYD", "price": 350.0, "qty": 250, "min": 60, "sid": s_biopharm.id},
-            {"name": "Test de Grossesse", "sku": "MAT-TST-GRO", "price": 200.0, "qty": 120, "min": 30, "sid": s_biopharm.id},
-            {"name": "Bandelettes Glycémie", "sku": "MAT-BAN-GLY", "price": 1200.0, "qty": 80, "min": 15, "sid": s_biopharm.id},
+            # Produits pharmaceutiques
+            {"name": "Amoxicilline 1g", "sku": "PHA-AME-1G", "price": 300.0, "qty": 200, "min": 50, "sid": s_saidal.id},
+            {"name": "Ibuprofène 400mg", "sku": "PHA-IBU-400", "price": 200.0, "qty": 250, "min": 60, "sid": s_saidal.id},
+            {"name": "Vitamine C 1000mg", "sku": "PHA-VITC-1000", "price": 150.0, "qty": 300, "min": 70, "sid": s_saidal.id},
+            {"name": "Sérum Physiologique 500ml", "sku": "PHA-SER-500", "price": 120.0, "qty": 180, "min": 40, "sid": s_saidal.id},
+            {"name": "Gants Latex", "sku": "PHA-GNT-LAT", "price": 50.0, "qty": 500, "min": 100, "sid": s_saidal.id},
+            {"name": "Masques Chirurgicaux", "sku": "PHA-MSK-CHIR", "price": 80.0, "qty": 400, "min": 80, "sid": s_saidal.id},
+            {"name": "Alcool Médical 1L", "sku": "PHA-ALC-1L", "price": 100.0, "qty": 150, "min": 30, "sid": s_saidal.id},
+            {"name": "Paracétamol Sirop Enfant", "sku": "PHA-PAR-SIR", "price": 180.0, "qty": 120, "min": 40, "sid": s_saidal.id},
+            {"name": "Thermomètre Digital", "sku": "PHA-THM-DIG", "price": 250.0, "qty": 100, "min": 20, "sid": s_saidal.id},
+            {"name": "Compresses Stériles", "sku": "PHA-CMP-STER", "price": 60.0, "qty": 300, "min": 60, "sid": s_saidal.id},
         ]
 
         products = []
