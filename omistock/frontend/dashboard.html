@@ -659,7 +659,6 @@
                             <p class="text-rose-200">Chargement...</p>
                         </div>
                         <button
-                            type="button" onclick="orderAllAlerts()"
                             class="w-full mt-6 py-4 bg-white/20 hover:bg-white/30 rounded-2xl font-bold text-sm transition-colors"
                         >
                             Commander tout
@@ -1204,23 +1203,13 @@
                         <span class="erp-alert-qty">${p.quantity}</span>
                     </div>
                     <div class="grid grid-cols-1 gap-2">
-                        <button type="button" onclick="generatePO(${p.id}, '${p.name.replace(/'/g, "\\'")}')" class="erp-alert-action">Commande d'urgence</button>
+                        <button onclick="generatePO(${p.id}, '${p.supplier}')" class="erp-alert-action">Commande d'urgence</button>
                     </div>
                 </div>
             `,
                         )
                         .join("") ||
                     '<p class="text-rose-50 text-sm font-semibold">✅ Tout est en ordre</p>';
-            }
-
-            function generatePO(id, name) {
-                showToast("Commande d'urgence préparée pour " + name, "success");
-            }
-
-            function orderAllAlerts() {
-                if (confirm("Voulez-vous préparer une commande pour tous les produits critiques ?")) {
-                    showToast("Commande préparée pour tous les produits en alerte !", "success");
-                }
             }
 
             function renderTops(top5, topSold, totalQty) {
