@@ -388,6 +388,9 @@ body.dark-theme .omi-wordmark .stock {
     box-shadow:
         0 18px 44px -30px rgba(15, 23, 42, 0.22),
         0 10px 22px -18px rgba(0, 80, 184, 0.12);
+}
+
+.erp-main .card:not([class*="bg-"]) {
     background: linear-gradient(180deg, #ffffff 0%, #fcfdff 100%);
 }
 
@@ -1885,4 +1888,98 @@ body.omi-signup-page {
     .omi-signup-field-group--full {
         grid-column: auto;
     }
+}
+
+/* --- ERP readability helpers --- */
+.erp-soft-label {
+    color: #475569;
+}
+
+.erp-soft-meta {
+    color: #64748b;
+}
+
+.erp-empty-state {
+    color: #475569;
+    font-weight: 600;
+}
+
+.erp-alert-item {
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.erp-alert-name {
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.erp-alert-qty {
+    background: #fff;
+    color: #be123c;
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 900;
+}
+
+.erp-alert-action {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border-radius: 0.9rem;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 800;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transition:
+        background var(--transition-fast),
+        transform var(--transition-fast);
+}
+
+.erp-alert-action:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.erp-top-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.erp-top-row__name {
+    color: #1e293b;
+}
+
+.erp-top-row__qty {
+    color: #0f172a;
+}
+
+.erp-sales-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.erp-sales-name {
+    color: #f8fafc;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.erp-sales-badge {
+    background: rgba(119, 167, 255, 0.18);
+    color: #dbeafe;
+    border: 1px solid rgba(143, 192, 255, 0.2);
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.7rem;
+    font-size: 0.75rem;
+    font-weight: 800;
 }

@@ -1197,19 +1197,19 @@
                     alerts
                         .map(
                             (p) => `
-                <div class="bg-white/10 p-4 rounded-2xl space-y-3">
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-sm">${p.name}</span>
-                        <span class="bg-white text-rose-600 px-3 py-1 rounded-xl text-xs font-black">${p.quantity}</span>
+                <div class="erp-alert-item space-y-3">
+                    <div class="flex justify-between items-center gap-3">
+                        <span class="erp-alert-name">${p.name}</span>
+                        <span class="erp-alert-qty">${p.quantity}</span>
                     </div>
                     <div class="grid grid-cols-1 gap-2">
-                        <button onclick="generatePO(${p.id}, '${p.supplier}')" class="py-2 bg-rose-500/30 hover:bg-rose-500/50 rounded-xl text-[10px] font-bold transition-all w-full">Commande d'urgence</button>
+                        <button onclick="generatePO(${p.id}, '${p.supplier}')" class="erp-alert-action">Commande d'urgence</button>
                     </div>
                 </div>
             `,
                         )
                         .join("") ||
-                    '<p class="text-rose-200 text-sm">✅ Tout est en ordre</p>';
+                    '<p class="text-rose-50 text-sm font-semibold">✅ Tout est en ordre</p>';
             }
 
             function renderTops(top5, topSold, totalQty) {
@@ -1220,9 +1220,9 @@
                         .map(
                             (p) => `
                 <div class="space-y-2">
-                    <div class="flex justify-between text-sm font-bold">
-                        <span class="text-slate-600">${p.name}</span>
-                        <span class="text-slate-900">${p.quantity}</span>
+                    <div class="erp-top-row">
+                        <span class="erp-top-row__name">${p.name}</span>
+                        <span class="erp-top-row__qty">${p.quantity}</span>
                     </div>
                     <div class="progress-track">
                         <div class="progress-fill bg-[#0050b8]" style="--progress: ${Math.min(100, (p.quantity / maxQty) * 200)}%"></div>
@@ -1231,24 +1231,24 @@
             `,
                         )
                         .join("") ||
-                    '<p class="text-slate-400">Pas de produits</p>';
+                    '<p class="erp-empty-state">Pas de produits</p>';
 
                 const topSoldList = document.getElementById("top_sold_list");
                 topSoldList.innerHTML =
                     topSold
                         .map(
                             (p) => `
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-3">
-                        <div class="w-2 h-2 bg-[#77a7ff] rounded-full"></div>
-                        <span class="text-sm font-medium">${p.name}</span>
+                <div class="erp-sales-item">
+                    <div class="flex items-center gap-3 min-w-0">
+                        <div class="w-2 h-2 bg-[#77a7ff] rounded-full shrink-0"></div>
+                        <span class="erp-sales-name truncate">${p.name}</span>
                     </div>
-                    <span class="text-xs font-bold bg-[#0a3d8f] px-2 py-1 rounded-lg">${p.total_sold} vendus</span>
+                    <span class="erp-sales-badge">${p.total_sold} vendus</span>
                 </div>
             `,
                         )
                         .join("") ||
-                    '<p class="text-slate-200 text-xs">Aucune vente</p>';
+                    '<p class="text-slate-100 text-sm font-semibold">Aucune vente</p>';
             }
 
             async function openTransferModal() {

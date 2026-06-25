@@ -28,7 +28,11 @@
         >
             <div class="mb-12 omi-sidebar-brand">
                 <div class="omi-sidebar-brand__icon">
-                    <img src="logo-mark-transparent.svg" alt="OMISTOCK" class="omi-sidebar-brand__logo" />
+                    <img
+                        src="logo-mark-transparent.svg"
+                        alt="OMISTOCK"
+                        class="omi-sidebar-brand__logo"
+                    />
                 </div>
                 <h2
                     class="omi-sidebar-brand__name omi-wordmark"
@@ -333,43 +337,49 @@
             >
                 <div class="card p-8 bg-[#0f1b3a] text-white">
                     <h3
-                        class="text-[#77a7ff] text-xs font-black uppercase tracking-[0.2em] mb-2"
+                        class="text-[#9ac0ff] text-xs font-black uppercase tracking-[0.2em] mb-2"
                     >
                         Bénéfice Estimé (Brut)
                     </h3>
-                    <p id="profit_total" class="text-4xl font-black mb-1">
+                    <p
+                        id="profit_total"
+                        class="text-4xl font-black mb-1 text-white"
+                    >
                         -- DA
                     </p>
-                    class="text-slate-200/70 text-xs font-bold"
+                    <p class="text-slate-100 text-xs font-bold">
                         +15% vs mois dernier
                     </p>
                 </div>
                 <div class="card p-8 bg-rose-600 text-white">
                     <h3
-                        class="text-rose-200 text-xs font-black uppercase tracking-[0.2em] mb-2"
+                        class="text-rose-100 text-xs font-black uppercase tracking-[0.2em] mb-2"
                     >
                         Ruptures évitées
                     </h3>
-                    <p id="stockouts_avoided" class="text-4xl font-black mb-1">
+                    <p
+                        id="stockouts_avoided"
+                        class="text-4xl font-black mb-1 text-white"
+                    >
                         --
                     </p>
-                    <p class="text-rose-200/60 text-xs font-bold">
+                    <p class="text-rose-50 text-xs font-bold">
                         Basé sur le seuil d'alerte
                     </p>
                 </div>
                 <div class="card p-8 bg-slate-100">
                     <h3
-                        class="text-slate-400 text-xs font-black uppercase tracking-[0.2em] mb-2"
+                        class="text-slate-500 text-xs font-black uppercase tracking-[0.2em] mb-2"
                     >
                         Fournisseur le plus fiable
                     </h3>
                     <p
                         id="top_supplier"
-                        class="text-3xl font-black text-slate-800 mb-1"
+                        class="text-3xl font-black text-slate-900 mb-1"
                     >
                         --
                     </p>
-                    <p class="text-slate-500 text-xs font-bold">
+                    <p class="text-slate-600 text-xs font-bold">
                         Taux de livraison 98%
                     </p>
                 </div>
@@ -466,7 +476,6 @@
                         const companyName = isFood
                             ? "AGRO-INDUSTRIE DZ"
                             : "OMISTOCK";
-
                     }
                 } catch (e) {
                     console.error("Erreur de profil:", e);

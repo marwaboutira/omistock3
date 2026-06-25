@@ -1,7 +1,7 @@
 {
-  "name": "OMISTOCK Mobile Client",
-  "short_name": "OMISTOCK Mobile",
-  "description": "Application terrain OMISTOCK — scan, stock et alertes hors-ligne",
+  "name": "OMISTOCK",
+  "short_name": "OMISTOCK",
+  "description": "OMISTOCK — Application terrain (scan, stock, alertes)",
   "start_url": "app_mobile.html",
   "scope": "./",
   "display": "standalone",
