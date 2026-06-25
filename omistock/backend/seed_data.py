@@ -134,9 +134,9 @@ def seed(admin_only=False):
 
         # 7. Initialisation des Stocks et Inventaires
         print("Répartition du stock entre Alger et Oran...")
-        for p in products:
-            # Répartition 70% Alger / 30% Oran
-            q_alg = int(p.quantity * 0.7)
+        ratios_alger = [0.82, 0.11, 0.45, 0.75, 0.60, 0.35, 0.68, 0.25, 0.55, 0.40]
+        for idx, p in enumerate(products):
+            q_alg = int(p.quantity * ratios_alger[idx])
             q_orn = p.quantity - q_alg
             
             inv_alg = models.Inventory(branch_id=b_alger.id, product_id=p.id, quantity=q_alg, min_threshold=p.min_threshold)
