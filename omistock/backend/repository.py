@@ -11,7 +11,7 @@ stock.recompute_product_quantity().
 from typing import Any, Dict, List, Optional, Union
 
 from sqlalchemy import or_
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 import models
 import stock
@@ -51,7 +51,16 @@ def get_products(
                 models.Product.barcode.ilike(pattern),
             )
         )
-    return q.all()
+    # Charger les relations inventory pour accéder aux quantités par dépôt
+    q = q.options(selectinload(models.Product.inventory))
+    products = q.all()
+    # Quand un dépôt est sélectionné, exposer la quantité du dépôt (pas le total global)
+    if branch_id is not None:
+        for p in products:
+            inv = next((i for i in p.inventory if i.branch_id == branch_id), None)
+            if inv:
+                p.quantity = inv.quantity
+    return products
 
 
 def get_product_by_id(db: Session, product_id: int) -> Optional[models.Product]:
