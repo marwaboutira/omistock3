@@ -101,33 +101,19 @@ def seed(admin_only=False):
         db.commit()
         db.refresh(s_saidal)
         # 6. Création des Produits Universels (IT, Santé, Agro)
-        print("Ajout du catalogue universel...")
+        print("Ajout du catalogue pharmaceutique...")
         products_data = [
-            # Produits existants
-            {"name": "Ordinateur Portable HP Victus", "sku": "IT-HP-VCT", "price": 145000.0, "qty": 450, "min": 100, "sid": s_saidal.id},
-            {"name": "Serveur Dell PowerEdge", "sku": "IT-DEL-SRV", "price": 450000.0, "qty": 120, "min": 50, "sid": s_saidal.id},
-            {"name": "Doliprane 500mg (Boîte 16)", "sku": "PHA-DOL-500", "price": 250.0, "qty": 500, "min": 100, "sid": s_saidal.id},
-            {"name": "Huile de Tournesol 5L", "sku": "AGR-HUI-5L", "price": 1200.0, "qty": 300, "min": 50, "sid": s_biopharm.id},
-            {"name": "Café Robusta 250g", "sku": "AGR-CAF-250", "price": 450.0, "qty": 200, "min": 30, "sid": s_saidal.id},
-            {"name": "Smartphone Galaxy S21", "sku": "IT-GAL-S21", "price": 85000.0, "qty": 150, "min": 40, "sid": s_saidal.id},
-            
-            # Nouveaux produits cosmétiques
-            {"name": "Écran Solaire SPF50+", "sku": "COS-SUN-50", "price": 1800.0, "qty": 300, "min": 50, "sid": s_biopharm.id},
-            {"name": "Sérum Anti-âge Acide Hyaluronique", "sku": "COS-SER-AH", "price": 3500.0, "qty": 120, "min": 20, "sid": s_biopharm.id},
-            {"name": "Crème Hydratante Visage 50ml", "sku": "COS-CRE-HYD", "price": 2200.0, "qty": 250, "min": 30, "sid": s_biopharm.id},
-            {"name": "Lotion Tonique Apaisante", "sku": "COS-LOT-APA", "price": 1500.0, "qty": 180, "min": 25, "sid": s_biopharm.id},
-            {"name": "Masque Purifiant Argile", "sku": "COS-MAS-ARG", "price": 1200.0, "qty": 200, "min": 40, "sid": s_biopharm.id},
-            {"name": "Gel Nettoyant Visage", "sku": "COS-GEL-NET", "price": 1400.0, "qty": 300, "min": 50, "sid": s_biopharm.id},
-            {"name": "Gommage Exfoliant Doux", "sku": "COS-GOM-EXF", "price": 1700.0, "qty": 150, "min": 20, "sid": s_biopharm.id},
-            {"name": "Eau Micellaire Démaquillante", "sku": "COS-EAU-MIC", "price": 1100.0, "qty": 400, "min": 60, "sid": s_biopharm.id},
-            {"name": "Baume à Lèvres Réparateur", "sku": "COS-BAU-LEV", "price": 600.0, "qty": 500, "min": 100, "sid": s_biopharm.id},
-            {"name": "Shampooing Fortifiant", "sku": "COS-SHA-FOR", "price": 1300.0, "qty": 220, "min": 40, "sid": s_biopharm.id},
-            {"name": "Après-shampooing Nourrissant", "sku": "COS-APR-NOU", "price": 1400.0, "qty": 200, "min": 30, "sid": s_biopharm.id},
-            {"name": "Huile Sèche Multi-Usages", "sku": "COS-HUI-SEC", "price": 2800.0, "qty": 100, "min": 15, "sid": s_biopharm.id},
-            {"name": "Déodorant Bille 24h", "sku": "COS-DEO-BIL", "price": 800.0, "qty": 350, "min": 50, "sid": s_biopharm.id},
-            {"name": "Lait Corps Hydratant 400ml", "sku": "COS-LAI-COR", "price": 1900.0, "qty": 280, "min": 40, "sid": s_biopharm.id},
-            {"name": "Sérum Vitamine C Éclat", "sku": "COS-SER-VIT", "price": 4200.0, "qty": 80, "min": 10, "sid": s_biopharm.id},
-            {"name": "Crème Contour des Yeux", "sku": "COS-CRE-YEU", "price": 2500.0, "qty": 110, "min": 20, "sid": s_biopharm.id},
+            # Produits pharmaceutiques
+            {"name": "Amoxicilline 1g", "sku": "PHA-AME-1G", "price": 300.0, "qty": 200, "min": 50, "sid": s_saidal.id},
+            {"name": "Ibuprofène 400mg", "sku": "PHA-IBU-400", "price": 200.0, "qty": 250, "min": 60, "sid": s_saidal.id},
+            {"name": "Vitamine C 1000mg", "sku": "PHA-VITC-1000", "price": 150.0, "qty": 300, "min": 70, "sid": s_saidal.id},
+            {"name": "Sérum Physiologique 500ml", "sku": "PHA-SER-500", "price": 120.0, "qty": 180, "min": 40, "sid": s_saidal.id},
+            {"name": "Gants Latex", "sku": "PHA-GNT-LAT", "price": 50.0, "qty": 500, "min": 100, "sid": s_saidal.id},
+            {"name": "Masques Chirurgicaux", "sku": "PHA-MSK-CHIR", "price": 80.0, "qty": 400, "min": 80, "sid": s_saidal.id},
+            {"name": "Alcool Médical 1L", "sku": "PHA-ALC-1L", "price": 100.0, "qty": 150, "min": 30, "sid": s_saidal.id},
+            {"name": "Paracétamol Sirop Enfant", "sku": "PHA-PAR-SIR", "price": 180.0, "qty": 120, "min": 40, "sid": s_saidal.id},
+            {"name": "Thermomètre Digital", "sku": "PHA-THM-DIG", "price": 250.0, "qty": 100, "min": 20, "sid": s_saidal.id},
+            {"name": "Compresses Stériles", "sku": "PHA-CMP-STER", "price": 60.0, "qty": 300, "min": 60, "sid": s_saidal.id},
         ]
 
         products = []
