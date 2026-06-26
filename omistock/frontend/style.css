@@ -642,6 +642,7 @@ body.mobile-theme .progress-track {
         width: 100%;
         max-width: 100vw;
         padding: 1.25rem !important;
+        overflow-x: hidden;
     }
 
     body.sidebar-open {

@@ -251,7 +251,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="erp-main flex-1 ml-72 p-12">
+        <main class="erp-main flex-1 ml-72 p-4 sm:p-6 lg:p-12 w-full max-w-full">
             <header
                 class="mb-8 lg:mb-12 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4"
             >
@@ -994,6 +994,28 @@
                 }
             }
 
+            function generateQRCodeSafe(qrText) {
+                const oldContainer = document.getElementById("qrcode");
+                const newContainer = oldContainer.cloneNode(false);
+                oldContainer.parentNode.replaceChild(newContainer, oldContainer);
+                const safeText = String(qrText || "").normalize("NFC");
+
+                try {
+                    new QRCode(newContainer, {
+                        text: safeText,
+                        width: 128,
+                        height: 128,
+                        colorDark: "#0f172a",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.M,
+                    });
+                } catch (err) {
+                    console.error("Erreur génération QR:", err);
+                    console.error("QR text:", safeText);
+                    newContainer.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
+                }
+            }
+
             function openDetailsModal(id) {
                 const productId = String(id);
                 const p = allProducts.find((x) => String(x.id) === productId);
@@ -1015,24 +1037,7 @@
                 <div class="flex justify-between items-center"><span class="text-slate-400">Il y a 30j</span><span class="text-slate-600">${(currentPrice * 1.05).toLocaleString()} DA</span></div>
             `;
 
-                const oldContainer = document.getElementById("qrcode");
-                const newContainer = oldContainer.cloneNode(false);
-                oldContainer.parentNode.replaceChild(newContainer, oldContainer);
-                const qrText = `${p.sku || ""} - ${p.name || ""}`;
-
-                try {
-                    new QRCode(newContainer, {
-                        text: qrText,
-                        width: 128,
-                        height: 128,
-                        colorDark: "#0f172a",
-                        colorLight: "#ffffff",
-                        correctLevel: QRCode.CorrectLevel.H,
-                    });
-                } catch (err) {
-                    console.error("Erreur génération QR:", err, "texte:", qrText);
-                    newContainer.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
-                }
+                generateQRCodeSafe(`${p.sku || ""} - ${p.name || ""}`);
 
                 openModal("detailsModal");
             }
@@ -1054,24 +1059,7 @@
                 <div class="flex justify-between items-center"><span class="text-slate-400">Il y a 30j</span><span class="text-slate-600">${(currentPrice * 1.05).toLocaleString()} DA</span></div>
             `;
 
-                const oldContainer = document.getElementById("qrcode");
-                const newContainer = oldContainer.cloneNode(false);
-                oldContainer.parentNode.replaceChild(newContainer, oldContainer);
-                const qrText = `${sku} - ${name}`;
-
-                try {
-                    new QRCode(newContainer, {
-                        text: qrText,
-                        width: 128,
-                        height: 128,
-                        colorDark: "#0f172a",
-                        colorLight: "#ffffff",
-                        correctLevel: QRCode.CorrectLevel.H,
-                    });
-                } catch (err) {
-                    console.error("Erreur génération QR:", err, "texte:", qrText);
-                    newContainer.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
-                }
+                generateQRCodeSafe(`${sku} - ${name}`);
 
                 openModal("detailsModal");
             }
