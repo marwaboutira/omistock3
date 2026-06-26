@@ -994,25 +994,46 @@
                 }
             }
 
-            function generateQRCodeSafe(qrText) {
-                const oldContainer = document.getElementById("qrcode");
-                const newContainer = oldContainer.cloneNode(false);
-                oldContainer.parentNode.replaceChild(newContainer, oldContainer);
-                const safeText = String(qrText || "").normalize("NFC");
+            function renderQrCode(text) {
+                const container = document.getElementById("qrcode");
+                container.innerHTML = "";
+                const safeText = String(text || "").normalize("NFC");
 
                 try {
-                    new QRCode(newContainer, {
-                        text: safeText,
-                        width: 128,
-                        height: 128,
-                        colorDark: "#0f172a",
-                        colorLight: "#ffffff",
-                        correctLevel: QRCode.CorrectLevel.M,
-                    });
+                    if (window.QRCode && typeof window.QRCode.toCanvas === "function") {
+                        const canvas = document.createElement("canvas");
+                        container.appendChild(canvas);
+                        window.QRCode.toCanvas(canvas, safeText, {
+                            width: 128,
+                            margin: 1,
+                            errorCorrectionLevel: "M",
+                            color: {
+                                dark: "#0f172a",
+                                light: "#ffffff",
+                            },
+                        }, function (error) {
+                            if (error) {
+                                console.error("Erreur QR toCanvas:", error, safeText);
+                                container.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
+                            }
+                        });
+                    } else if (window.QRCode) {
+                        new window.QRCode(container, {
+                            text: safeText,
+                            width: 128,
+                            height: 128,
+                            colorDark: "#0f172a",
+                            colorLight: "#ffffff",
+                            correctLevel: window.QRCode.CorrectLevel
+                                ? window.QRCode.CorrectLevel.L
+                                : undefined,
+                        });
+                    } else {
+                        throw new Error("Bibliothèque QRCode non chargée");
+                    }
                 } catch (err) {
-                    console.error("Erreur génération QR:", err);
-                    console.error("QR text:", safeText);
-                    newContainer.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
+                    console.error("Erreur génération QR:", err, safeText);
+                    container.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
                 }
             }
 
@@ -1037,7 +1058,7 @@
                 <div class="flex justify-between items-center"><span class="text-slate-400">Il y a 30j</span><span class="text-slate-600">${(currentPrice * 1.05).toLocaleString()} DA</span></div>
             `;
 
-                generateQRCodeSafe(`${p.sku || ""} - ${p.name || ""}`);
+                renderQrCode(`${p.sku || ""} - ${p.name || ""}`);
 
                 openModal("detailsModal");
             }
@@ -1059,7 +1080,7 @@
                 <div class="flex justify-between items-center"><span class="text-slate-400">Il y a 30j</span><span class="text-slate-600">${(currentPrice * 1.05).toLocaleString()} DA</span></div>
             `;
 
-                generateQRCodeSafe(`${sku} - ${name}`);
+                renderQrCode(`${sku} - ${name}`);
 
                 openModal("detailsModal");
             }
