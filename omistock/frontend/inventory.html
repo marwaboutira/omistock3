@@ -1015,13 +1015,13 @@
                 <div class="flex justify-between items-center"><span class="text-slate-400">Il y a 30j</span><span class="text-slate-600">${(currentPrice * 1.05).toLocaleString()} DA</span></div>
             `;
 
-                const qrContainer = document.getElementById("qrcode");
-                qrContainer.innerHTML = "";
-
+                const oldContainer = document.getElementById("qrcode");
+                const newContainer = oldContainer.cloneNode(false);
+                oldContainer.parentNode.replaceChild(newContainer, oldContainer);
                 const qrText = `${p.sku || ""} - ${p.name || ""}`;
 
                 try {
-                    new QRCode(qrContainer, {
+                    new QRCode(newContainer, {
                         text: qrText,
                         width: 128,
                         height: 128,
@@ -1031,7 +1031,7 @@
                     });
                 } catch (err) {
                     console.error("Erreur génération QR:", err, "texte:", qrText);
-                    qrContainer.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
+                    newContainer.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
                 }
 
                 openModal("detailsModal");
@@ -1054,15 +1054,13 @@
                 <div class="flex justify-between items-center"><span class="text-slate-400">Il y a 30j</span><span class="text-slate-600">${(currentPrice * 1.05).toLocaleString()} DA</span></div>
             `;
 
-                const qrContainer = document.getElementById("qrcode");
-                qrContainer.innerHTML = "";
+                const oldContainer = document.getElementById("qrcode");
+                const newContainer = oldContainer.cloneNode(false);
+                oldContainer.parentNode.replaceChild(newContainer, oldContainer);
                 const qrText = `${sku} - ${name}`;
 
-                console.log("QRCode =", typeof QRCode);
-                console.log("qrText:", qrText);
-
                 try {
-                    new QRCode(qrContainer, {
+                    new QRCode(newContainer, {
                         text: qrText,
                         width: 128,
                         height: 128,
@@ -1071,15 +1069,8 @@
                         correctLevel: QRCode.CorrectLevel.H,
                     });
                 } catch (err) {
-                    console.error(err);
-                    console.error("QR text:", qrText);
-                    console.error("Product:", {
-                        sku,
-                        name,
-                        supplier,
-                        price
-                    });
-                    qrContainer.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
+                    console.error("Erreur génération QR:", err, "texte:", qrText);
+                    newContainer.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
                 }
 
                 openModal("detailsModal");
