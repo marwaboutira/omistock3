@@ -114,6 +114,23 @@ def seed(admin_only=False):
             {"name": "Paracétamol Sirop Enfant", "sku": "PHA-PAR-SIR", "price": 180.0, "qty": 120, "min": 40, "sid": s_saidal.id},
             {"name": "Thermomètre Digital", "sku": "PHA-THM-DIG", "price": 250.0, "qty": 100, "min": 20, "sid": s_saidal.id},
             {"name": "Compresses Stériles", "sku": "PHA-CMP-STER", "price": 60.0, "qty": 300, "min": 60, "sid": s_saidal.id},
+            # Produits cosmétiques
+            {"name": "Crème Hydratante Visage 50ml", "sku": "COS-CRH-50", "price": 450.0, "qty": 180, "min": 40, "sid": s_saidal.id},
+            {"name": "Écran Solaire SPF50 100ml", "sku": "COS-ECS-SPF50", "price": 1200.0, "qty": 150, "min": 30, "sid": s_saidal.id},
+            {"name": "Gel Nettoyant Visage 200ml", "sku": "COS-GNL-200", "price": 320.0, "qty": 220, "min": 50, "sid": s_saidal.id},
+            {"name": "Baume à Lèvres Réparateur", "sku": "COS-BLM-RPR", "price": 180.0, "qty": 300, "min": 80, "sid": s_saidal.id},
+            {"name": "Shampooing Dermatologique 250ml", "sku": "COS-SHD-DRM", "price": 550.0, "qty": 160, "min": 40, "sid": s_saidal.id},
+            {"name": "Lotion Micellaire 400ml", "sku": "COS-LTM-400", "price": 480.0, "qty": 140, "min": 35, "sid": s_saidal.id},
+            {"name": "Eau Thermale 300ml", "sku": "COS-ETP-300", "price": 350.0, "qty": 200, "min": 50, "sid": s_saidal.id},
+            {"name": "Crème Mains Nourrissante", "sku": "COS-CMN-NRS", "price": 390.0, "qty": 175, "min": 45, "sid": s_saidal.id},
+            # Produits Autres (MAT)
+            {"name": "Test de Grossesse", "sku": "MAT-TST-GRS", "price": 80.0, "qty": 120, "min": 30, "sid": s_saidal.id},
+            {"name": "Bandelettes Glycémie", "sku": "MAT-BGT-GLC", "price": 250.0, "qty": 250, "min": 60, "sid": s_saidal.id},
+            {"name": "Tensiomètre Électronique", "sku": "MAT-TNS-ELE", "price": 3500.0, "qty": 80, "min": 20, "sid": s_saidal.id},
+            {"name": "Seringues Usage Unique", "sku": "MAT-SRING-UN", "price": 150.0, "qty": 400, "min": 100, "sid": s_saidal.id},
+            {"name": "Pansements Stériles", "sku": "MAT-PNS-ST", "price": 95.0, "qty": 350, "min": 70, "sid": s_saidal.id},
+            {"name": "Solution Désinfectante Surface", "sku": "MAT-SDS-SRF", "price": 180.0, "qty": 200, "min": 50, "sid": s_saidal.id},
+            {"name": "Boîte Collecteur Aiguilles", "sku": "MAT-BCA", "price": 220.0, "qty": 90, "min": 25, "sid": s_saidal.id},
         ]
 
         products = []
@@ -134,7 +151,9 @@ def seed(admin_only=False):
 
         # 7. Initialisation des Stocks et Inventaires
         print("Répartition du stock entre Alger et Oran...")
-        ratios_alger = [0.82, 0.11, 0.45, 0.75, 0.60, 0.35, 0.68, 0.25, 0.55, 0.40]
+        ratios_alger = [0.82, 0.11, 0.45, 0.75, 0.60, 0.35, 0.68, 0.25, 0.55, 0.40,
+            0.65, 0.20, 0.50, 0.70, 0.45, 0.30, 0.55, 0.40,
+            0.58, 0.32, 0.42, 0.60, 0.48, 0.35, 0.45]
         for idx, p in enumerate(products):
             q_alg = int(p.quantity * ratios_alger[idx])
             q_orn = p.quantity - q_alg
