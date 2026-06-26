@@ -899,7 +899,7 @@
                     <td class="py-6 px-8"><span class="status-badge ${status.class}">${status.label}</span></td>
                     <td class="py-6 px-8 text-slate-900">${parseFloat(p.price).toLocaleString()} DA</td>
                     <td class="py-6 px-8 text-right space-x-2">
-                        <button onclick="openDetailsModal(${p.id})" data-tooltip="Détails & QR" class="p-2.5 bg-[#eaf1ff] text-[#0050b8] rounded-xl transition-all shadow-sm">
+                        <button onclick="openDetailsModalFromButton(this)" data-tooltip="Détails & QR" data-id="${p.id}" data-sku="${p.sku || ""}" data-name="${p.name || ""}" data-supplier="${p.supplier ? p.supplier.name : 'Grossiste Pharma Local'}" data-price="${p.price}" class="p-2.5 bg-[#eaf1ff] text-[#0050b8] rounded-xl transition-all shadow-sm">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                         </button>
                         <button onclick="openEditModal(${p.id})" data-tooltip="Modifier" class="p-2.5 bg-slate-100 text-slate-600 rounded-xl transition-all shadow-sm">
@@ -995,32 +995,82 @@
             }
 
             function openDetailsModal(id) {
-                const p = allProducts.find((x) => x.id == id);
-                if (!p) return;
+                const productId = String(id);
+                const p = allProducts.find((x) => String(x.id) === productId);
+                if (!p) {
+                    console.error("Produit introuvable dans allProducts, id:", productId);
+                    return;
+                }
 
-                document.getElementById("detailName").innerText = p.name;
+                document.getElementById("detailName").innerText = p.name || "N/A";
                 document.getElementById("detailSku").innerText = p.sku || "N/A";
                 document.getElementById("detailSupplier").innerText = p.supplier
                     ? p.supplier.name
                     : "Grossiste Pharma Local";
 
-                // Historique mocké basé sur le prix actuel
-                const currentPrice = parseFloat(p.price);
+                const currentPrice = parseFloat(p.price) || 0;
                 document.getElementById("detailPriceHistory").innerHTML = `
                 <div class="flex justify-between items-center"><span class="text-slate-400">Aujourd'hui</span><span class="text-[#0050b8]">${currentPrice.toLocaleString()} DA</span></div>
                 <div class="flex justify-between items-center"><span class="text-slate-400">Il y a 7j</span><span class="text-slate-600">${(currentPrice * 0.98).toLocaleString()} DA</span></div>
                 <div class="flex justify-between items-center"><span class="text-slate-400">Il y a 30j</span><span class="text-slate-600">${(currentPrice * 1.05).toLocaleString()} DA</span></div>
             `;
 
-                document.getElementById("qrcode").innerHTML = "";
-                new QRCode(document.getElementById("qrcode"), {
-                    text: `${p.sku || "N/A"} - ${p.name}`,
-                    width: 128,
-                    height: 128,
-                    colorDark: "#0f172a",
-                    colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.H,
-                });
+                const qrContainer = document.getElementById("qrcode");
+                qrContainer.innerHTML = "";
+
+                const qrText = `${p.sku || ""} - ${p.name || ""}`;
+
+                try {
+                    new QRCode(qrContainer, {
+                        text: qrText,
+                        width: 128,
+                        height: 128,
+                        colorDark: "#0f172a",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H,
+                    });
+                } catch (err) {
+                    console.error("Erreur génération QR:", err, "texte:", qrText);
+                    qrContainer.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
+                }
+
+                openModal("detailsModal");
+            }
+
+            function openDetailsModalFromButton(button) {
+                const sku = button.dataset.sku || "";
+                const name = button.dataset.name || "";
+                const supplier = button.dataset.supplier || "Grossiste Pharma Local";
+                const price = button.dataset.price || "0";
+
+                document.getElementById("detailName").innerText = name || "N/A";
+                document.getElementById("detailSku").innerText = sku || "N/A";
+                document.getElementById("detailSupplier").innerText = supplier;
+
+                const currentPrice = parseFloat(price) || 0;
+                document.getElementById("detailPriceHistory").innerHTML = `
+                <div class="flex justify-between items-center"><span class="text-slate-400">Aujourd'hui</span><span class="text-[#0050b8]">${currentPrice.toLocaleString()} DA</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-400">Il y a 7j</span><span class="text-slate-600">${(currentPrice * 0.98).toLocaleString()} DA</span></div>
+                <div class="flex justify-between items-center"><span class="text-slate-400">Il y a 30j</span><span class="text-slate-600">${(currentPrice * 1.05).toLocaleString()} DA</span></div>
+            `;
+
+                const qrContainer = document.getElementById("qrcode");
+                qrContainer.innerHTML = "";
+                const qrText = `${sku} - ${name}`;
+
+                try {
+                    new QRCode(qrContainer, {
+                        text: qrText,
+                        width: 128,
+                        height: 128,
+                        colorDark: "#0f172a",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H,
+                    });
+                } catch (err) {
+                    console.error("Erreur génération QR:", err, "texte:", qrText);
+                    qrContainer.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
+                }
 
                 openModal("detailsModal");
             }

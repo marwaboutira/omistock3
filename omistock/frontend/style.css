@@ -62,6 +62,7 @@ body.light-theme-alt {
     font-family: "Outfit", sans-serif;
     background-color: var(--color-bg);
     color: var(--color-text);
+    overflow-x: hidden;
 }
 
 body.light-theme-alt {
