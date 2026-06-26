@@ -995,7 +995,7 @@
             }
 
             function openDetailsModal(id) {
-                const p = allProducts.find((x) => x.id === id);
+                const p = allProducts.find((x) => x.id == id);
                 if (!p) return;
 
                 document.getElementById("detailName").innerText = p.name;
@@ -1026,7 +1026,7 @@
             }
 
             function openEditModal(id) {
-                const p = allProducts.find((x) => x.id === id);
+                const p = allProducts.find((x) => x.id == id);
                 if (!p) return;
                 document.getElementById("editId").value = p.id;
                 document.getElementById("editName").value = p.name;
