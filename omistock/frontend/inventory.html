@@ -251,7 +251,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="erp-main flex-1 ml-72 p-4 sm:p-6 lg:p-12 w-full max-w-full">
+        <main class="erp-main flex-1 ml-0 lg:ml-72 p-4 sm:p-6 lg:p-12 w-full max-w-full">
             <header
                 class="mb-8 lg:mb-12 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4"
             >
@@ -397,20 +397,20 @@
                         <tr
                             class="border-b border-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] bg-slate-50/30"
                         >
-                            <th class="py-6 px-8 w-12">
+                            <th class="py-4 px-3 sm:px-4 lg:px-6 w-12">
                                 <input
                                     type="checkbox"
                                     id="select-all-checkbox"
                                     class="rounded border-slate-300 product-checkbox"
                                 />
                             </th>
-                            <th class="py-6 px-8">SKU</th>
-                            <th class="py-6 px-8">Nom</th>
-                            <th class="py-6 px-8">Catégorie</th>
-                            <th class="py-6 px-8">Quantité</th>
-                            <th class="py-6 px-8">Statut</th>
-                            <th class="py-6 px-8">Prix</th>
-                            <th class="py-6 px-8 text-right">Actions</th>
+                            <th class="py-4 px-3 sm:px-4 lg:px-6">SKU</th>
+                            <th class="py-4 px-3 sm:px-4 lg:px-6">Nom</th>
+                            <th class="py-4 px-3 sm:px-4 lg:px-6">Catégorie</th>
+                            <th class="py-4 px-3 sm:px-4 lg:px-6">Quantité</th>
+                            <th class="py-4 px-3 sm:px-4 lg:px-6">Statut</th>
+                            <th class="py-4 px-3 sm:px-4 lg:px-6">Prix</th>
+                            <th class="py-4 px-3 sm:px-4 lg:px-6 text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody
@@ -891,14 +891,14 @@
                     const tr = document.createElement("tr");
                     tr.className = "hover:bg-slate-50/50 transition-colors";
                     tr.innerHTML = `
-                    <td class="py-6 px-8"><input type="checkbox" class="product-checkbox rounded border-slate-300" data-id="${p.id}"></td>
-                    <td class="py-6 px-8 text-[11px] font-black text-slate-400 tracking-widest uppercase">${p.sku || "N/A"}</td>
-                    <td class="py-6 px-8 text-slate-900 font-black">${p.name}</td>
-                    <td class="py-6 px-8 text-slate-400">${mockCat}</td>
-                    <td class="py-6 px-8 text-slate-900">${p.quantity}</td>
-                    <td class="py-6 px-8"><span class="status-badge ${status.class}">${status.label}</span></td>
-                    <td class="py-6 px-8 text-slate-900">${parseFloat(p.price).toLocaleString()} DA</td>
-                    <td class="py-6 px-8 text-right space-x-2">
+                    <td class="py-4 px-3 sm:px-4 lg:px-6"><input type="checkbox" class="product-checkbox rounded border-slate-300" data-id="${p.id}"></td>
+                    <td class="py-4 px-3 sm:px-4 lg:px-6 text-[11px] font-black text-slate-400 tracking-widest uppercase">${p.sku || "N/A"}</td>
+                    <td class="py-4 px-3 sm:px-4 lg:px-6 text-slate-900 font-black">${p.name}</td>
+                    <td class="py-4 px-3 sm:px-4 lg:px-6 text-slate-400">${mockCat}</td>
+                    <td class="py-4 px-3 sm:px-4 lg:px-6 text-slate-900">${p.quantity}</td>
+                    <td class="py-4 px-3 sm:px-4 lg:px-6"><span class="status-badge ${status.class}">${status.label}</span></td>
+                    <td class="py-4 px-3 sm:px-4 lg:px-6 text-slate-900">${parseFloat(p.price).toLocaleString()} DA</td>
+                    <td class="py-4 px-3 sm:px-4 lg:px-6 text-right space-x-2">
                         <button onclick="openDetailsModalFromButton(this)" data-tooltip="Détails & QR" data-id="${p.id}" data-sku="${p.sku || ""}" data-name="${p.name || ""}" data-supplier="${p.supplier ? p.supplier.name : 'Grossiste Pharma Local'}" data-price="${p.price}" class="p-2.5 bg-[#eaf1ff] text-[#0050b8] rounded-xl transition-all shadow-sm">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                         </button>
