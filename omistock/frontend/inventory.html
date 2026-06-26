@@ -1058,6 +1058,9 @@
                 qrContainer.innerHTML = "";
                 const qrText = `${sku} - ${name}`;
 
+                console.log("QRCode =", typeof QRCode);
+                console.log("qrText:", qrText);
+
                 try {
                     new QRCode(qrContainer, {
                         text: qrText,
@@ -1068,7 +1071,14 @@
                         correctLevel: QRCode.CorrectLevel.H,
                     });
                 } catch (err) {
-                    console.error("Erreur génération QR:", err, "texte:", qrText);
+                    console.error(err);
+                    console.error("QR text:", qrText);
+                    console.error("Product:", {
+                        sku,
+                        name,
+                        supplier,
+                        price
+                    });
                     qrContainer.innerHTML = '<p class="text-xs text-rose-500">QR indisponible</p>';
                 }
 
