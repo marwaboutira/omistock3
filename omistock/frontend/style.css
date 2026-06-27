@@ -2184,8 +2184,7 @@ body.omi-signup-page {
     }
 
     /* Cache la pilule info user — déjà visible dans la sidebar */
-    .erp-main > header div:has(#header_user_name),
-    .erp-main > header div:has(#current_depot_header) {
+    .omi-header-user-pill {
         display: none !important;
     }
 
