@@ -2155,10 +2155,10 @@ body.omi-signup-page {
         transform: scale(0.99);
     }
 
-    /* Textes adaptatifs */
-    .text-5xl { font-size: 2rem !important; }
-    .text-4xl { font-size: 1.625rem !important; }
-    .text-3xl { font-size: 1.375rem !important; }
+    /* Textes adaptatifs — scoped aux pages ERP uniquement */
+    .erp-main .text-5xl { font-size: 2rem !important; }
+    .erp-main .text-4xl { font-size: 1.625rem !important; }
+    .erp-main .text-3xl { font-size: 1.375rem !important; }
 
     /* Boutons pleine largeur sur mobile */
     .erp-main > header .flex.flex-wrap.gap-3 {
@@ -2216,19 +2216,19 @@ body.omi-signup-page {
     white-space: nowrap;
 }
 
-/* Fallback : toutes les tables non wrappées scrollent sur mobile */
+/* Fallback : tables dans les pages ERP scrollent sur mobile */
 @media (max-width: 1023px) {
     .overflow-x-auto {
         -webkit-overflow-scrolling: touch;
         border-radius: 12px;
     }
 
-    table {
+    .erp-main table {
         min-width: 500px;
     }
 
-    /* Empêche le débordement du body */
-    body {
+    /* Empêche le débordement du body uniquement dans les pages ERP */
+    .erp-main {
         overflow-x: hidden;
         max-width: 100vw;
     }
@@ -2244,14 +2244,13 @@ body.omi-signup-page {
     }
 }
 
-/* ---- Modales génériques : meilleure ergonomie mobile ---- */
+/* ---- Modales ERP : ergonomie mobile (scoped aux pages ERP uniquement) ---- */
 @media (max-width: 767px) {
-    /* Slide depuis le bas = sheet natif */
-    [class*="modal"]:not(#sidebar-overlay):not(.scanner-modal) {
+    .erp-modal-overlay {
         align-items: flex-end !important;
     }
 
-    [class*="modal"] > div:not(.transfer-modal-grid) {
+    .erp-modal-sheet {
         border-radius: 24px 24px 0 0 !important;
         max-height: 92vh;
         overflow-y: auto;
@@ -2261,14 +2260,12 @@ body.omi-signup-page {
     }
 }
 
-/* ---- Touch targets >= 44px (recommandation Apple/Google) ---- */
+/* ---- Touch targets >= 44px (scoped aux pages ERP uniquement) ---- */
 @media (max-width: 1023px) {
-    button,
-    a,
-    [role="button"],
-    select,
-    input[type="checkbox"],
-    input[type="radio"] {
+    .erp-main button,
+    .erp-main a,
+    .erp-main [role="button"],
+    .erp-main select {
         min-height: 44px;
     }
 
