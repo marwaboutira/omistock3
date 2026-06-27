@@ -44,7 +44,7 @@ function shouldUseCacheStrategy(request) {
 }
 
 /**
- * CSS/JS locaux : priorité réseau pour éviter les styles obsolètes.
+ * CSS/JS/HTML locaux : priorité réseau pour éviter les styles obsolètes.
  * @param {Request} request
  * @returns {boolean}
  */
@@ -52,7 +52,7 @@ function isLocalStaticAsset(request) {
   if (request.method !== 'GET') return false;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return false;
-  return /\.(css|js)$/i.test(url.pathname);
+  return /\.(css|js|html)$/i.test(url.pathname) || url.pathname === '/' || url.pathname.endsWith('/');
 }
 
 self.addEventListener('install', (event) => {
