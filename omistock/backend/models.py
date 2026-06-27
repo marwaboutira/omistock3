@@ -299,7 +299,8 @@ class AuditLog(Base):
 class TransferStatus(str, enum.Enum):
     PENDING = "en_attente"
     APPROVED = "approuvé"
-    CONFIRMED = "confirmé"
+    SHIPPED = "expédié"      # employé source confirme expédition physique
+    CONFIRMED = "confirmé"   # employé destination confirme réception physique
     REJECTED = "rejeté"
 
 

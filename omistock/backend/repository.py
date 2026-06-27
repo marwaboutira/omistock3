@@ -519,21 +519,52 @@ def approve_transfer_request(db: Session, transfer_id: int, user_id: int) -> mod
         if not from_inv or from_inv.quantity < req.quantity:
             raise ValueError("Stock insuffisant dans le dépôt source")
 
-        from_inv.quantity -= req.quantity
         req.status = models.TransferStatus.APPROVED.value
         req.approver_id = user_id
+        db.commit()
+        db.refresh(req)
+        return req
+    except ValueError:
+        db.rollback()
+        raise
+    except Exception:
+        db.rollback()
+        raise
 
-        db.add(
-            models.StockMovement(
-                product_id=req.product_id,
-                branch_id=req.from_branch_id,
-                quantity=-req.quantity,
-                reason="Transfert approuvé (sortie)",
-                company_id=req.company_id,
-                movement_type="OUT",
-                actor_id=user_id,
+
+def ship_transfer_request(db: Session, transfer_id: int, user_id: int) -> models.TransferRequest:
+    """Employé source confirme expédition physique → stock - source."""
+    try:
+        req = get_transfer_request_by_id(db, transfer_id)
+        if not req:
+            raise ValueError(f"Demande de transfert {transfer_id} introuvable")
+        if req.status != models.TransferStatus.APPROVED.value:
+            raise ValueError("Le transfert doit être approuvé avant expédition")
+
+        from_inv = (
+            db.query(models.Inventory)
+            .filter(
+                models.Inventory.product_id == req.product_id,
+                models.Inventory.branch_id == req.from_branch_id,
             )
+            .with_for_update()
+            .first()
         )
+        if not from_inv or from_inv.quantity < req.quantity:
+            raise ValueError("Stock insuffisant dans le dépôt source")
+
+        from_inv.quantity -= req.quantity
+        req.status = models.TransferStatus.SHIPPED.value
+
+        db.add(models.StockMovement(
+            product_id=req.product_id,
+            branch_id=req.from_branch_id,
+            quantity=-req.quantity,
+            reason=f"Expédition transfert #{req.id}",
+            company_id=req.company_id,
+            movement_type="OUT",
+            actor_id=user_id,
+        ))
         product = get_product_by_id(db, req.product_id)
         if product:
             db.flush()
@@ -554,7 +585,7 @@ def confirm_transfer_request(db: Session, transfer_id: int, user_id: int) -> mod
         req = get_transfer_request_by_id(db, transfer_id)
         if not req:
             raise ValueError(f"Demande de transfert {transfer_id} introuvable")
-        if req.status != models.TransferStatus.APPROVED.value:
+        if req.status not in (models.TransferStatus.APPROVED.value, models.TransferStatus.SHIPPED.value):
             raise ValueError("Statut invalide : le transfert doit être approuvé")
 
         to_inv = (

@@ -117,7 +117,7 @@ class CorrelationMiddleware(BaseHTTPMiddleware):
 app.add_middleware(CorrelationMiddleware)
 
 # Routers
-from routers import auth, products, transfers, admin, agent, purchase_orders  # noqa: E402
+from routers import auth, products, transfers, admin, agent, purchase_orders, mobile  # noqa: E402
 
 app.include_router(auth.router)
 app.include_router(products.router)
@@ -125,6 +125,7 @@ app.include_router(transfers.router)
 app.include_router(admin.router)
 app.include_router(agent.router)
 app.include_router(purchase_orders.router)
+app.include_router(mobile.router)
 
 
 @app.exception_handler(404)

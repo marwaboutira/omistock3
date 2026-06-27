@@ -120,7 +120,7 @@ def test_admin_approves_transfer_stock_moved(db, company, branch, product, human
         rationale="", correlation_id=corr,
     )
 
-    # Simule le handler admin : create → approve → confirm
+    # Simule le handler complet : create → approve → ship (employé) → confirm (employé)
     payload = json.loads(prop.payload)
     req = repository.create_transfer_request(
         db,
@@ -134,8 +134,9 @@ def test_admin_approves_transfer_stock_moved(db, company, branch, product, human
         },
         from_branch_id=payload["from_branch_id"],
     )
-    repository.approve_transfer_request(db, req.id, admin.id)
-    repository.confirm_transfer_request(db, req.id, admin.id)
+    repository.approve_transfer_request(db, req.id, admin.id)    # virtuel, pas de stock change
+    repository.ship_transfer_request(db, req.id, admin.id)       # stock - source
+    repository.confirm_transfer_request(db, req.id, admin.id)    # stock + destination
 
     prop.status = "EXECUTED"
     prop.reviewer_id = admin.id
