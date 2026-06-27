@@ -985,6 +985,8 @@
                         const branches = await branchesRes.json();
                         const selector =
                             document.getElementById("branch_selector");
+                        const selectorMobile =
+                            document.getElementById("branch_selector_mobile");
                         const tSelectFrom =
                             document.getElementById("transfer_from");
                         const tSelectTo =
@@ -996,6 +998,7 @@
                             opt.value = b.id;
                             opt.textContent = b.name;
                             selector.appendChild(opt.cloneNode(true));
+                            selectorMobile.appendChild(opt.cloneNode(true));
                             tSelectFrom.appendChild(opt.cloneNode(true));
                             tSelectTo.appendChild(opt.cloneNode(true));
                         });
