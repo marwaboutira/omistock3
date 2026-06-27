@@ -642,7 +642,6 @@ body.mobile-theme .progress-track {
         width: 100%;
         max-width: 100vw;
         padding: 1.25rem !important;
-        overflow-x: hidden;
     }
 
     body.sidebar-open {
@@ -2265,7 +2264,6 @@ body.omi-signup-page {
 
     /* Empêche le débordement du body uniquement dans les pages ERP */
     .erp-main {
-        overflow-x: hidden;
         max-width: 100vw;
     }
 }
