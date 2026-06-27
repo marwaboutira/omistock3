@@ -93,12 +93,15 @@ def economic_order_quantity(
 
 
 def stock_value_at_cost(db: Session, company_id: int, branch_id: Optional[int] = None) -> float:
-    """Valorisation du stock AU COÛT (WAC), pas au prix de vente."""
+    """Valorisation du stock : WAC (cost_price) si disponible, sinon prix de vente (price)."""
+    effective_price = func.coalesce(
+        func.nullif(models.Product.cost_price, 0.0),
+        models.Product.price,
+        0.0,
+    )
     q = (
         db.query(
-            func.coalesce(
-                func.sum(models.Inventory.quantity * models.Product.cost_price), 0.0
-            )
+            func.coalesce(func.sum(models.Inventory.quantity * effective_price), 0.0)
         )
         .join(models.Product, models.Inventory.product_id == models.Product.id)
         .filter(models.Product.company_id == company_id)
