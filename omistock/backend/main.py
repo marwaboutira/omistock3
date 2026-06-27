@@ -34,7 +34,8 @@ def run_db_migrations():
                   ("max_action_quantity", "INTEGER DEFAULT 0"), ("created_at", "DATETIME")],
         "suppliers": [("lead_time_days", "INTEGER DEFAULT 7")],
         "products": [("cost_price", "FLOAT DEFAULT 0"), ("safety_stock", "INTEGER DEFAULT 0"),
-                     ("avg_daily_demand", "FLOAT DEFAULT 0"), ("lead_time_days", "INTEGER DEFAULT 0")],
+                     ("avg_daily_demand", "FLOAT DEFAULT 0"), ("lead_time_days", "INTEGER DEFAULT 0"),
+                     ("qr_code", "VARCHAR")],
         "stock_movements": [("actor_id", "INTEGER"), ("correlation_id", "VARCHAR"),
                             ("reverses_movement_id", "INTEGER"), ("reversed", "BOOLEAN DEFAULT 0")],
         "sales": [("total_cost", "FLOAT DEFAULT 0"), ("status", "VARCHAR DEFAULT 'CONFIRMED'"),
@@ -44,7 +45,11 @@ def run_db_migrations():
                        ("correlation_id", "VARCHAR"), ("prev_hash", "VARCHAR"), ("entry_hash", "VARCHAR"),
                        ("hash_ts", "VARCHAR")],
         "transfer_requests": [("origin", "VARCHAR DEFAULT 'HUMAIN'")],
-        "purchase_orders": [("branch_id", "INTEGER"), ("received_at", "DATETIME")],
+        "purchase_orders": [("branch_id", "INTEGER"), ("received_at", "DATETIME"),
+                            ("creator_id", "INTEGER"), ("created_at", "DATETIME")],
+        # purchase_order_items : l'ancien schéma nommait la FK 'purchase_order_id'.
+        # Le modèle actuel utilise 'order_id'. On ajoute la colonne puis on réaligne.
+        "purchase_order_items": [("order_id", "INTEGER")],
     }
     try:
         insp = inspect(engine)
@@ -60,6 +65,14 @@ def run_db_migrations():
                             conn.execute(text(f"ALTER TABLE {table} ADD COLUMN {col} {ddl}"))
                         except Exception as e:  # colonne déjà créée par create_all
                             print(f"[MIGRATIONS] skip {table}.{col}: {e}")
+            # Réalignement legacy : 'purchase_order_id' -> 'order_id' (renommage de FK).
+            if "purchase_order_items" in existing_tables:
+                pi_cols = {c["name"] for c in insp.get_columns("purchase_order_items")}
+                if "purchase_order_id" in pi_cols and "order_id" in pi_cols:
+                    conn.execute(text(
+                        "UPDATE purchase_order_items SET order_id = purchase_order_id "
+                        "WHERE order_id IS NULL AND purchase_order_id IS NOT NULL"
+                    ))
             conn.commit()
         print("[MIGRATIONS] DB migrations appliquées.")
     except Exception as e:

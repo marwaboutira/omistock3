@@ -571,6 +571,7 @@
                             <p class="text-rose-200">Chargement...</p>
                         </div>
                         <button
+                            onclick="orderAllUrgent()"
                             class="w-full mt-6 py-4 bg-white/20 hover:bg-white/30 rounded-2xl font-bold text-sm transition-colors"
                         >
                             Commander tout
@@ -1103,7 +1104,12 @@
                     '<p class="text-slate-400 italic">Aucun mouvement</p>';
             }
 
+            // Stock global des alertes — utilisé par generatePO() et orderAllUrgent()
+            // (Mission 3 : automatisation des commandes depuis le dashboard).
+            let allAlerts = [];
+
             function renderAlerts(alerts) {
+                allAlerts = alerts;
                 const alertsList = document.getElementById("alerts_list");
                 alertsList.innerHTML =
                     alerts
@@ -1115,13 +1121,110 @@
                         <span class="erp-alert-qty">${p.quantity}</span>
                     </div>
                     <div class="grid grid-cols-1 gap-2">
-                        <button onclick="generatePO(${p.id}, '${p.supplier}')" class="erp-alert-action">Commande d'urgence</button>
+                        <button onclick="generatePO(${p.id})" class="erp-alert-action">Commande d'urgence</button>
                     </div>
                 </div>
             `,
                         )
                         .join("") ||
                     '<p class="text-rose-50 text-sm font-semibold">✅ Tout est en ordre</p>';
+            }
+
+            // ============================================================
+            // AUTOMATISATION DES COMMANDES (Mission 3)
+            // ============================================================
+            async function generatePO(productId) {
+                const alert = allAlerts.find((a) => a.id === productId);
+                if (!alert) {
+                    alert("Produit d'alerte introuvable.");
+                    return;
+                }
+                if (!confirm(
+                    `Commande d'urgence : ${alert.name}\n` +
+                    `Fournisseur : ${alert.supplier_name || alert.supplier}\n` +
+                    `Quantité manquante : ${alert.missing_qty || "?"}\n\n` +
+                    `Un bon de commande brouillon sera créé et envoyé au fournisseur.`
+                )) return;
+
+                const token = localStorage.getItem("omistock_token");
+                try {
+                    const res = await fetch(`${API_BASE}/api/purchase-orders/auto-from-alerts`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                            product_ids: [productId],
+                            branch_id: alert.branch_id || undefined,
+                        }),
+                    });
+                    const data = await res.json();
+                    if (!res.ok) {
+                        alert("Erreur : " + (data.detail || "Impossible de créer la commande."));
+                        return;
+                    }
+                    const pos = data.created || [];
+                    const summary = pos
+                        .map((po) => `${po.order_number} → ${po.supplier_name}`)
+                        .join(", ");
+                    alert(
+                        `✅ ${data.message}\n\n` +
+                        `Bon(s) : ${summary || "Aucun"}\n` +
+                        `Vous pouvez les gérer dans la page Fournisseurs.`
+                    );
+                    // Rediriger vers la page Fournisseurs pour visualiser/éditer les BC.
+                    window.location.href = "suppliers.html";
+                } catch (err) {
+                    console.error("generatePO:", err);
+                    alert("Erreur réseau lors de la commande automatique.");
+                }
+            }
+
+            async function orderAllUrgent() {
+                if (!allAlerts.length) {
+                    alert("Aucune alerte critique en cours.");
+                    return;
+                }
+                if (!confirm(
+                    `Commander automatiquement TOUS les produits en alerte (${allAlerts.length} produit(s)) ?\n\n` +
+                    `Des bons de commande brouillon seront créés groupés par fournisseur.`
+                )) return;
+
+                const token = localStorage.getItem("omistock_token");
+                try {
+                    const branchId = document.getElementById("branch_selector").value;
+                    const res = await fetch(`${API_BASE}/api/purchase-orders/auto-from-alerts`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                            branch_id: branchId || undefined,
+                        }),
+                    });
+                    const data = await res.json();
+                    if (!res.ok) {
+                        alert("Erreur : " + (data.detail || "Impossible de créer les commandes."));
+                        return;
+                    }
+                    const pos = data.created || [];
+                    const summary = pos
+                        .map((po) => `  • ${po.order_number} → ${po.supplier_name} (${po.items_count} ligne(s), ${po.total_amount.toFixed(2)} DA)`)
+                        .join("\n");
+                    const errorMsg = data.errors.length
+                        ? `\n⚠ Erreurs : ${data.errors.map((e) => e.error).join("; ")}`
+                        : "";
+                    alert(
+                        `✅ ${data.message}\n\n` + summary + errorMsg +
+                        `\n\nVous pouvez gérer ces bons dans la page Fournisseurs.`
+                    );
+                    window.location.href = "suppliers.html";
+                } catch (err) {
+                    console.error("orderAllUrgent:", err);
+                    alert("Erreur réseau lors de la commande automatique.");
+                }
             }
 
             function renderTops(top5, topSold, totalQty) {

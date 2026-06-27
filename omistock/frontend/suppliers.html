@@ -318,6 +318,25 @@
                         Réapprovisionner
                     </button>
                     <button
+                        onclick="openPurchaseOrderModal()"
+                        class="bg-amber-500 hover:bg-amber-600 text-white px-4 sm:px-5 py-2.5 rounded-xl font-semibold shadow-sm transition-colors flex items-center gap-2 text-sm sm:text-base w-full sm:w-auto"
+                    >
+                        <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                            ></path>
+                        </svg>
+                        Nouveau Bon de Commande
+                    </button>
+                    <button
                         onclick="openSupplierModal()"
                         class="bg-[#174092] hover:bg-[#0f2d5c] text-white px-5 py-2.5 rounded-xl font-semibold shadow-sm transition-colors flex items-center gap-2"
                     >
@@ -339,7 +358,56 @@
                 </div>
             </header>
 
+            <!-- Bons de commande fournisseurs -->
+            <section class="mb-10">
+                <div class="flex items-center justify-between mb-4">
+                    <h2
+                        class="text-lg sm:text-xl font-bold text-slate-800 flex items-center gap-2"
+                    >
+                        <svg
+                            class="w-5 h-5 text-amber-500"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                            ></path>
+                        </svg>
+                        Bons de Commande
+                    </h2>
+                    <span id="po_count_badge" class="text-xs font-bold text-slate-400"></span>
+                </div>
+                <div
+                    id="po_list"
+                    class="space-y-3"
+                >
+                    <p class="text-slate-400 text-sm">Chargement des bons de commande...</p>
+                </div>
+            </section>
+
             <!-- Grille de Fournisseurs -->
+            <h2
+                class="text-lg sm:text-xl font-bold text-slate-800 mb-4 flex items-center gap-2"
+            >
+                <svg
+                    class="w-5 h-5 text-[#174092]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    ></path>
+                </svg>
+                Fournisseurs partenaires
+            </h2>
             <div
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
                 id="suppliers_grid"
@@ -589,6 +657,116 @@
             </div>
         </div>
 
+        <!-- Modal Nouveau Bon de Commande (multi-lignes) -->
+        <div
+            id="po_modal"
+            class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4"
+        >
+            <div
+                class="bg-white rounded-3xl w-full max-w-3xl p-8 shadow-2xl transform transition-all max-h-[90vh] overflow-y-auto"
+            >
+                <h3
+                    class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3"
+                >
+                    <div class="p-2 bg-amber-100 text-amber-600 rounded-xl">
+                        <svg
+                            class="w-6 h-6"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                            ></path>
+                        </svg>
+                    </div>
+                    Nouveau Bon de Commande
+                </h3>
+
+                <form
+                    id="po_form"
+                    onsubmit="submitPurchaseOrder(event)"
+                    class="space-y-5"
+                >
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label
+                                class="block text-sm font-semibold text-slate-700 mb-1"
+                                >Fournisseur *</label
+                            >
+                            <select
+                                id="po_supplier"
+                                required
+                                class="w-full border border-slate-200 rounded-xl px-4 py-3 bg-slate-50 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition-all"
+                            >
+                                <option value="">Sélectionner un fournisseur</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label
+                                class="block text-sm font-semibold text-slate-700 mb-1"
+                                >Filiale de réception *</label
+                            >
+                            <select
+                                id="po_branch"
+                                required
+                                class="w-full border border-slate-200 rounded-xl px-4 py-3 bg-slate-50 focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition-all"
+                            >
+                                <option value="">Sélectionner une filiale</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <label
+                                class="block text-sm font-semibold text-slate-700"
+                                >Lignes de commande *</label
+                            >
+                            <button
+                                type="button"
+                                onclick="addPoLine()"
+                                class="text-sm font-bold text-amber-600 hover:text-amber-700 flex items-center gap-1"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                Ajouter une ligne
+                            </button>
+                        </div>
+                        <div id="po_lines" class="space-y-2"></div>
+                    </div>
+
+                    <div
+                        class="bg-slate-50 rounded-xl p-4 flex justify-between items-center"
+                    >
+                        <span class="text-sm font-semibold text-slate-600">Total estimé</span>
+                        <span id="po_total" class="text-lg font-black text-slate-800">0 DA</span>
+                    </div>
+
+                    <div
+                        class="pt-6 border-t border-slate-100 flex gap-3 justify-end"
+                    >
+                        <button
+                            type="button"
+                            onclick="closePurchaseOrderModal()"
+                            class="px-5 py-2.5 text-slate-500 hover:text-slate-700 hover:bg-slate-100 font-semibold rounded-xl transition-colors"
+                        >
+                            Annuler
+                        </button>
+                        <button
+                            type="submit"
+                            id="submit_po_btn"
+                            class="px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-md transition-colors flex items-center gap-2"
+                        >
+                            Créer le bon (brouillon)
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <script>
             async function init() {
                 const token = localStorage.getItem("omistock_token");
@@ -649,6 +827,313 @@
                     renderGrid(suppliers);
                 } catch (error) {
                     console.error("Erreur de chargement:", error);
+                }
+
+                // Charger les bons de commande en parallèle (Mission 2).
+                loadPurchaseOrders();
+            }
+
+            // ============================================================
+            // BONS DE COMMANDE FOURNISSEUR (Mission 2)
+            // ============================================================
+            let poProducts = [];   // cache produits (pour le formulaire multi-lignes)
+            const PO_STATUS_META = {
+                brouillon: { label: "Brouillon", cls: "bg-slate-100 text-slate-600" },
+                envoyé: { label: "Envoyé", cls: "bg-blue-100 text-blue-600" },
+                reçu: { label: "Reçu", cls: "bg-emerald-100 text-emerald-600" },
+                annulé: { label: "Annulé", cls: "bg-rose-100 text-rose-600" },
+            };
+
+            function fmtMoney(n) {
+                return (Number(n) || 0).toLocaleString("fr-FR") + " DA";
+            }
+
+            function escapeAttr(s) {
+                return String(s || "").replace(/"/g, "&quot;");
+            }
+
+            async function loadPurchaseOrders() {
+                const token = localStorage.getItem("omistock_token");
+                const API_BASE = window.location.origin;
+                const listEl = document.getElementById("po_list");
+                const badgeEl = document.getElementById("po_count_badge");
+                try {
+                    const res = await fetch(`${API_BASE}/api/purchase-orders`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    });
+                    if (!res.ok) {
+                        listEl.innerHTML =
+                            '<p class="text-slate-400 text-sm">Bons de commande indisponibles.</p>';
+                        return;
+                    }
+                    const orders = await res.json();
+                    badgeEl.textContent = `${orders.length} bon(s)`;
+                    if (!orders.length) {
+                        listEl.innerHTML =
+                            '<p class="text-slate-400 text-sm">Aucun bon de commande. Créez-en un pour réapprovisionner une filiale.</p>';
+                        return;
+                    }
+                    listEl.innerHTML = orders
+                        .map((po) => renderPurchaseOrderCard(po))
+                        .join("");
+                } catch (e) {
+                    console.error("loadPurchaseOrders:", e);
+                    listEl.innerHTML =
+                        '<p class="text-slate-400 text-sm">Impossible de charger les bons de commande.</p>';
+                }
+            }
+
+            function renderPurchaseOrderCard(po) {
+                const meta = PO_STATUS_META[po.status] || PO_STATUS_META["brouillon"];
+                const created = po.created_at
+                    ? new Date(po.created_at).toLocaleString("fr-FR")
+                    : "--";
+                const linesHtml = (po.items || [])
+                    .map(
+                        (it) => `
+                        <tr>
+                            <td class="px-3 py-2 text-slate-700">${it.product_name || "Produit #" + it.product_id}</td>
+                            <td class="px-3 py-2 text-center text-slate-700">${it.quantity}</td>
+                            <td class="px-3 py-2 text-right text-slate-700">${fmtMoney(it.unit_price)}</td>
+                            <td class="px-3 py-2 text-right font-semibold text-slate-800">${fmtMoney(it.quantity * it.unit_price)}</td>
+                        </tr>`,
+                    )
+                    .join("");
+                // Actions selon le statut.
+                let actions = "";
+                if (po.status === "brouillon") {
+                    actions = `
+                        <button onclick="poAction(${po.id}, 'send')" class="px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold rounded-lg">Envoyer</button>
+                        <button onclick="poAction(${po.id}, 'cancel')" class="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 text-rose-600 text-xs font-bold rounded-lg">Annuler</button>`;
+                } else if (po.status === "envoyé") {
+                    actions = `
+                        <button onclick="poAction(${po.id}, 'receive')" class="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-lg">Marquer reçu</button>
+                        <button onclick="poAction(${po.id}, 'cancel')" class="px-3 py-1.5 bg-rose-100 hover:bg-rose-200 text-rose-600 text-xs font-bold rounded-lg">Annuler</button>`;
+                }
+                return `
+                <div class="card p-5 sm:p-6">
+                    <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-black text-slate-800">${po.order_number}</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase ${meta.cls}">${meta.label}</span>
+                            </div>
+                            <p class="text-xs text-slate-400">${created}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-slate-400">Total</p>
+                            <p class="font-black text-slate-800">${fmtMoney(po.total_amount)}</p>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="text-xs uppercase text-slate-400 border-b border-slate-100">
+                                    <th class="px-3 py-1 text-left font-bold">Produit</th>
+                                    <th class="px-3 py-1 text-center font-bold">Qté</th>
+                                    <th class="px-3 py-1 text-right font-bold">P.U.</th>
+                                    <th class="px-3 py-1 text-right font-bold">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>${linesHtml}</tbody>
+                        </table>
+                    </div>
+                    ${actions ? `<div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-slate-100">${actions}</div>` : ""}
+                </div>`;
+            }
+
+            async function poAction(poId, action) {
+                const token = localStorage.getItem("omistock_token");
+                const API_BASE = window.location.origin;
+                const labels = {
+                    send: "Envoyer ce bon au fournisseur",
+                    receive: "Confirmer la réception (le stock sera incrémenté)",
+                    cancel: "Annuler ce bon de commande",
+                };
+                if (!confirm(labels[action] + " ?")) return;
+                try {
+                    const res = await fetch(
+                        `${API_BASE}/api/purchase-orders/${poId}/${action}`,
+                        { method: "POST", headers: { Authorization: `Bearer ${token}` } },
+                    );
+                    const data = await res.json();
+                    if (!res.ok) {
+                        alert(data.detail || "Action impossible.");
+                        return;
+                    }
+                    loadPurchaseOrders();
+                } catch (e) {
+                    console.error("poAction:", e);
+                    alert("Erreur réseau lors de l'action.");
+                }
+            }
+
+            async function openPurchaseOrderModal() {
+                document.getElementById("po_modal").classList.remove("hidden");
+                const token = localStorage.getItem("omistock_token");
+                const API_BASE = window.location.origin;
+                try {
+                    const [supRes, prodRes, branchRes] = await Promise.all([
+                        fetch(`${API_BASE}/api/suppliers`, { headers: { Authorization: `Bearer ${token}` } }),
+                        fetch(`${API_BASE}/api/inventory`, { headers: { Authorization: `Bearer ${token}` } }),
+                        fetch(`${API_BASE}/api/branches`, { headers: { Authorization: `Bearer ${token}` } }),
+                    ]);
+                    const suppliers = await supRes.json();
+                    poProducts = await prodRes.json();
+                    const branches = await branchRes.json();
+
+                    document.getElementById("po_supplier").innerHTML =
+                        '<option value="">Sélectionner un fournisseur</option>' +
+                        suppliers
+                            .map((s) => `<option value="${s.id}">${escapeAttr(s.name)}</option>`)
+                            .join("");
+                    document.getElementById("po_branch").innerHTML =
+                        '<option value="">Sélectionner une filiale</option>' +
+                        branches
+                            .map((b) => `<option value="${b.id}">${escapeAttr(b.name)}</option>`)
+                            .join("");
+
+                    // Réinitialiser les lignes avec une ligne vide.
+                    document.getElementById("po_lines").innerHTML = "";
+                    addPoLine();
+                } catch (e) {
+                    console.error("openPurchaseOrderModal:", e);
+                    alert("Erreur de chargement des données.");
+                }
+            }
+
+            function closePurchaseOrderModal() {
+                document.getElementById("po_modal").classList.add("hidden");
+                document.getElementById("po_form").reset();
+                document.getElementById("po_lines").innerHTML = "";
+                document.getElementById("po_total").textContent = "0 DA";
+            }
+
+            function addPoLine() {
+                const wrap = document.getElementById("po_lines");
+                const idx = wrap.children.length;
+                const line = document.createElement("div");
+                line.className = "grid grid-cols-12 gap-2 items-center";
+                const options =
+                    '<option value="">Produit…</option>' +
+                    poProducts
+                        .map(
+                            (p) =>
+                                `<option value="${p.id}" data-cost="${p.cost_price || 0}">${escapeAttr(p.name)}</option>`,
+                        )
+                        .join("");
+                line.innerHTML = `
+                    <div class="col-span-12 sm:col-span-6">
+                        <select required class="po-product w-full border border-slate-200 rounded-lg px-3 py-2 bg-slate-50 focus:bg-white focus:border-amber-500 outline-none text-sm">
+                            ${options}
+                        </select>
+                    </div>
+                    <div class="col-span-4 sm:col-span-2">
+                        <input type="number" min="1" value="1" required class="po-qty w-full border border-slate-200 rounded-lg px-3 py-2 bg-slate-50 focus:bg-white focus:border-amber-500 outline-none text-sm" placeholder="Qté" />
+                    </div>
+                    <div class="col-span-5 sm:col-span-3">
+                        <input type="number" min="0" step="0.01" value="0" required class="po-price w-full border border-slate-200 rounded-lg px-3 py-2 bg-slate-50 focus:bg-white focus:border-amber-500 outline-none text-sm" placeholder="Prix achat" />
+                    </div>
+                    <div class="col-span-3 sm:col-span-1 flex justify-end">
+                        <button type="button" onclick="this.closest('.grid').remove(); updatePoTotal();" class="w-9 h-9 bg-rose-100 hover:bg-rose-200 text-rose-600 rounded-lg font-bold flex items-center justify-center" title="Retirer la ligne">×</button>
+                    </div>`;
+                wrap.appendChild(line);
+                // Pré-remplir le prix avec le coût d'achat (WAC) si connu.
+                const sel = line.querySelector(".po-product");
+                sel.addEventListener("change", () => syncLinePrice(line));
+                line.querySelector(".po-qty").addEventListener("input", updatePoTotal);
+                line.querySelector(".po-price").addEventListener("input", updatePoTotal);
+                syncLinePrice(line);
+            }
+
+            function syncLinePrice(line) {
+                const sel = line.querySelector(".po-product");
+                const priceInput = line.querySelector(".po-price");
+                const opt = sel.selectedOptions[0];
+                const cost = opt ? parseFloat(opt.dataset.cost) || 0 : 0;
+                // Ne pré-remplit que si l'utilisateur n'a rien saisi.
+                if (!parseFloat(priceInput.value)) priceInput.value = cost.toFixed(2);
+                updatePoTotal();
+            }
+
+            function updatePoTotal() {
+                let total = 0;
+                document.querySelectorAll("#po_lines > .grid").forEach((line) => {
+                    const qty = parseFloat(line.querySelector(".po-qty").value) || 0;
+                    const price = parseFloat(line.querySelector(".po-price").value) || 0;
+                    total += qty * price;
+                });
+                document.getElementById("po_total").textContent = fmtMoney(total);
+            }
+
+            async function submitPurchaseOrder(e) {
+                e.preventDefault();
+                const token = localStorage.getItem("omistock_token");
+                const API_BASE = window.location.origin;
+
+                const supplierId = parseInt(document.getElementById("po_supplier").value);
+                const branchId = parseInt(document.getElementById("po_branch").value);
+                if (!supplierId || !branchId) {
+                    alert("Veuillez sélectionner un fournisseur et une filiale.");
+                    return;
+                }
+
+                // Construire et valider les lignes.
+                const items = [];
+                for (const line of document.querySelectorAll("#po_lines > .grid")) {
+                    const productId = parseInt(line.querySelector(".po-product").value);
+                    const quantity = parseInt(line.querySelector(".po-qty").value);
+                    const unitPrice = parseFloat(line.querySelector(".po-price").value);
+                    if (!productId) {
+                        alert("Chaque ligne doit avoir un produit.");
+                        return;
+                    }
+                    if (!quantity || quantity <= 0) {
+                        alert("Les quantités doivent être positives.");
+                        return;
+                    }
+                    if (isNaN(unitPrice) || unitPrice < 0) {
+                        alert("Les prix d'achat doivent être positifs ou nuls.");
+                        return;
+                    }
+                    items.push({ product_id: productId, quantity, unit_price: unitPrice });
+                }
+                if (!items.length) {
+                    alert("Ajoutez au moins une ligne de commande.");
+                    return;
+                }
+
+                const btn = document.getElementById("submit_po_btn");
+                const original = btn.textContent;
+                btn.disabled = true;
+                btn.textContent = "Création...";
+                try {
+                    const res = await fetch(`${API_BASE}/api/purchase-orders`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({
+                            supplier_id: supplierId,
+                            branch_id: branchId,
+                            items,
+                        }),
+                    });
+                    const data = await res.json();
+                    if (!res.ok) {
+                        alert(data.detail || "Erreur lors de la création du bon.");
+                        return;
+                    }
+                    closePurchaseOrderModal();
+                    loadPurchaseOrders();
+                    alert(`Bon ${data.order_number} créé (statut brouillon).`);
+                } catch (err) {
+                    console.error("submitPurchaseOrder:", err);
+                    alert("Erreur réseau lors de la création.");
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = original;
                 }
             }
 

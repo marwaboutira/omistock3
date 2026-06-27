@@ -130,6 +130,37 @@ def get_dashboard_stats_data(db: Session, cid: int, branch_id: Optional[int] = N
 
     expiring = stock.expiring_lots(db, cid, within_days=30)
 
+    # Filiale cible pour les commandes automatiques (celle filtrée, sinon la
+    # première filiale de l'entreprise). Sert à router le BC auto généré.
+    auto_branch_id = branch_id
+    if auto_branch_id is None:
+        first_branch = (
+            db.query(models.Branch)
+            .filter(models.Branch.company_id == cid)
+            .order_by(models.Branch.id.asc())
+            .first()
+        )
+        auto_branch_id = first_branch.id if first_branch else None
+
+    # Enrichissement des alertes pour piloter la commande automatique (Mission 3) :
+    # on expose l'ID fournisseur, son nom et la quantité manquante jusqu'au ROP.
+    alerts_payload = []
+    for p in alerts:
+        on_hand_qty = on_hand(p)
+        rop = p.reorder_point or 0
+        missing_qty = max(rop - on_hand_qty, 1)  # au moins 1 unité commandée
+        alerts_payload.append({
+            "id": p.id,
+            "name": p.name,
+            "quantity": on_hand_qty,
+            "reorder_point": rop,
+            "missing_qty": missing_qty,
+            "supplier": (p.supplier.name if p.supplier else "N/A"),
+            "supplier_id": (p.supplier.id if p.supplier else None),
+            "supplier_name": (p.supplier.name if p.supplier else None),
+            "branch_id": auto_branch_id,
+        })
+
     return {
         "summary": {
             "total_products": total_products,
@@ -138,12 +169,7 @@ def get_dashboard_stats_data(db: Session, cid: int, branch_id: Optional[int] = N
             "total_qty": total_qty,
             "potential_margin": potential_margin,
         },
-        "alerts": [
-            {"id": p.id, "name": p.name, "quantity": on_hand(p),
-             "reorder_point": p.reorder_point,
-             "supplier": (p.supplier.name if p.supplier else "N/A")}
-            for p in alerts
-        ],
+        "alerts": alerts_payload,
         "top_5": [{"name": p.name, "quantity": on_hand(p)} for p in top_5],
         "top_sold": top_sold,
         "movements": movements_list,

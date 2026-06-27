@@ -29,6 +29,40 @@ def _to_dict(data: DataDict) -> Dict[str, Any]:
     raise TypeError("data doit être un dict ou un schéma Pydantic")
 
 
+def _ensure_qr_code(db: Session, product: models.Product) -> str:
+    """
+    Garantit qu'un produit possède un qr_code normalisé et unique.
+    Le QR encode par défaut le SKU (clé métier stable + lisible par le scan).
+    Sans SKU, on en génère un déterministe `PROD-{id}` après flush.
+    La QR doit être unique au sein de l'entreprise pour éviter les scans ambigus.
+    """
+    base = (product.sku or product.barcode or "").strip()
+    if not base:
+        base = f"PROD-{product.id}"
+    candidate = base
+    suffix = 2
+    # On s'assure de l'unicité du QR au sein de l'entreprise (collision possible
+    # si deux produits partagent le même SKU/barcode, ou PROD-{id} déjà pris).
+    while (
+        db.query(models.Product)
+        .filter(
+            models.Product.company_id == product.company_id,
+            models.Product.qr_code == candidate,
+            models.Product.id != product.id,
+        )
+        .first()
+        is not None
+    ):
+        candidate = f"{base}-{suffix}"
+        suffix += 1
+    product.qr_code = candidate
+    # Synchronise aussi le sku s'il était vide (garantit sku == qr_code).
+    if not (product.sku or "").strip():
+        product.sku = candidate
+    return candidate
+
+
+
 # =============================================================================
 # Produits
 # =============================================================================
@@ -77,6 +111,29 @@ def get_product_by_id_for_company(
     )
 
 
+def get_product_by_code(
+    db: Session, code: str, company_id: int
+) -> Optional[models.Product]:
+    """
+    Recherche un produit par son identifiant scannable normalisé.
+    Ordre de priorité : qr_code > sku > barcode. Restreint à l'entreprise (multi-tenant).
+    Utilisé par l'endpoint de scan mobile (/api/scan/{code}).
+    """
+    if not code:
+        return None
+    code = code.strip()
+    for field in (models.Product.qr_code, models.Product.sku, models.Product.barcode):
+        found = (
+            db.query(models.Product)
+            .filter(field == code, models.Product.company_id == company_id)
+            .first()
+        )
+        if found:
+            return found
+    return None
+
+
+
 def create_product(db: Session, product_data: DataDict, company_id: int) -> models.Product:
     try:
         payload = _to_dict(product_data)
@@ -86,6 +143,9 @@ def create_product(db: Session, product_data: DataDict, company_id: int) -> mode
         branch_id = payload.pop("branch_id", None)
         db_product = models.Product(**payload, company_id=company_id)
         db.add(db_product)
+        db.flush()
+        # Génération automatique d'un QR code normalisé et unique (cf. _ensure_qr_code).
+        _ensure_qr_code(db, db_product)
         db.flush()
         if branch_id is not None and initial_qty:
             db.add(
@@ -143,6 +203,10 @@ def update_product(db: Session, product_id: int, product_data: DataDict) -> mode
         for key, value in update_data.items():
             if hasattr(db_product, key) and key not in ("id", "company_id", "quantity"):
                 setattr(db_product, key, value)
+
+        # Si le SKU/barcode a changé (ou qr_code absent), on resynchronise le QR.
+        if "sku" in update_data or "barcode" in update_data or not (db_product.qr_code or "").strip():
+            _ensure_qr_code(db, db_product)
 
         stock.recompute_product_quantity(db, db_product)
         db.commit()

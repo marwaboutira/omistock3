@@ -39,6 +39,8 @@ class ProductBase(BaseModel):
     name: str
     sku: Optional[str] = None
     barcode: Optional[str] = None
+    # QR code normalisé (auto-généré côté backend si non fourni).
+    qr_code: Optional[str] = None
     quantity: int = 0
     price: float = 0.0
     min_threshold: int = 5
@@ -52,6 +54,7 @@ class ProductUpdate(BaseModel):
     name: Optional[str] = None
     sku: Optional[str] = None
     barcode: Optional[str] = None
+    qr_code: Optional[str] = None
     quantity: Optional[int] = None
     price: Optional[float] = None
     min_threshold: Optional[int] = None
@@ -391,6 +394,7 @@ class PurchaseOrderCreate(BaseModel):
 class POItemResponse(BaseModel):
     id: int
     product_id: int
+    product_name: Optional[str] = None
     quantity: int
     unit_price: float
     class Config:
@@ -400,6 +404,7 @@ class PurchaseOrderResponse(BaseModel):
     id: int
     order_number: str
     supplier_id: Optional[int] = None
+    supplier_name: Optional[str] = None
     branch_id: int
     company_id: int
     status: str

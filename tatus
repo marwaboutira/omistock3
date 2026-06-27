@@ -3,3 +3,31 @@
 [33mea853f0[m feat: Mise a jour soutenance 19 slides avec logos et QR codes
 [33mdccfa28[m Ajout de la page de présentation (soutenance.html)
 [33mfef37b2[m Update requirements.txt dependencies and start.bat venv activation
+[33mcommit 770405426a66d10923981135424adab7342cc6eb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: GACEM_Sarra <gacemsarra7@gmail.com>
+Date:   Fri Jun 26 13:46:13 2026 +0200
+
+    Fix inventory details modal product lookup
+
+[1mdiff --git a/omistock/frontend/inventory.html b/omistock/frontend/inventory.html[m
+[1mindex 48bce7e..6707112 100644[m
+[1m--- a/omistock/frontend/inventory.html[m
+[1m+++ b/omistock/frontend/inventory.html[m
+[36m@@ -995,7 +995,7 @@[m
+             }[m
+ [m
+             function openDetailsModal(id) {[m
+[31m-                const p = allProducts.find((x) => x.id === id);[m
+[32m+[m[32m                const p = allProducts.find((x) => x.id == id);[m
+                 if (!p) return;[m
+ [m
+                 document.getElementById("detailName").innerText = p.name;[m
+[36m@@ -1026,7 +1026,7 @@[m
+             }[m
+ [m
+             function openEditModal(id) {[m
+[31m-                const p = allProducts.find((x) => x.id === id);[m
+[32m+[m[32m                const p = allProducts.find((x) => x.id == id);[m
+                 if (!p) return;[m
+                 document.getElementById("editId").value = p.id;[m
+                 document.getElementById("editName").value = p.name;[m

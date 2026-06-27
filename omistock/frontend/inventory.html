@@ -624,6 +624,10 @@
                         id="qrcode"
                         class="p-2 bg-white border-2 border-slate-100 rounded-xl"
                     ></div>
+                    <p
+                        id="qrcode_label"
+                        class="text-[11px] text-slate-500 font-mono break-all text-center max-w-[12rem]"
+                    ></p>
                     <button
                         onclick="closeModal('detailsModal')"
                         class="w-full mt-4 px-6 py-3 rounded-xl font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all"
@@ -909,7 +913,7 @@
                     <td class="py-4 px-3 sm:px-4 lg:px-6"><span class="status-badge ${status.class}">${status.label}</span></td>
                     <td class="py-4 px-3 sm:px-4 lg:px-6 text-slate-900">${parseFloat(p.price).toLocaleString()} DA</td>
                     <td class="py-4 px-3 sm:px-4 lg:px-6 text-right space-x-2">
-                        <button onclick="openDetailsModalFromButton(this)" data-tooltip="Détails & QR" data-id="${p.id}" data-sku="${p.sku || ""}" data-name="${p.name || ""}" data-supplier="${p.supplier ? p.supplier.name : 'Grossiste Pharma Local'}" data-price="${p.price}" class="p-2.5 bg-[#eaf1ff] text-[#0050b8] rounded-xl transition-all shadow-sm">
+                        <button onclick="openDetailsModalFromButton(this)" data-tooltip="Détails & QR" data-id="${p.id}" data-sku="${(p.sku || "").replace(/"/g, '&quot;')}" data-qr="${(p.qr_code || p.sku || "").replace(/"/g, '&quot;')}" data-name="${(p.name || "").replace(/"/g, '&quot;')}" data-supplier="${(p.supplier ? p.supplier.name : 'Grossiste Pharma Local').replace(/"/g, '&quot;')}" data-price="${p.price}" class="p-2.5 bg-[#eaf1ff] text-[#0050b8] rounded-xl transition-all shadow-sm">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                         </button>
                         <button onclick="openEditModal(${p.id})" data-tooltip="Modifier" class="p-2.5 bg-slate-100 text-slate-600 rounded-xl transition-all shadow-sm">
@@ -1007,7 +1011,16 @@
             function renderQrCode(text) {
                 const container = document.getElementById("qrcode");
                 container.innerHTML = "";
-                const safeText = String(text || "").normalize("NFC");
+                const labelEl = document.getElementById("qrcode_label");
+                // Sans contenu exploitable, on affiche explicitement un état au lieu
+                // d'un QR vide : 100% des produits doivent avoir un QR fonctionnel.
+                const safeText = String(text || "").trim();
+                if (labelEl) labelEl.textContent = safeText;
+                if (!safeText) {
+                    container.innerHTML =
+                        '<p class="text-xs text-rose-500">QR indisponible</p>';
+                    return;
+                }
 
                 try {
                     if (window.QRCode && typeof window.QRCode.toCanvas === "function") {
@@ -1068,7 +1081,7 @@
                 <div class="flex justify-between items-center"><span class="text-slate-400">Il y a 30j</span><span class="text-slate-600">${(currentPrice * 1.05).toLocaleString()} DA</span></div>
             `;
 
-                renderQrCode(`${p.sku || ""} - ${p.name || ""}`);
+                renderQrCode(p.qr_code || p.sku || p.barcode || "");
 
                 openModal("detailsModal");
             }
@@ -1078,6 +1091,7 @@
                 const name = button.dataset.name || "";
                 const supplier = button.dataset.supplier || "Grossiste Pharma Local";
                 const price = button.dataset.price || "0";
+                const qr = button.dataset.qr || sku || "";
 
                 document.getElementById("detailName").innerText = name || "N/A";
                 document.getElementById("detailSku").innerText = sku || "N/A";
@@ -1090,7 +1104,7 @@
                 <div class="flex justify-between items-center"><span class="text-slate-400">Il y a 30j</span><span class="text-slate-600">${(currentPrice * 1.05).toLocaleString()} DA</span></div>
             `;
 
-                renderQrCode(`${sku} - ${name}`);
+                renderQrCode(qr);
 
                 openModal("detailsModal");
             }

@@ -105,6 +105,9 @@ class Product(Base):
     name = Column(String, index=True)
     sku = Column(String, index=True)
     barcode = Column(String, index=True)
+    # QR code normalisé (généré automatiquement à la création = sku par défaut).
+    # Source de vérité du QR affiché/scanné. Voir repository.create_product.
+    qr_code = Column(String, index=True, nullable=True)
     # price = prix de VENTE (selling price)
     price = Column(Float, default=0.0)
     # cost_price = coût moyen pondéré (WAC) mis à jour à chaque réception.

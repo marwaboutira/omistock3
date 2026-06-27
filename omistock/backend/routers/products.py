@@ -61,6 +61,25 @@ def get_product_route(
     return db_product
 
 
+@router.get("/scan/{code}", response_model=schemas.ProductResponse)
+@router.get("/api/scan/{code}", response_model=schemas.ProductResponse)
+def scan_product_route(
+    code: str,
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    Recherche d'un produit par son code scanné (QR code / SKU / barcode).
+    Utilisé par le scanner mobile (mobile_scan.html). Multi-tenant : restreint à
+    l'entreprise de l'utilisateur authentifié.
+    """
+    product = repository.get_product_by_code(db, code, current_user.company_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Aucun produit pour ce code.")
+    return product
+
+
+
 @router.put("/api/products/{product_id}")
 def update_product_route(
     product_id: int,
