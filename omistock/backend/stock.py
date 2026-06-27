@@ -97,7 +97,7 @@ def stock_value_at_cost(db: Session, company_id: int, branch_id: Optional[int] =
     q = (
         db.query(
             func.coalesce(
-                func.sum(models.Inventory.quantity * models.Product.price), 0.0
+                func.sum(models.Inventory.quantity * models.Product.cost_price), 0.0
             )
         )
         .join(models.Product, models.Inventory.product_id == models.Product.id)
