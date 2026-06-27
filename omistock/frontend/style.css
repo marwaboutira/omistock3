@@ -1985,3 +1985,332 @@ body.omi-signup-page {
     font-size: 0.75rem;
     font-weight: 800;
 }
+
+/* ==========================================================================
+   OMISTOCK — Responsive Mobile Premium
+   Corrections complètes : safe-area, topbar sticky, tablet, tables, modales
+   ========================================================================== */
+
+/* ---- Safe-area globale sur les pages ERP (iPhone notch / Dynamic Island) ---- */
+.erp-main {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* ---- Topbar sticky mobile (remplace la navigation perdue quand sidebar cachée) ---- */
+.omi-mobile-topbar {
+    display: none;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    box-shadow: 0 2px 12px -4px rgba(15, 23, 42, 0.1);
+    padding: max(0.875rem, env(safe-area-inset-top)) 1.25rem 0.875rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.omi-mobile-topbar__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.omi-mobile-topbar__brand img {
+    width: 1.75rem;
+    height: 1.75rem;
+    object-fit: contain;
+}
+
+.omi-mobile-topbar__brand span {
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+}
+
+.omi-mobile-topbar__brand .omi { color: #0050b8; }
+.omi-mobile-topbar__brand .stock { color: #0f172a; }
+
+.omi-mobile-topbar__right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.omi-hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #0f172a;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.omi-hamburger:hover { background: #e2e8f0; }
+.omi-hamburger:active { background: #cbd5e1; }
+
+.omi-topbar-page-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 1023px) {
+    .omi-mobile-topbar {
+        display: flex;
+    }
+
+    /* Le header de page se simplifie — plus de redondance avec la topbar */
+    .erp-main > header {
+        border-radius: 1rem;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.25rem !important;
+    }
+
+    /* Cache le bouton hamburger interne si la topbar externe est présente */
+    .erp-main > header .menu-toggle,
+    .erp-main > header #menu-toggle {
+        display: none !important;
+    }
+
+    /* Titre de page plus compact */
+    .erp-main > header h1 {
+        font-size: clamp(1.5rem, 5vw, 2.5rem) !important;
+        line-height: 1.15;
+    }
+
+    /* Boutons d'action en ligne compacte */
+    .erp-main > header .flex.flex-wrap.gap-3 {
+        gap: 0.5rem;
+    }
+}
+
+/* ---- Breakpoint tablet 768–1023px ---- */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .erp-main {
+        padding: 1.5rem !important;
+    }
+
+    .chart-container {
+        height: 260px;
+    }
+
+    /* Grilles KPI : 2 colonnes sur tablet */
+    .grid.grid-cols-2.lg\:grid-cols-4,
+    .grid.grid-cols-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    /* Flex-row → flex-col pour les headers avec sélecteurs */
+    .erp-main > header > div:first-child {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* ---- Mobile < 768px ---- */
+@media (max-width: 767px) {
+    .erp-main {
+        padding: 0.875rem !important;
+        padding-left: max(0.875rem, env(safe-area-inset-left)) !important;
+        padding-right: max(0.875rem, env(safe-area-inset-right)) !important;
+        padding-bottom: max(1.5rem, env(safe-area-inset-bottom)) !important;
+    }
+
+    /* Grilles KPI : 2 colonnes */
+    .grid.grid-cols-2.lg\:grid-cols-4,
+    .grid.grid-cols-4,
+    .grid.grid-cols-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    /* Charts plus compacts */
+    .chart-container {
+        height: 200px;
+    }
+
+    /* Cards sans hover transform (évite le saut tactile) */
+    .erp-main .card:hover {
+        transform: none;
+    }
+    .erp-main .card:active {
+        transform: scale(0.99);
+    }
+
+    /* Textes adaptatifs */
+    .text-5xl { font-size: 2rem !important; }
+    .text-4xl { font-size: 1.625rem !important; }
+    .text-3xl { font-size: 1.375rem !important; }
+
+    /* Boutons pleine largeur sur mobile */
+    .erp-main > header .flex.flex-wrap.gap-3 {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .erp-main > header .flex.flex-wrap.gap-3 > button,
+    .erp-main > header .flex.flex-wrap.gap-3 > a {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Sélecteur de filiale pleine largeur */
+    #branch_selector {
+        width: 100% !important;
+    }
+
+    /* Info user en colonne */
+    .erp-main > header .flex.items-center.gap-4 {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+/* ---- Mobile très petit < 480px ---- */
+@media (max-width: 479px) {
+    .erp-main {
+        padding: 0.75rem !important;
+        padding-left: max(0.75rem, env(safe-area-inset-left)) !important;
+        padding-right: max(0.75rem, env(safe-area-inset-right)) !important;
+    }
+
+    .chart-container {
+        height: 180px;
+    }
+
+    .grid.grid-cols-2 {
+        gap: 0.625rem !important;
+    }
+}
+
+/* ---- Tables : scroll horizontal fluide + wrapper ---- */
+.omi-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+}
+
+.omi-table-wrap table {
+    min-width: 600px;
+    width: 100%;
+    white-space: nowrap;
+}
+
+/* Fallback : toutes les tables non wrappées scrollent sur mobile */
+@media (max-width: 1023px) {
+    .overflow-x-auto {
+        -webkit-overflow-scrolling: touch;
+        border-radius: 12px;
+    }
+
+    table {
+        min-width: 500px;
+    }
+
+    /* Empêche le débordement du body */
+    body {
+        overflow-x: hidden;
+        max-width: 100vw;
+    }
+}
+
+/* ---- Modale de transfert : scroll interne sur mobile ---- */
+@media (max-width: 1023px) {
+    .transfer-modal-grid {
+        height: auto !important;
+        max-height: 80vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* ---- Modales génériques : meilleure ergonomie mobile ---- */
+@media (max-width: 767px) {
+    /* Slide depuis le bas = sheet natif */
+    [class*="modal"]:not(#sidebar-overlay):not(.scanner-modal) {
+        align-items: flex-end !important;
+    }
+
+    [class*="modal"] > div:not(.transfer-modal-grid) {
+        border-radius: 24px 24px 0 0 !important;
+        max-height: 92vh;
+        overflow-y: auto;
+        padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+        width: 100% !important;
+        margin: 0 !important;
+    }
+}
+
+/* ---- Touch targets >= 44px (recommandation Apple/Google) ---- */
+@media (max-width: 1023px) {
+    button,
+    a,
+    [role="button"],
+    select,
+    input[type="checkbox"],
+    input[type="radio"] {
+        min-height: 44px;
+    }
+
+    /* Navigation sidebar : zones plus larges */
+    .sidebar .nav-item {
+        padding: 0.875rem 1rem;
+        min-height: 52px;
+    }
+}
+
+/* ---- Focus rings accessibles (clavier & lecteurs d'écran) ---- */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid #0050b8;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* ---- Sidebar sur mobile : fond scroll bloqué ---- */
+@media (max-width: 1023px) {
+    body.sidebar-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
+}
+
+/* ---- Animation d'entrée sidebar sur mobile ---- */
+@media (max-width: 1023px) {
+    .sidebar {
+        will-change: transform;
+    }
+}
+
+/* ---- Utilitaire : cacher sur mobile uniquement ---- */
+@media (max-width: 767px) {
+    .hide-mobile { display: none !important; }
+}
+
+@media (min-width: 768px) {
+    .show-mobile-only { display: none !important; }
+}

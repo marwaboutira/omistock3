@@ -70,9 +70,29 @@
     window.toggleMobileMenu = toggleMobileMenu;
     window.closeMobileMenu = closeMobileMenu;
 
+    // Recalcule les charts Chart.js lors d'un resize d'écran (rotation, split-view)
+    function initChartResize() {
+        if (typeof Chart === 'undefined') return;
+        var resizeTimer;
+        window.addEventListener('resize', function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function () {
+                Object.values(Chart.instances || {}).forEach(function (chart) {
+                    if (chart && typeof chart.resize === 'function') {
+                        chart.resize();
+                    }
+                });
+            }, 150);
+        });
+    }
+
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initErpSidebar);
+        document.addEventListener('DOMContentLoaded', function () {
+            initErpSidebar();
+            initChartResize();
+        });
     } else {
         initErpSidebar();
+        initChartResize();
     }
 })();

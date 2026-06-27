@@ -251,7 +251,17 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="erp-main flex-1 ml-72 p-4 sm:p-6 lg:p-12 w-full max-w-full overflow-x-hidden">
+        <main class="erp-main flex-1 ml-0 lg:ml-72 p-4 sm:p-6 lg:p-12 w-full max-w-full overflow-x-hidden">
+            <!-- ===== TOPBAR MOBILE ===== -->
+            <div class="omi-mobile-topbar">
+                <button class="omi-hamburger" onclick="toggleMobileMenu()" aria-label="Ouvrir le menu">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <span class="omi-topbar-page-title">Dashboard</span>
+                <a href="dashboard.html" class="omi-mobile-topbar__brand">
+                    <img src="logo-mark-transparent.svg" alt="OMISTOCK"><span><span class="omi">OMI</span><span class="stock">STOCK</span></span>
+                </a>
+            </div>
             <header
                 class="mb-8 lg:mb-12 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4"
             >
