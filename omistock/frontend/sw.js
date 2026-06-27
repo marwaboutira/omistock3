@@ -5,7 +5,7 @@
  * ASSET_VERSION : synchroniser avec ?v= dans les pages HTML.
  * Incrémenter à chaque déploiement CSS/JS/design.
  */
-const ASSET_VERSION = '20260628d';
+const ASSET_VERSION = '20260628e';
 const CACHE_NAME = `omistock-cache-v${ASSET_VERSION}`;
 
 /** @param {string} path */
