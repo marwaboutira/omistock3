@@ -198,6 +198,7 @@ def test_auto_order_with_product_ids_filter(db, company, branch, human):
     p1 = _setup_alert(db, company, branch, sup, qty=1)
     p2 = _setup_alert(db, company, branch, sup, qty=0)
     db.refresh(p1)
+    db.commit()
 
     try:
         c = _admin_client(human)
