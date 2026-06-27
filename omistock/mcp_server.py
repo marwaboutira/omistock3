@@ -13,18 +13,28 @@ HEADERS = {"X-API-Key": API_KEY}
 mcp = FastMCP("omistock")
 
 
-def _get(path: str, params: dict = None):
-    with httpx.Client() as client:
-        r = client.get(f"{BASE_URL}{path}", headers=HEADERS, params=params, timeout=30)
-        r.raise_for_status()
-        return r.json()
+def _get(path: str, params: dict = None) -> dict:
+    try:
+        with httpx.Client() as client:
+            r = client.get(f"{BASE_URL}{path}", headers=HEADERS, params=params, timeout=30)
+            r.raise_for_status()
+            return {"ok": True, "data": r.json()}
+    except httpx.HTTPStatusError as e:
+        return {"ok": False, "error": f"{e.response.status_code} {e.response.reason_phrase}", "detail": e.response.text}
+    except httpx.RequestError as e:
+        return {"ok": False, "error": "network_error", "detail": str(e)}
 
 
-def _post(path: str, body: dict):
-    with httpx.Client() as client:
-        r = client.post(f"{BASE_URL}{path}", headers=HEADERS, json=body, timeout=30)
-        r.raise_for_status()
-        return r.json()
+def _post(path: str, body: dict) -> dict:
+    try:
+        with httpx.Client() as client:
+            r = client.post(f"{BASE_URL}{path}", headers=HEADERS, json=body, timeout=30)
+            r.raise_for_status()
+            return {"ok": True, "data": r.json()}
+    except httpx.HTTPStatusError as e:
+        return {"ok": False, "error": f"{e.response.status_code} {e.response.reason_phrase}", "detail": e.response.text}
+    except httpx.RequestError as e:
+        return {"ok": False, "error": "network_error", "detail": str(e)}
 
 
 @mcp.tool()
@@ -34,13 +44,13 @@ def get_capabilities() -> dict:
 
 
 @mcp.tool()
-def get_alerts() -> list:
+def get_alerts() -> dict:
     """List products whose stock is below the reorder point."""
     return _get("/api/agent/alerts")
 
 
 @mcp.tool()
-def get_inventory(branch_id: int = None, low_stock_only: bool = False) -> list:
+def get_inventory(branch_id: int = None, low_stock_only: bool = False) -> dict:
     """
     Return real stock per product/branch.
     branch_id: filter by branch (optional).
@@ -64,13 +74,13 @@ def get_valuation(branch_id: int = None) -> dict:
 
 
 @mcp.tool()
-def get_reorder_suggestions() -> list:
+def get_reorder_suggestions() -> dict:
     """Return restock suggestions using ROP + Wilson EOQ formula."""
     return _get("/api/agent/reorder-suggestions")
 
 
 @mcp.tool()
-def get_expiring_lots(days: int = 30) -> list:
+def get_expiring_lots(days: int = 30) -> dict:
     """Return lots expiring within `days` days (FEFO management)."""
     return _get("/api/agent/expiring-lots", {"days": days})
 
@@ -82,7 +92,7 @@ def get_forecast(product_id: int) -> dict:
 
 
 @mcp.tool()
-def list_my_proposals(status: str = None) -> list:
+def list_my_proposals(status: str = None) -> dict:
     """
     List proposals created by this agent.
     status: filter by PENDING, APPROVED, REJECTED, or EXECUTED (optional).
