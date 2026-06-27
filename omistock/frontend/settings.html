@@ -342,6 +342,7 @@
 
                         <div class="w-full space-y-3 mb-6">
                             <button
+                                onclick="openEditProfile()"
                                 class="w-full btn-outline-blue flex items-center justify-center gap-2"
                             >
                                 <svg
@@ -645,7 +646,7 @@
                                     </svg>
                                 </button>
                             </div>
-                            <button class="w-full btn-outline-blue text-sm">
+                            <button onclick="openChangePassword()" class="w-full btn-outline-blue text-sm">
                                 Changer le Mot de Passe
                             </button>
                         </div>
@@ -1759,7 +1760,140 @@
                     .getElementById("add_user_form")
                     .addEventListener("submit", createUser);
             };
+
+            // --- Modifier Profil ---
+            function openEditProfile() {
+                const token = localStorage.getItem("token");
+                fetch(`${API_BASE}/api/me`, { headers: { Authorization: `Bearer ${token}` } })
+                    .then(r => r.json())
+                    .then(user => {
+                        document.getElementById("edit_profile_email").value = user.email || "";
+                        document.getElementById("modal_edit_profile").classList.remove("hidden");
+                    });
+            }
+
+            function closeEditProfile() {
+                document.getElementById("modal_edit_profile").classList.add("hidden");
+            }
+
+            async function submitEditProfile(e) {
+                e.preventDefault();
+                const token = localStorage.getItem("token");
+                const email = document.getElementById("edit_profile_email").value.trim();
+                const msgEl = document.getElementById("edit_profile_msg");
+                msgEl.textContent = "";
+                try {
+                    const res = await fetch(`${API_BASE}/api/me/profile`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                        body: JSON.stringify({ email }),
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.detail || "Erreur");
+                    document.getElementById("profile_email").textContent = email;
+                    document.getElementById("contact_email").textContent = email;
+                    document.getElementById("user_email_sidebar").textContent = email;
+                    msgEl.className = "text-sm text-green-600";
+                    msgEl.textContent = data.message;
+                    setTimeout(closeEditProfile, 1200);
+                } catch (err) {
+                    msgEl.className = "text-sm text-red-600";
+                    msgEl.textContent = err.message;
+                }
+            }
+
+            // --- Changer le Mot de Passe ---
+            function openChangePassword() {
+                document.getElementById("cp_current").value = "";
+                document.getElementById("cp_new").value = "";
+                document.getElementById("cp_confirm").value = "";
+                document.getElementById("change_password_msg").textContent = "";
+                document.getElementById("modal_change_password").classList.remove("hidden");
+            }
+
+            function closeChangePassword() {
+                document.getElementById("modal_change_password").classList.add("hidden");
+            }
+
+            async function submitChangePassword(e) {
+                e.preventDefault();
+                const token = localStorage.getItem("token");
+                const current_password = document.getElementById("cp_current").value;
+                const new_password = document.getElementById("cp_new").value;
+                const confirm = document.getElementById("cp_confirm").value;
+                const msgEl = document.getElementById("change_password_msg");
+                msgEl.textContent = "";
+                if (new_password !== confirm) {
+                    msgEl.className = "text-sm text-red-600";
+                    msgEl.textContent = "Les mots de passe ne correspondent pas.";
+                    return;
+                }
+                try {
+                    const res = await fetch(`${API_BASE}/api/me/password`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                        body: JSON.stringify({ current_password, new_password }),
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.detail || "Erreur");
+                    msgEl.className = "text-sm text-green-600";
+                    msgEl.textContent = data.message;
+                    setTimeout(closeChangePassword, 1200);
+                } catch (err) {
+                    msgEl.className = "text-sm text-red-600";
+                    msgEl.textContent = err.message;
+                }
+            }
         </script>
+
+        <!-- Modal : Modifier Profil -->
+        <div id="modal_edit_profile" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+            <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm mx-4">
+                <h2 class="text-lg font-bold text-slate-800 mb-4">Modifier le Profil</h2>
+                <form onsubmit="submitEditProfile(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                        <input id="edit_profile_email" type="email" required
+                            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#174092]" />
+                    </div>
+                    <p id="edit_profile_msg" class="text-sm"></p>
+                    <div class="flex gap-2 pt-1">
+                        <button type="submit" class="flex-1 btn-primary text-sm py-2">Enregistrer</button>
+                        <button type="button" onclick="closeEditProfile()" class="flex-1 btn-outline-blue text-sm py-2">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal : Changer le Mot de Passe -->
+        <div id="modal_change_password" class="hidden fixed inset-0 bg-black/40 z-50 flex items-center justify-center">
+            <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm mx-4">
+                <h2 class="text-lg font-bold text-slate-800 mb-4">Changer le Mot de Passe</h2>
+                <form onsubmit="submitChangePassword(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Mot de passe actuel</label>
+                        <input id="cp_current" type="password" required
+                            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#174092]" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Nouveau mot de passe</label>
+                        <input id="cp_new" type="password" required minlength="6"
+                            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#174092]" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Confirmer le mot de passe</label>
+                        <input id="cp_confirm" type="password" required minlength="6"
+                            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#174092]" />
+                    </div>
+                    <p id="change_password_msg" class="text-sm"></p>
+                    <div class="flex gap-2 pt-1">
+                        <button type="submit" class="flex-1 btn-primary text-sm py-2">Confirmer</button>
+                        <button type="button" onclick="closeChangePassword()" class="flex-1 btn-outline-blue text-sm py-2">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <script src="erp-sidebar.js?v=20260625"></script>
     </body>
 </html>

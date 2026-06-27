@@ -33,6 +33,38 @@ def get_me(current_user: models.User = Depends(get_current_user)):
     }
 
 
+@router.put("/api/me/profile")
+def update_profile(
+    data: schemas.UpdateProfileRequest,
+    current_user: models.User = Depends(get_current_human),
+    db: Session = Depends(get_db),
+):
+    existing = db.query(models.User).filter(
+        models.User.email == data.email,
+        models.User.id != current_user.id,
+    ).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Cet email est déjà utilisé.")
+    current_user.email = data.email
+    db.commit()
+    return {"message": "Profil mis à jour avec succès.", "email": current_user.email}
+
+
+@router.put("/api/me/password")
+def change_password(
+    data: schemas.ChangePasswordRequest,
+    current_user: models.User = Depends(get_current_human),
+    db: Session = Depends(get_db),
+):
+    if not security.verify_password(data.current_password, current_user.hashed_password):
+        raise HTTPException(status_code=400, detail="Mot de passe actuel incorrect.")
+    if len(data.new_password) < 6:
+        raise HTTPException(status_code=400, detail="Le nouveau mot de passe doit contenir au moins 6 caractères.")
+    current_user.hashed_password = security.get_password_hash(data.new_password)
+    db.commit()
+    return {"message": "Mot de passe changé avec succès."}
+
+
 @router.post("/token", response_model=schemas.Token)
 @router.post("/api/token")
 async def login(
