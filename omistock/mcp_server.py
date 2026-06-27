@@ -7,7 +7,9 @@ import os
 from mcp.server.fastmcp import FastMCP
 
 BASE_URL = os.environ.get("OMISTOCK_API_URL", "https://omistock3.onrender.com").rstrip("/")
-API_KEY = os.environ.get("OMISTOCK_API_KEY", "LYbY2GIHx0vznA8BDF_P5TeZEA9D56KbIco47YqomiI")
+API_KEY = os.environ.get("OMISTOCK_API_KEY")
+if not API_KEY:
+    raise RuntimeError("OMISTOCK_API_KEY environment variable is not set")
 HEADERS = {"X-API-Key": API_KEY}
 
 mcp = FastMCP("omistock")
