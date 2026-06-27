@@ -136,6 +136,20 @@ PROJECT_ROOT = pathlib.Path(
     os.environ.get("OMISTOCK_ROOT", str(pathlib.Path(__file__).resolve().parent.parent))
 )
 frontend_path = PROJECT_ROOT / "frontend"
+
+class NoCacheHTMLMiddleware(BaseHTTPMiddleware):
+    """Force no-cache on HTML files so Render CDN never serves stale pages."""
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        path = request.url.path
+        if path.endswith(".html") or path.endswith("/") or path == "/app":
+            response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+            response.headers["Pragma"] = "no-cache"
+            response.headers["Expires"] = "0"
+        return response
+
+app.add_middleware(NoCacheHTMLMiddleware)
+
 if frontend_path.is_dir():
     app.mount("/app", StaticFiles(directory=str(frontend_path.resolve()), html=True), name="frontend")
 else:
