@@ -28,7 +28,7 @@
         <div class="ui-overlay flex flex-col p-8">
             <header class="flex justify-between items-center mb-auto">
                 <button
-                    onclick="window.location.href = 'dashboard.html'"
+                    onclick="goBack()"
                     class="ui-element w-14 h-14 glass rounded-2xl flex items-center justify-center text-white active:scale-90 transition-all shadow-2xl"
                 >
                     <svg
@@ -93,6 +93,15 @@
         <script>
             let scanner = null;
             const API_BASE = "";
+
+            async function goBack() {
+                if (scanner) {
+                    try { await scanner.stop(); } catch (e) {}
+                    try { scanner.clear(); } catch (e) {}
+                    scanner = null;
+                }
+                window.location.href = 'app_mobile.html';
+            }
 
             function startScan() {
                 scanner = new Html5Qrcode("reader");

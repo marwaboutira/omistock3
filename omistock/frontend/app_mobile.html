@@ -459,7 +459,7 @@
                     Scanner un produit
                 </h2>
                 <button
-                    onclick="cancelProductScan()"
+                    onclick="closeOverlayManual(cancelProductScan)"
                     class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center active:scale-95 transition-transform"
                 >
                     <i data-feather="x" class="w-5 h-5"></i>
@@ -594,7 +594,7 @@
                             </h2>
                         </div>
                         <button
-                            onclick="closeProductModal()"
+                            onclick="closeOverlayManual(closeProductModal)"
                             class="w-10 h-10 bg-slate-100 rounded-full text-slate-500 flex items-center justify-center shrink-0 active:scale-95 transition-transform"
                         >
                             <i data-feather="x" class="w-5 h-5"></i>
@@ -688,7 +688,7 @@
                     <!-- Back + Title -->
                     <div class="flex items-center gap-3 mb-5">
                         <button
-                            onclick="closeActionScreen()"
+                            onclick="closeOverlayManual(closeActionScreen)"
                             class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center active:scale-95 transition-transform shrink-0"
                         >
                             <i data-feather="arrow-left" class="w-5 h-5 text-slate-600"></i>
@@ -740,6 +740,7 @@
             let allProducts = [];
             let currentProduct = null;
             let currentBranchName = null;
+            let currentBranchId = null;
 
             // Mobile action state
             let pendingTransfers = [];
@@ -774,6 +775,40 @@
 
             // Ngrok bypass headers (prevents warning page intercepting API calls)
             const NGROK_HEADERS = { "ngrok-skip-browser-warning": "1" };
+
+            // --- Gestion du bouton RETOUR matériel/geste (PWA) ---
+            // Sans ceci, sur mobile, le retour du téléphone sort de l'app
+            // au lieu de fermer l'overlay actif (scan / fiche produit / action).
+            // On empile un callback de fermeture + un état d'historique à
+            // chaque ouverture, et on intercepte popstate pour fermer.
+            const overlayStack = [];
+            let suppressPopstate = false;
+
+            function pushOverlay(closeFn) {
+                overlayStack.push(closeFn);
+                history.pushState({ omiOverlay: true }, "");
+            }
+
+            // Ferme l'overlay + dépile l'état d'historique (boutons manuels).
+            function closeOverlayManual(closeFn) {
+                const idx = overlayStack.lastIndexOf(closeFn);
+                if (idx !== -1) overlayStack.splice(idx, 1);
+                suppressPopstate = true;
+                closeFn();
+                history.back();
+            }
+
+            // Le bouton retour matériel/geste du mobile ferme l'overlay actif.
+            window.addEventListener("popstate", () => {
+                if (suppressPopstate) {
+                    suppressPopstate = false;
+                    return;
+                }
+                const closeFn = overlayStack.pop();
+                if (typeof closeFn === "function") {
+                    closeFn();
+                }
+            });
 
             // Initialize Feather Icons
             feather.replace();
@@ -913,6 +948,7 @@
                     const user = await res.json();
 
                     currentBranchName = user.branch_name;
+                    currentBranchId = user.branch_id;
 
                     document.getElementById("current-company-name").innerText =
                         user.company_name || "Mon Entreprise";
@@ -1167,6 +1203,10 @@
                 const select = document.getElementById("manual-product-select");
                 if (select.value) {
                     cancelProductScan();
+                    // Dépile l'état du scanner sans history.back()
+                    // car openProductModal va empiler le sien.
+                    const idx = overlayStack.lastIndexOf(cancelProductScan);
+                    if (idx !== -1) overlayStack.splice(idx, 1);
                     openProductModalFromList(parseInt(select.value));
                     select.value = "";
                 }
@@ -1187,6 +1227,10 @@
                 );
                 if (select && select.value) {
                     cancelProductScan();
+                    // Dépile l'état du scanner sans history.back()
+                    // car openProductModal va empiler le sien.
+                    const idx = overlayStack.lastIndexOf(cancelProductScan);
+                    if (idx !== -1) overlayStack.splice(idx, 1);
                     openProductModalFromList(parseInt(select.value));
                     select.value = "";
                     const container = document.getElementById(
@@ -1231,6 +1275,8 @@
 
                 populateManualSelect();
 
+                pushOverlay(cancelProductScan);
+
                 try {
                     if (!productQrCode)
                         productQrCode = new Html5Qrcode("product-reader");
@@ -1252,6 +1298,10 @@
                                 document
                                     .getElementById("scanner-modal")
                                     .classList.add("hidden");
+                                // Dépile l'état du scanner sans history.back()
+                                // car on va enchaîner sur le modal produit.
+                                const idx = overlayStack.lastIndexOf(cancelProductScan);
+                                if (idx !== -1) overlayStack.splice(idx, 1);
                                 findAndShowProduct(decodedText);
                             },
                         )
@@ -1344,6 +1394,8 @@
                     .getElementById("product-modal")
                     .classList.remove("hidden");
                 feather.replace();
+
+                pushOverlay(closeProductModal);
 
                 // Fetch pending transfers
                 try {
@@ -1580,6 +1632,8 @@
                     .getElementById("action-screen")
                     .classList.remove("hidden");
                 feather.replace();
+
+                pushOverlay(closeActionScreen);
             }
 
             function selectTransfer(id, type) {
@@ -1650,24 +1704,35 @@
                             showToast("Quantité invalide", "error");
                             return;
                         }
-                        res = await fetch(
-                            `${API_BASE}/api/mobile/sale/quick`,
-                            {
-                                method: "POST",
-                                headers: {
-                                    ...NGROK_HEADERS,
-                                    Authorization:
-                                        "Bearer " + TokenStorage.get(),
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({
-                                    product_id: currentProduct.id,
-                                    quantity: qty,
-                                    unit_price: price || null,
-                                    note: note || null,
-                                }),
+                        // NB : /api/mobile/sale/quick est cassé côté backend
+                        // (Sale(seller_id=...) → le modèle utilise actor_id).
+                        // On redirige donc vers l'endpoint standard /api/sales
+                        // qui, lui, crée correctement la vente (actor_id, COGS,
+                        // mouvement de stock et décrément d'inventaire).
+                        const unitPrice =
+                            price && !isNaN(price) ? price : currentProduct.price || 0;
+                        res = await fetch(`${API_BASE}/api/sales`, {
+                            method: "POST",
+                            headers: {
+                                ...NGROK_HEADERS,
+                                Authorization:
+                                    "Bearer " + TokenStorage.get(),
+                                "Content-Type": "application/json",
                             },
-                        );
+                            body: JSON.stringify({
+                                branch_id: currentBranchId,
+                                items: [
+                                    {
+                                        product_id: currentProduct.id,
+                                        quantity: qty,
+                                        unit_price: unitPrice,
+                                    },
+                                ],
+                                ...(note
+                                    ? { note: note }
+                                    : {}),
+                            }),
+                        });
                     } else if (currentActionType === "ship") {
                         if (!currentTransfer) {
                             showToast("Sélectionnez un transfert", "error");
@@ -1707,9 +1772,19 @@
                     const data = await res.json();
 
                     if (res.ok) {
-                        showToast(data.message || "Action réussie !");
-                        closeActionScreen();
-                        closeProductModal();
+                        // /api/sales renvoie un objet SaleResponse (sans "message"),
+                        // les endpoints mobile renvoient { message }.
+                        let msg = data.message;
+                        if (!msg && currentActionType === "sale") {
+                            const total = data.total_amount;
+                            msg =
+                                total !== undefined
+                                    ? `Vente enregistrée — #${data.id} = ${total} DA`
+                                    : "Vente enregistrée !";
+                        }
+                        showToast(msg || "Action réussie !");
+                        closeOverlayManual(closeActionScreen);
+                        closeOverlayManual(closeProductModal);
                         await loadData();
                     } else {
                         showToast(data.detail || "Erreur", "error");
